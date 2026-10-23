@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+@import 'tailwindcss';
+
+html,
+body,
+#root {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ── Global micro-interaction primitives ──────────────────── */
+
+/* Primary violet button */
+.btn-primary {
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+.btn-primary:hover {
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
+}
+.btn-primary:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);
+}
+
+/* Secondary / ghost button */
+.btn-secondary {
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.btn-secondary:active {
+  transform: scale(0.98);
+}
+
+/* Hoverable card — lift */
+.card-hover {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.09);
+}
+
+/* Sidebar nav link */
+.nav-link {
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Slide-up-fade-in toast / badge */
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.toast-enter {
+  animation: slideUpFade 0.25s ease-out forwards;
+}
+
+/* Fade-in tooltip */
+@keyframes tooltipFade {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.tooltip-fade {
+  animation: tooltipFade 0.18s ease-out forwards;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  opacity: 0;
+}
+
+@theme inline {
+  --color-blue-primary: #1D4ED8;
+  --color-blue-light: #3B82F6;
+  --color-blue-pale: #EFF6FF;
+  --color-navy: #0F172A;
+}
