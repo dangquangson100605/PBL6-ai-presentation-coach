@@ -1,14 +1,8 @@
+import { GeminiIcon } from "./components/icons";
 import { useState } from "react";
 import Sidebar, { UserRole } from "./Sidebar";
 
 /* ── Icons ─────────────────────────────────────────────── */
-function GeminiIcon({ size = 16 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
-      <path d="M8 2C8 5.314 5.314 8 2 8c3.314 0 6 2.686 6 6 0-3.314 2.686-6 6-6-3.314 0-6-2.686-6-6z" fill="#7C3AED" />
-    </svg>
-  );
-}
 
 const ADMIN_NAV = [
   {

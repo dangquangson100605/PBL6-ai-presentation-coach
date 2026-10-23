@@ -1,123 +1,12 @@
+import { GeminiIcon } from "./components/icons";
 import { useState } from "react";
 import Sidebar, { UserRole } from "./Sidebar";
 
 /* ── Icons ─────────────────────────────────────────────── */
-function GeminiIcon({ size = 16 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
-      <path d="M8 2C8 5.314 5.314 8 2 8c3.314 0 6 2.686 6 6 0-3.314 2.686-6 6-6-3.314 0-6-2.686-6-6z" fill="#7C3AED" />
-    </svg>
-  );
-}
 
-const NAV_ITEMS = [
-  {
-    id: "dashboard", label: "Dashboard",
-    Icon: ({ a }: { a?: boolean }) => {
-      const c = a ? "#7C3AED" : "#94A3B8";
-      return <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1.5" y="1.5" width="6" height="6" rx="1.5" stroke={c} strokeWidth="1.5" /><rect x="10.5" y="1.5" width="6" height="6" rx="1.5" stroke={c} strokeWidth="1.5" /><rect x="1.5" y="10.5" width="6" height="6" rx="1.5" stroke={c} strokeWidth="1.5" /><rect x="10.5" y="10.5" width="6" height="6" rx="1.5" stroke={c} strokeWidth="1.5" /></svg>;
-    },
-  },
-  {
-    id: "studio", label: "Studio",
-    Icon: ({ a }: { a?: boolean }) => {
-      const c = a ? "#7C3AED" : "#94A3B8";
-      return <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke={c} strokeWidth="1.5" /><circle cx="9" cy="9" r="3" fill={c} fillOpacity="0.3" stroke={c} strokeWidth="1.5" /><circle cx="9" cy="9" r="1" fill={c} /></svg>;
-    },
-  },
-  {
-    id: "upload", label: "Upload Video",
-    Icon: ({ a }: { a?: boolean }) => {
-      const c = a ? "#7C3AED" : "#94A3B8";
-      return <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2v10M5 6l4-4 4 4M2 14h14" stroke={c} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>;
-    },
-  },
-  {
-    id: "history", label: "History",
-    Icon: ({ a }: { a?: boolean }) => {
-      const c = a ? "#7C3AED" : "#94A3B8";
-      return <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 4.5V9l3 2" stroke={c} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /><path d="M3.5 9A5.5 5.5 0 1 1 9 14.5" stroke={c} strokeWidth="1.5" strokeLinecap="round" /><path d="M3.5 5.5V9H7" stroke={c} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>;
-    },
-  },
-  {
-    id: "settings", label: "Settings",
-    Icon: ({ a }: { a?: boolean }) => {
-      const c = a ? "#7C3AED" : "#94A3B8";
-      return <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.5" stroke={c} strokeWidth="1.5" /><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.697 3.697l1.414 1.414M12.889 12.889l1.414 1.414M3.697 14.303l1.414-1.414M12.889 5.111l1.414-1.414" stroke={c} strokeWidth="1.5" strokeLinecap="round" /></svg>;
-    },
-  },
-];
 
-/* ── Data ───────────────────────────────────────────────── */
-const CHART_DATA = [
-  { label: "Tuần 1", score: 58, sessions: 3, topSkill: "Âm lượng" },
-  { label: "Tuần 2", score: 67, sessions: 4, topSkill: "Giao tiếp mắt" },
-  { label: "Tuần 3", score: 76, sessions: 5, topSkill: "Giao tiếp mắt" },
-  { label: "Tuần 4", score: 85, sessions: 4, topSkill: "Độ tự tin" },
-];
 
-const SESSIONS = [
-  {
-    id: 1,
-    date: "11/09/2026",
-    title: "Luyện tập bảo vệ đề án — Tuần 5",
-    context: "Bảo vệ đề án",
-    duration: "04:32",
-    score: 85,
-    trend: +4,
-    eyeContact: 88,
-    wpm: 175,
-    fillerWords: 5,
-  },
-  {
-    id: 2,
-    date: "10/09/2026",
-    title: "Thuyết trình ý tưởng lần 1",
-    context: "Phỏng vấn việc làm",
-    duration: "02:45",
-    score: 82,
-    trend: +6,
-    eyeContact: 80,
-    wpm: 162,
-    fillerWords: 7,
-  },
-  {
-    id: 3,
-    date: "08/09/2026",
-    title: "Thuyết trình lớp — Giới thiệu PBL6",
-    context: "Thuyết trình lớp học",
-    duration: "06:10",
-    score: 76,
-    trend: +9,
-    eyeContact: 74,
-    wpm: 158,
-    fillerWords: 9,
-  },
-  {
-    id: 4,
-    date: "05/09/2026",
-    title: "Phỏng vấn thử vòng 2",
-    context: "Phỏng vấn việc làm",
-    duration: "03:22",
-    score: 70,
-    trend: +12,
-    eyeContact: 70,
-    wpm: 145,
-    fillerWords: 11,
-  },
-  {
-    id: 5,
-    date: "03/09/2026",
-    title: "Bản nháp bài nói hội thảo",
-    context: "Hội thảo",
-    duration: "05:48",
-    score: 67,
-    trend: null,
-    eyeContact: 65,
-    wpm: 188,
-    fillerWords: 14,
-  },
-];
+import { CHART_DATA, SESSIONS } from "./mocks/mockHistory";
 
 const CONTEXT_COLORS: Record<string, string> = {
   "Bảo vệ đề án":        "bg-violet-50 text-violet-700 border-violet-200",

@@ -1,15 +1,6 @@
+import { GeminiIcon } from "./components/icons";
 import { useState } from "react";
 
-function GeminiIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-      <path
-        d="M8 2C8 5.31371 5.31371 8 2 8C5.31371 8 8 10.6863 8 14C8 10.6863 10.6863 8 14 8C10.6863 8 8 5.31371 8 2Z"
-        fill="#7C3AED"
-      />
-    </svg>
-  );
-}
 
 function CheckCircleIcon() {
   return (

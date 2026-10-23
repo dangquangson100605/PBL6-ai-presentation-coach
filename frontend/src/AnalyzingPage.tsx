@@ -1,63 +1,10 @@
+import { GeminiIcon } from "./components/icons";
 import { useState, useEffect } from "react";
 import Sidebar, { UserRole } from "./Sidebar";
 
 /* ── Icons ─────────────────────────────────────────────── */
-function GeminiIcon({ size = 16 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
-      <path d="M8 2C8 5.314 5.314 8 2 8c3.314 0 6 2.686 6 6 0-3.314 2.686-6 6-6-3.314 0-6-2.686-6-6z" fill="#7C3AED" />
-    </svg>
-  );
-}
 
-function IconDashboard({ active }: { active?: boolean }) {
-  const c = active ? "#7C3AED" : "#94A3B8";
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-      <rect x="1.5" y="1.5" width="6" height="6" rx="1.5" stroke={c} strokeWidth="1.5" />
-      <rect x="10.5" y="1.5" width="6" height="6" rx="1.5" stroke={c} strokeWidth="1.5" />
-      <rect x="1.5" y="10.5" width="6" height="6" rx="1.5" stroke={c} strokeWidth="1.5" />
-      <rect x="10.5" y="10.5" width="6" height="6" rx="1.5" stroke={c} strokeWidth="1.5" />
-    </svg>
-  );
-}
 
-function IconStudio({ active }: { active?: boolean }) {
-  const c = active ? "#7C3AED" : "#94A3B8";
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-      <circle cx="9" cy="9" r="7" stroke={c} strokeWidth="1.5" />
-      <circle cx="9" cy="9" r="3" fill={c} fillOpacity="0.3" stroke={c} strokeWidth="1.5" />
-      <circle cx="9" cy="9" r="1" fill={c} />
-    </svg>
-  );
-}
-
-function IconUpload({ active }: { active?: boolean }) {
-  const c = active ? "#7C3AED" : "#94A3B8";
-  return <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2v10M5 6l4-4 4 4M2 14h14" stroke={c} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>;
-}
-
-function IconHistory({ active }: { active?: boolean }) {
-  const c = active ? "#7C3AED" : "#94A3B8";
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-      <path d="M9 4.5V9l3 2" stroke={c} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M3.5 9A5.5 5.5 0 1 1 9 14.5" stroke={c} strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M3.5 5.5V9H7" stroke={c} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function IconSettings({ active }: { active?: boolean }) {
-  const c = active ? "#7C3AED" : "#94A3B8";
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-      <circle cx="9" cy="9" r="2.5" stroke={c} strokeWidth="1.5" />
-      <path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.697 3.697l1.414 1.414M12.889 12.889l1.414 1.414M3.697 14.303l1.414-1.414M12.889 5.111l1.414-1.414" stroke={c} strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 /* ── Circular progress ──────────────────────────────────── */
 function CircularProgress({ pct }: { pct: number }) {
