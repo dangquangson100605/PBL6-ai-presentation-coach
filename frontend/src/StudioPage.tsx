@@ -1,76 +1,113 @@
-import { GeminiIcon } from "./components/icons";
 import { useState, useEffect, useRef } from "react";
 import Sidebar, { UserRole } from "./Sidebar";
+import { Button, Card, Badge } from "./components/common";
 
-/* ── Icons ─────────────────────────────────────────────── */
-
-
+/* ── Inline Icons for Studio ─────────────────────────────── */
 
 function IconStop() {
   return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-      <rect x="5" y="5" width="12" height="12" rx="2" fill="white" />
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <rect x="5" y="5" width="14" height="14" rx="2.5" />
+    </svg>
+  );
+}
+
+function IconRecord() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="12" cy="12" r="7" />
     </svg>
   );
 }
 
 function IconSend() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M2 8l12-6-6 12-2-4-4-2z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function IconMic() {
   return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-      <rect x="4" y="1" width="4" height="6" rx="2" fill="currentColor" />
-      <path d="M2 6a4 4 0 0 0 8 0" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" fill="none" />
-      <path d="M6 10v1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function IconEye() {
   return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-      <ellipse cx="6" cy="6" rx="5" ry="3.5" stroke="currentColor" strokeWidth="1.2" />
-      <circle cx="6" cy="6" r="1.5" fill="currentColor" />
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 
 function IconPace() {
   return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-      <path d="M1 9l3-4 3 2 4-5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function IconChevron() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M4 5.5l3 3 3-3" stroke="#94A3B8" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M22 12h-4l-3 9L9 3l-3 9H2"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function IconTextSize() {
   return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M1 12l4-10 4 10M2.5 8.5h5" stroke="#7C3AED" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M10 7l2.5-3 .5 1.5" stroke="#7C3AED" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M9.5 12l3-5 3 5M10.5 10h2" stroke="#7C3AED" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M4 7V4h16v3M9 20h6M12 4v16"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function IconScroll() {
   return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M7 2v10M4 9l3 3 3-3" stroke="#7C3AED" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M12 5v14M19 12l-7 7-7-7"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -83,7 +120,8 @@ function useTimer(running: boolean) {
     const id = setInterval(() => setSeconds((s) => s + 1), 1000);
     return () => clearInterval(id);
   }, [running]);
-  const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+  const fmt = (s: number) =>
+    `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
   return fmt(seconds);
 }
 
@@ -112,209 +150,228 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
   const teleRef = useRef<HTMLTextAreaElement>(null);
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-[Inter,sans-serif]">
-
+    <div className="flex h-screen bg-[#F5F7F6] overflow-hidden font-[Inter,sans-serif] text-[#24312B]">
       <Sidebar userRole={userRole} activeItem="studio" onNav={onNav} />
 
       {/* ── MAIN CONTENT ──────────────────────────────────── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-
-        {/* Top header */}
-        <header className="h-14 flex-shrink-0 bg-white border-b border-slate-100 flex items-center justify-between px-6">
+        {/* Top Header */}
+        <header className="h-16 flex-shrink-0 bg-white border-b border-[#DCE5DF] flex items-center justify-between px-6 z-10">
           <div className="flex items-center gap-3">
-            <h1 className="text-[17px] font-bold text-slate-800 tracking-tight">Studio Ghi hình Trực tiếp</h1>
-            {recording && (
-              <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-red-500 bg-red-50 border border-red-200 px-2.5 py-1 rounded-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                LIVE
-              </span>
+            <h1 className="text-[17px] font-bold text-[#24312B] tracking-tight">
+              Studio Ghi hình Trực tiếp
+            </h1>
+            {recording ? (
+              <Badge variant="danger" withDot>
+                Đang ghi hình
+              </Badge>
+            ) : (
+              <Badge variant="neutral">Tạm dừng</Badge>
             )}
           </div>
+
           <div className="flex items-center gap-3">
-            <span className="text-[12px] text-slate-400 font-medium">Phiên #47</span>
-            <div className="w-px h-4 bg-slate-200" />
-            <span className="text-[12px] text-slate-500 font-medium">
-              {new Date().toLocaleDateString("vi-VN", { day: "2-digit", month: "short", year: "numeric" })}
+            <span className="text-[12px] text-[#69766F] font-medium">Phiên #47</span>
+            <div className="w-px h-3.5 bg-[#DCE5DF]" />
+            <span className="text-[12px] text-[#69766F]">
+              {new Date().toLocaleDateString("vi-VN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
             </span>
           </div>
         </header>
 
-        {/* Body: 70 / 30 split */}
-        <div className="flex-1 flex gap-4 p-4 min-h-0">
-
-          {/* ── LEFT: Camera (70%) ──────────────────────── */}
-          <div className="flex-[7] min-w-0 flex flex-col gap-3">
-
-            {/* Camera viewport */}
-            <div className="relative flex-1 rounded-2xl overflow-hidden bg-slate-900 shadow-xl shadow-slate-900/20 min-h-0">
-
-              {/* Live feed image */}
+        {/* Studio Workspace: Camera (70%) + Teleprompter Panel (30%) */}
+        <div className="flex-1 flex flex-col lg:flex-row gap-4 p-5 min-h-0 overflow-y-auto lg:overflow-hidden">
+          {/* ── LEFT: Camera & Controls ──────────────────────── */}
+          <div className="flex-1 lg:flex-[7] min-w-0 flex flex-col gap-3.5">
+            {/* Camera Viewport Container */}
+            <div className="relative flex-1 rounded-2xl overflow-hidden bg-[#1A231F] border border-[#DCE5DF] shadow-sm min-h-[360px] flex flex-col">
+              {/* Webcam Video / Live Preview Feed */}
               <img
                 src="https://images.unsplash.com/photo-1758876020207-67890de8aa73?w=1200&h=900&fit=crop&auto=format"
                 alt="Live webcam preview — presenter"
-                className="w-full h-full object-cover opacity-90"
+                className="w-full h-full object-cover"
               />
 
-              {/* Dark vignette overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
+              {/* Subtle top & bottom vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25 pointer-events-none" />
 
-              {/* AI face tracking box */}
-              <div className="absolute top-[12%] left-[38%] w-[24%] h-[52%] pointer-events-none">
-                <div className="absolute inset-0 border-2 border-emerald-400/80 rounded-lg">
-                  <div className="absolute -top-0.5 -left-0.5 w-4 h-4 border-t-2 border-l-2 border-emerald-400 rounded-tl" />
-                  <div className="absolute -top-0.5 -right-0.5 w-4 h-4 border-t-2 border-r-2 border-emerald-400 rounded-tr" />
-                  <div className="absolute -bottom-0.5 -left-0.5 w-4 h-4 border-b-2 border-l-2 border-emerald-400 rounded-bl" />
-                  <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 border-b-2 border-r-2 border-emerald-400 rounded-br" />
+              {/* AI Face & Posture Tracking Bounding Box */}
+              <div className="absolute top-[14%] left-[38%] w-[24%] h-[50%] pointer-events-none">
+                <div className="absolute inset-0 border border-[#276749]/80 rounded-lg">
+                  <div className="absolute -top-0.5 -left-0.5 w-3.5 h-3.5 border-t-2 border-l-2 border-emerald-400 rounded-tl" />
+                  <div className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 border-t-2 border-r-2 border-emerald-400 rounded-tr" />
+                  <div className="absolute -bottom-0.5 -left-0.5 w-3.5 h-3.5 border-b-2 border-l-2 border-emerald-400 rounded-bl" />
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 border-b-2 border-r-2 border-emerald-400 rounded-br" />
                 </div>
-                <div className="absolute -top-6 left-0 bg-emerald-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded">
-                  AI Theo dõi
+                <div className="absolute -top-5 left-0 bg-[#276749]/90 text-white text-[10px] font-medium px-2 py-0.5 rounded shadow-sm">
+                  AI Tracking
                 </div>
               </div>
 
-              {/* ── HUD: Top-Left Pills ── */}
-              <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/20 text-white text-[11px] font-semibold px-3 py-1.5 rounded-full">
-                  <IconMic /> Mic: Bật
-                </span>
-                <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-emerald-400/40 text-emerald-300 text-[11px] font-semibold px-3 py-1.5 rounded-full">
-                  <IconEye /> Giao tiếp mắt: Tốt
-                </span>
-                <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/20 text-slate-200 text-[11px] font-semibold px-3 py-1.5 rounded-full">
-                  <IconPace /> Nhịp độ: Nhanh
-                </span>
-              </div>
-
-              {/* ── HUD: Top-Right Timer ── */}
-              <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/50 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2">
-                <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse flex-shrink-0" />
-                <span className="text-white font-mono text-[15px] font-bold tracking-widest">
-                  {timer}
-                </span>
-                <span className="text-white/40 font-mono text-[13px]">/ 03:00</span>
-              </div>
-
-              {/* ── HUD: Bottom Controls ── */}
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-4">
-                {/* Stop/Start button */}
-                <button
-                  onClick={() => setRecording(!recording)}
-                  className={`btn-primary group flex items-center gap-2.5 ${recording ? "bg-rose-600 hover:bg-rose-700 shadow-rose-600/30" : "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/30"} text-white font-semibold text-[13px] pl-3 pr-5 py-2.5 rounded-full shadow-lg transition-all`}
-                >
-                  <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-all">
-                    <IconStop />
+              {/* HUD: Top Status Indicators */}
+              <div className="absolute top-3.5 left-4 right-4 flex items-center justify-between pointer-events-none">
+                <div className="flex items-center gap-2">
+                  <div className="inline-flex items-center gap-1.5 bg-black/50 backdrop-blur-md border border-white/15 text-white text-[11px] font-medium px-3 py-1 rounded-full">
+                    <IconMic />
+                    <span>Micro: Bật</span>
                   </div>
-                  {recording ? "Dừng ghi hình" : "Bắt đầu ghi hình"}
-                </button>
+                  <div className="inline-flex items-center gap-1.5 bg-black/50 backdrop-blur-md border border-emerald-500/30 text-emerald-300 text-[11px] font-medium px-3 py-1 rounded-full">
+                    <IconEye />
+                    <span>Ánh mắt: Chuẩn</span>
+                  </div>
+                  <div className="hidden sm:inline-flex items-center gap-1.5 bg-black/50 backdrop-blur-md border border-white/15 text-white/90 text-[11px] font-medium px-3 py-1 rounded-full">
+                    <IconPace />
+                    <span>Nhịp độ: Ổn định</span>
+                  </div>
+                </div>
 
-                {/* Send for analysis */}
-                <button
-                  onClick={onAnalyze}
-                  className="btn-secondary flex items-center gap-2 backdrop-blur-md border border-white/80 bg-white text-slate-800 hover:bg-slate-50 shadow-lg font-semibold text-[13px] px-5 py-3 rounded-full transition-all"
-                >
-                  <IconSend /> Gửi để phân tích
-                </button>
+                {/* HUD: Timer */}
+                <div className="flex items-center gap-2 bg-black/55 backdrop-blur-md border border-white/15 rounded-xl px-3.5 py-1.5">
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                      recording ? "bg-[#C24141] animate-pulse" : "bg-neutral-400"
+                    }`}
+                  />
+                  <span className="text-white font-mono text-[14px] font-bold tracking-wider">
+                    {timer}
+                  </span>
+                  <span className="text-white/40 font-mono text-[12px]">/ 03:00</span>
+                </div>
               </div>
 
-              {/* Audio waveform strip */}
-              <div className="absolute bottom-0 left-0 right-0 h-10 flex items-center justify-center gap-0.5 px-8 pointer-events-none">
-                {Array.from({ length: 60 }).map((_, i) => (
+              {/* Audio Waveform Visualization Strip */}
+              <div className="absolute bottom-16 left-0 right-0 h-7 flex items-center justify-center gap-0.5 px-8 pointer-events-none opacity-80">
+                {Array.from({ length: 48 }).map((_, i) => (
                   <div
                     key={i}
-                    className="w-1 bg-emerald-400/50 rounded-full"
-                    style={{ height: `${4 + Math.abs(Math.sin(i * 0.6 + Date.now() * 0.001)) * 20}px` }}
+                    className="w-1 bg-emerald-400/60 rounded-full transition-all duration-150"
+                    style={{
+                      height: `${4 + Math.abs(Math.sin(i * 0.5 + Date.now() * 0.001)) * 16}px`,
+                    }}
                   />
                 ))}
               </div>
+
+              {/* Bottom Control Bar */}
+              <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
+                {/* Record / Stop Button */}
+                <button
+                  type="button"
+                  onClick={() => setRecording(!recording)}
+                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-[13px] text-white shadow-md transition-all active:scale-[0.98] ${
+                    recording
+                      ? "bg-[#C24141] hover:bg-[#a53232]"
+                      : "bg-[#276749] hover:bg-[#1F553C]"
+                  }`}
+                >
+                  {recording ? <IconStop /> : <IconRecord />}
+                  <span>{recording ? "Dừng ghi hình" : "Bắt đầu ghi hình"}</span>
+                </button>
+
+                {/* Send for Analysis Button */}
+                <button
+                  type="button"
+                  onClick={onAnalyze}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full font-medium text-[13px] bg-white text-[#24312B] hover:bg-[#F5F7F6] border border-[#DCE5DF] shadow-md transition-all active:scale-[0.98]"
+                >
+                  <IconSend />
+                  <span>Gửi phân tích</span>
+                </button>
+              </div>
             </div>
 
-            {/* Realtime metrics strip below camera (Standardized Clean White Cards) */}
-            <div className="flex gap-3">
+            {/* Realtime Metrics Summary Strip */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { label: "Giao tiếp mắt", value: 85, unit: "%" },
-                { label: "Tốc độ nói", value: 158, unit: " WPM" },
-                { label: "Độ tự tin", value: 72, unit: "%" },
-                { label: "Từ đệm", value: 3, unit: " từ" },
-              ].map(({ label, value, unit }) => (
-                <div key={label} className="flex-1 bg-white border border-slate-200/80 rounded-xl px-4 py-3 shadow-sm">
-                  <p className="text-[11px] text-slate-500 font-medium mb-1">{label}</p>
-                  <p className="text-[20px] font-bold text-slate-900 leading-none">
-                    {value}<span className="text-[12px] font-semibold text-slate-500 ml-0.5">{unit}</span>
-                  </p>
+                { label: "Giao tiếp mắt", value: "85%", status: "Tốt", variant: "success" },
+                { label: "Tốc độ nói", value: "158", unit: "WPM", status: "Hơi nhanh", variant: "warning" },
+                { label: "Độ tự tin", value: "72%", status: "Ổn định", variant: "neutral" },
+                { label: "Từ đệm", value: "3", unit: "từ", status: "Thấp", variant: "success" },
+              ].map(({ label, value, unit, status, variant }) => (
+                <div
+                  key={label}
+                  className="bg-white border border-[#DCE5DF] rounded-xl px-4 py-3 shadow-sm flex flex-col justify-between"
+                >
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[12px] font-medium text-[#69766F]">{label}</span>
+                    <Badge variant={variant as "success" | "warning" | "neutral"}>{status}</Badge>
+                  </div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-[22px] font-bold text-[#24312B] tracking-tight">
+                      {value}
+                    </span>
+                    {unit && (
+                      <span className="text-[11.5px] font-medium text-[#69766F]">{unit}</span>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* ── RIGHT: Teleprompter (30%) ───────────────── */}
-          <div className="flex-[3] min-w-0 flex flex-col gap-3">
-
-            {/* Presentation Context */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm px-4 py-4 space-y-2">
-              <label className="block text-[12px] font-semibold text-slate-500 uppercase tracking-wider">
+          {/* ── RIGHT: Teleprompter & Context (30%) ─────────── */}
+          <div className="w-full lg:w-80 flex-shrink-0 flex flex-col gap-3.5">
+            {/* Context Selector Card */}
+            <Card className="p-4 space-y-2">
+              <label className="block text-[11.5px] font-semibold text-[#69766F] uppercase tracking-wider">
                 Ngữ cảnh thuyết trình
               </label>
-              <div className="relative">
-                <select
-                  value={context}
-                  onChange={(e) => setContext(e.target.value)}
-                  className="w-full appearance-none bg-slate-50 border border-slate-200 text-slate-700 text-[13.5px] font-medium rounded-xl px-4 py-2.5 pr-9 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all cursor-pointer"
-                >
-                  <option>Bảo vệ đề án</option>
-                  <option>Phỏng vấn việc làm</option>
-                  <option>Hội thảo</option>
-                  <option>Thuyết trình lớp học</option>
-                  <option>Thuyết phục khách hàng</option>
-                </select>
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <IconChevron />
-                </div>
-              </div>
-              <div className="flex items-center gap-2 pt-0.5">
-                <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span className="text-[11px] text-slate-400">Chế độ AI coaching đang hoạt động theo ngữ cảnh</span>
-              </div>
-            </div>
+              <select
+                value={context}
+                onChange={(e) => setContext(e.target.value)}
+                className="w-full h-10 bg-[#F5F7F6] border border-[#DCE5DF] text-[#24312B] text-[13.5px] font-medium rounded-lg px-3 outline-none focus:border-[#276749] focus:ring-1 focus:ring-[#276749] transition-all cursor-pointer"
+              >
+                <option>Bảo vệ đề án</option>
+                <option>Phỏng vấn việc làm</option>
+                <option>Hội thảo</option>
+                <option>Thuyết trình lớp học</option>
+                <option>Thuyết phục khách hàng</option>
+              </select>
+              <p className="text-[11px] text-[#69766F] pt-0.5">
+                AI sẽ căn chỉnh bộ tiêu chí đánh giá phù hợp với bối cảnh này.
+              </p>
+            </Card>
 
-            {/* Teleprompter */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm px-4 py-4 flex flex-col flex-1 min-h-0 gap-3">
-              <div className="flex items-center justify-between">
-                <label className="block text-[12px] font-semibold text-slate-500 uppercase tracking-wider">
+            {/* Teleprompter Card */}
+            <Card className="p-4 flex flex-col flex-1 min-h-[380px] gap-3">
+              <div className="flex items-center justify-between pb-1 border-b border-[#DCE5DF]">
+                <span className="text-[12px] font-semibold text-[#24312B] uppercase tracking-wider">
                   Máy nhắc chữ
-                </label>
-                <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
-                  Đang cuộn
                 </span>
+                <Badge variant="primary" withDot>
+                  Đang cuộn
+                </Badge>
               </div>
 
-              {/* Text area */}
-              <div className="flex-1 relative min-h-0">
-                <div
-                  className="absolute inset-0 rounded-xl bg-slate-900 overflow-hidden"
-                  style={{ boxShadow: "inset 0 2px 12px rgba(0,0,0,0.3)" }}
-                >
-                  {/* Top fade */}
-                  <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-slate-900 to-transparent z-10 pointer-events-none" />
-                  {/* Bottom fade */}
-                  <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-slate-900 to-transparent z-10 pointer-events-none" />
-                  {/* Center highlight line */}
-                  <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-8 bg-emerald-500/10 border-y border-emerald-400/20 z-10 pointer-events-none" />
-                  <textarea
-                    ref={teleRef}
-                    defaultValue={TELEPROMPTER_TEXT}
-                    className="absolute inset-0 w-full h-full bg-transparent text-slate-100 resize-none outline-none px-4 py-6 leading-relaxed scrollbar-hide"
-                    style={{ fontSize: textSize, lineHeight: 1.8 }}
-                    spellCheck={false}
-                  />
-                </div>
+              {/* Text Area with subtle focus frame */}
+              <div className="flex-1 relative min-h-[200px] rounded-lg bg-[#1A231F] overflow-hidden border border-[#DCE5DF]">
+                {/* Top fade */}
+                <div className="absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-[#1A231F] to-transparent z-10 pointer-events-none" />
+                {/* Center reading line */}
+                <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-8 bg-white/5 border-y border-white/10 z-10 pointer-events-none" />
+                {/* Bottom fade */}
+                <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-[#1A231F] to-transparent z-10 pointer-events-none" />
+
+                <textarea
+                  ref={teleRef}
+                  defaultValue={TELEPROMPTER_TEXT}
+                  className="absolute inset-0 w-full h-full bg-transparent text-slate-100 resize-none outline-none px-4 py-5 leading-relaxed overflow-y-auto"
+                  style={{ fontSize: textSize, lineHeight: 1.75 }}
+                  spellCheck={false}
+                />
               </div>
 
-              {/* Controls */}
-              <div className="space-y-3 pt-1 border-t border-slate-100">
-                {/* Text Size */}
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1.5 w-24 flex-shrink-0">
+              {/* Teleprompter Controls */}
+              <div className="space-y-3 pt-2 border-t border-[#DCE5DF]">
+                {/* Text Size Control */}
+                <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-1.5 w-24 flex-shrink-0 text-[#69766F]">
                     <IconTextSize />
-                    <span className="text-[11.5px] font-semibold text-slate-600">Cỡ chữ</span>
+                    <span className="text-[12px] font-medium text-[#24312B]">Cỡ chữ</span>
                   </div>
                   <input
                     type="range"
@@ -322,16 +379,18 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                     max={22}
                     value={textSize}
                     onChange={(e) => setTextSize(Number(e.target.value))}
-                    className="flex-1 accent-emerald-600 h-1.5 cursor-pointer"
+                    className="flex-1 accent-[#276749] h-1.5 bg-[#DCE5DF] rounded-lg cursor-pointer"
                   />
-                  <span className="text-[11px] font-mono font-semibold text-emerald-700 w-7 text-right">{textSize}px</span>
+                  <span className="text-[11.5px] font-mono font-medium text-[#276749] w-8 text-right">
+                    {textSize}px
+                  </span>
                 </div>
 
-                {/* Scroll Speed */}
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1.5 w-24 flex-shrink-0">
+                {/* Scroll Speed Control */}
+                <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-1.5 w-24 flex-shrink-0 text-[#69766F]">
                     <IconScroll />
-                    <span className="text-[11.5px] font-semibold text-slate-600">Tốc độ cuộn</span>
+                    <span className="text-[12px] font-medium text-[#24312B]">Tốc độ cuộn</span>
                   </div>
                   <input
                     type="range"
@@ -340,20 +399,21 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                     step={1}
                     value={scrollSpeed}
                     onChange={(e) => setScrollSpeed(Number(e.target.value))}
-                    className="flex-1 accent-emerald-600 h-1.5 cursor-pointer"
+                    className="flex-1 accent-[#276749] h-1.5 bg-[#DCE5DF] rounded-lg cursor-pointer"
                   />
-                  <span className="text-[11px] font-mono font-semibold text-emerald-700 w-7 text-right">{scrollSpeed}x</span>
+                  <span className="text-[11.5px] font-mono font-medium text-[#276749] w-8 text-right">
+                    {scrollSpeed}x
+                  </span>
                 </div>
 
-                {/* Speed labels */}
-                <div className="flex justify-between px-[calc(24px+0.75rem)]">
-                  {["Chậm", "", "Bình thường", "", "Nhanh"].map((l, i) => (
-                    <span key={i} className="text-[10px] text-slate-400">{l}</span>
-                  ))}
+                {/* Quick Speed Labels */}
+                <div className="flex justify-between text-[10px] text-[#69766F] px-1">
+                  <span>Chậm</span>
+                  <span>Vừa phải</span>
+                  <span>Nhanh</span>
                 </div>
               </div>
-            </div>
-
+            </Card>
           </div>
         </div>
       </div>
