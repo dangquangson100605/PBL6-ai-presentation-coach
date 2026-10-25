@@ -1,147 +1,14 @@
 import { useState } from "react";
 import Sidebar, { UserRole } from "./Sidebar";
-import { CHART_DATA, SESSIONS } from "./mocks/mockHistory";
+import { getStoredSessions } from "./mocks/mockHistory";
 import { Button, Card, Badge } from "./components/common";
-
-/* ── Clean Line Chart (Standardized Deep Forest Green) ───────── */
-function LineChart({
-  hoverIdx,
-  setHoverIdx,
-}: {
-  hoverIdx: number | null;
-  setHoverIdx: (i: number | null) => void;
-}) {
-  const W = 700,
-    H = 190;
-  const padL = 40,
-    padR = 20,
-    padT = 16,
-    padB = 28;
-  const chartW = W - padL - padR;
-  const chartH = H - padT - padB;
-
-  const minScore = 45,
-    maxScore = 100;
-  const toX = (i: number) => padL + (i / (CHART_DATA.length - 1)) * chartW;
-  const toY = (v: number) =>
-    padT + chartH - ((v - minScore) / (maxScore - minScore)) * chartH;
-
-  const pts = CHART_DATA.map((d, i) => ({ x: toX(i), y: toY(d.score) }));
-  const linePath = pts
-    .map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`)
-    .join(" ");
-  const areaPath =
-    linePath +
-    ` L${pts[pts.length - 1].x},${padT + chartH} L${pts[0].x},${padT + chartH} Z`;
-
-  const yTicks = [50, 70, 90];
-
-  return (
-    <svg
-      viewBox={`0 0 ${W} ${H}`}
-      className="w-full"
-      style={{ height: 200, userSelect: "none" }}
-      onMouseLeave={() => setHoverIdx(null)}
-    >
-      <defs>
-        <linearGradient id="lineAreaGrad" x1="0%" y1="0%" x2="0%" y2="1">
-          <stop offset="0%" stopColor="#276749" stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#276749" stopOpacity="0.02" />
-        </linearGradient>
-      </defs>
-
-      {/* Y-axis gridlines */}
-      {yTicks.map((v) => {
-        const y = toY(v);
-        return (
-          <g key={v}>
-            <line
-              x1={padL}
-              y1={y}
-              x2={W - padR}
-              y2={y}
-              stroke="#DCE5DF"
-              strokeWidth="1"
-            />
-            <text
-              x={padL - 8}
-              y={y + 3.5}
-              textAnchor="end"
-              fontSize="10"
-              fill="#69766F"
-              fontFamily="Inter, sans-serif"
-              fontWeight="500"
-            >
-              {v}
-            </text>
-          </g>
-        );
-      })}
-
-      {/* Area fill */}
-      <path d={areaPath} fill="url(#lineAreaGrad)" />
-
-      {/* Main trend line */}
-      <path
-        d={linePath}
-        fill="none"
-        stroke="#276749"
-        strokeWidth="2.4"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-      />
-
-      {/* X-axis labels + interactive markers */}
-      {CHART_DATA.map((d, i) => {
-        const x = toX(i);
-        const active = hoverIdx === i;
-        return (
-          <g key={i}>
-            {active && (
-              <line
-                x1={x}
-                y1={padT}
-                x2={x}
-                y2={padT + chartH}
-                stroke="#276749"
-                strokeWidth="1"
-                strokeDasharray="3 3"
-                opacity="0.6"
-              />
-            )}
-            <circle
-              cx={x}
-              cy={pts[i].y}
-              r={active ? 5.5 : 4}
-              fill={active ? "#276749" : "white"}
-              stroke="#276749"
-              strokeWidth="2"
-              style={{ cursor: "pointer", transition: "r 0.15s" }}
-            />
-            <text
-              x={x}
-              y={H - 6}
-              textAnchor="middle"
-              fontSize="10"
-              fill={active ? "#24312B" : "#69766F"}
-              fontWeight={active ? "600" : "500"}
-              fontFamily="Inter, sans-serif"
-            >
-              {d.label}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
 
 function MiniBar({ value }: { value: number }) {
   return (
     <div className="h-1.5 bg-[#DCE5DF] rounded-full overflow-hidden">
       <div
         className="h-full rounded-full bg-[#276749]"
-        style={{ width: `${value}%` }}
+        style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
       />
     </div>
   );
@@ -149,7 +16,7 @@ function MiniBar({ value }: { value: number }) {
 
 interface HistoryPageProps {
   onNav: (view: string) => void;
-  onViewReport: () => void;
+  onViewReport: (id: string | number) => void;
   userRole: UserRole;
 }
 
@@ -158,9 +25,10 @@ export default function HistoryPage({
   onViewReport,
   userRole,
 }: HistoryPageProps) {
-  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [activeFilter, setActiveFilter] = useState("Tất cả");
   const [expandedId, setExpandedId] = useState<string | number | null>(null);
+
+  const sessions = getStoredSessions();
 
   const filters = [
     "Tất cả",
@@ -168,20 +36,13 @@ export default function HistoryPage({
     "Phỏng vấn việc làm",
     "Thuyết trình lớp học",
     "Hội thảo",
+    "Luyện tập tự do",
   ];
+
   const filtered =
     activeFilter === "Tất cả"
-      ? SESSIONS
-      : SESSIONS.filter((s) => s.context === activeFilter);
-
-  const avgScore = Math.round(
-    SESSIONS.reduce((a, s) => a + s.score, 0) / SESSIONS.length
-  );
-  const totalMins = SESSIONS.reduce((a, s) => {
-    const [m, sec] = s.duration.split(":").map(Number);
-    return a + m + sec / 60;
-  }, 0);
-  const improvement = SESSIONS[0].score - SESSIONS[SESSIONS.length - 1].score;
+      ? sessions
+      : sessions.filter((s) => s.context === activeFilter);
 
   return (
     <div className="flex h-screen bg-[#F5F7F6] overflow-hidden font-[Inter,sans-serif] text-[#24312B]">
@@ -191,13 +52,16 @@ export default function HistoryPage({
       <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         {/* Header */}
         <header className="bg-white border-b border-[#DCE5DF] px-6 sm:px-8 py-5 flex-shrink-0">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-[17px] font-bold text-[#24312B] tracking-tight leading-tight">
-                Tiến trình luyện tập
-              </h1>
+              <div className="flex items-center gap-2.5">
+                <h1 className="text-[18px] font-bold text-[#24312B] tracking-tight leading-tight">
+                  Lịch sử luyện tập
+                </h1>
+                <Badge variant="neutral">Tổng số: {sessions.length} phiên</Badge>
+              </div>
               <p className="text-[12px] text-[#69766F] mt-0.5">
-                Theo dõi sự phát triển kỹ năng thuyết trình qua từng phiên
+                Rà soát và truy cập báo cáo đánh giá chi tiết theo từng phiên thuyết trình
               </p>
             </div>
             <Button
@@ -209,101 +73,18 @@ export default function HistoryPage({
               Phiên mới
             </Button>
           </div>
-
-          {/* Unified Stat Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            {[
-              {
-                label: "Tổng số phiên",
-                value: String(SESSIONS.length),
-                sub: "Toàn bộ thời gian",
-              },
-              {
-                label: "Điểm trung bình",
-                value: `${avgScore}/100`,
-                sub: "Trên tất cả phiên",
-              },
-              {
-                label: "Thời gian luyện",
-                value: `${Math.round(totalMins)} phút`,
-                sub: "Tổng thời lượng video",
-              },
-              {
-                label: "Mức cải thiện",
-                value: `+${improvement} điểm`,
-                sub: "Kể từ phiên đầu tiên",
-                highlight: true,
-              },
-            ].map(({ label, value, sub, highlight }) => (
-              <Card
-                key={label}
-                className="px-4 py-3 space-y-1 bg-[#F5F7F6]/50 border-[#DCE5DF]"
-              >
-                <p className="text-[11.5px] font-medium text-[#69766F]">{label}</p>
-                <p
-                  className={`text-[20px] font-bold tracking-tight ${
-                    highlight ? "text-[#276749]" : "text-[#24312B]"
-                  }`}
-                >
-                  {value}
-                </p>
-                <p className="text-[11px] text-[#69766F]">{sub}</p>
-              </Card>
-            ))}
-          </div>
         </header>
 
         {/* Content Body */}
         <div className="p-6 sm:p-8 space-y-6">
-          {/* ── Growth Chart Card ─────────────────── */}
-          <Card className="p-5 sm:p-6 space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <h2 className="text-[14px] font-semibold text-[#24312B]">
-                  Điểm tổng thể — Xu hướng theo tuần
-                </h2>
-                <p className="text-[12px] text-[#69766F] mt-0.5">
-                  Biểu đồ thể hiện điểm đánh giá trung bình qua từng đợt luyện tập
-                </p>
-              </div>
-              <Badge variant="success">+27 điểm trong 4 tuần</Badge>
-            </div>
-
-            <LineChart hoverIdx={hoverIdx} setHoverIdx={setHoverIdx} />
-
-            {/* Week Summary Strip */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-[#DCE5DF]">
-              {CHART_DATA.map((d, i) => (
-                <div
-                  key={i}
-                  className={`rounded-xl p-3 transition-colors cursor-pointer border ${
-                    hoverIdx === i
-                      ? "bg-[#E8F1EB] border-[#D4E5D9]"
-                      : "bg-[#F5F7F6]/60 border-[#DCE5DF] hover:bg-[#F5F7F6]"
-                  }`}
-                  onMouseEnter={() => setHoverIdx(i)}
-                  onMouseLeave={() => setHoverIdx(null)}
-                >
-                  <p className="text-[11px] font-medium text-[#69766F]">{d.label}</p>
-                  <p className="text-[16px] font-bold text-[#24312B] mt-0.5">
-                    {d.score} điểm
-                  </p>
-                  <p className="text-[11px] text-[#69766F] mt-0.5 truncate">
-                    {d.sessions} phiên · {d.topSkill}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Card>
-
-          {/* ── Session List ──────────────────────── */}
+          {/* ── Session List & Filters ─────────────────── */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-2">
               <h2 className="text-[14px] font-semibold text-[#24312B]">
-                Các phiên gần đây
+                Danh sách các phiên luyện tập
               </h2>
               <span className="text-[12px] text-[#69766F]">
-                Hiển thị {filtered.length}/{SESSIONS.length} phiên
+                Đang hiển thị {filtered.length}/{sessions.length} phiên
               </span>
             </div>
 
@@ -336,7 +117,7 @@ export default function HistoryPage({
                     Chưa có phiên luyện tập nào trong mục này
                   </p>
                   <p className="text-[12px] text-[#69766F] max-w-sm mx-auto">
-                    Bạn có thể bắt đầu phiên luyện tập mới ngay bây giờ để nhận phân tích chi tiết từ AI.
+                    Bạn có thể bắt đầu phiên luyện tập mới ngay bây giờ để nhận phân tích chi tiết từ AI Coach.
                   </p>
                 </div>
                 <Button
@@ -382,7 +163,7 @@ export default function HistoryPage({
                             <span>{s.date}</span>
                             <span>·</span>
                             <span className="font-mono">{s.duration}</span>
-                            {s.trend !== null && (
+                            {s.trend !== null && s.trend !== 0 && (
                               <>
                                 <span>·</span>
                                 <span className="text-[#276749] font-medium">
@@ -400,7 +181,7 @@ export default function HistoryPage({
                             size="sm"
                             onClick={(e) => {
                               e.stopPropagation();
-                              onViewReport();
+                              onViewReport(s.id);
                             }}
                           >
                             Xem chi tiết
@@ -449,7 +230,7 @@ export default function HistoryPage({
                                 bar: false,
                               },
                               {
-                                label: "Từ đệm",
+                                label: "Từ đệm phát hiện",
                                 value: s.fillerWords,
                                 unit: " từ",
                                 bar: false,
@@ -476,7 +257,7 @@ export default function HistoryPage({
                             <Button
                               variant="primary"
                               size="sm"
-                              onClick={() => onViewReport()}
+                              onClick={() => onViewReport(s.id)}
                             >
                               Mở báo cáo đầy đủ →
                             </Button>

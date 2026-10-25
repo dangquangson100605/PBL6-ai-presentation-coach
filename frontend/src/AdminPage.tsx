@@ -208,10 +208,10 @@ export default function AdminPage({ onNav, userRole }: AdminPageProps) {
           <div className="flex items-center gap-3 sm:gap-4">
             <div>
               <h1 className="text-[17px] font-bold text-[#24312B] tracking-tight leading-tight">
-                Quản trị hệ thống
+                Cấu hình hệ thống
               </h1>
               <p className="text-[12px] text-[#69766F]">
-                AI Presentation Coach · Bảng cấu hình và giám sát máy chủ
+                AI Presentation Coach · Bảng cấu hình giới hạn tốc độ và giám sát tài nguyên máy chủ
               </p>
             </div>
             <Badge variant="success" withDot>
@@ -451,9 +451,17 @@ export default function AdminPage({ onNav, userRole }: AdminPageProps) {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between px-5 sm:px-6 py-4 border-b border-[#DCE5DF] gap-3">
               <div className="flex items-center gap-3">
                 <h2 className="text-[14px] font-semibold text-[#24312B]">
-                  Nhật ký hệ thống gần đây
+                  Nhật ký hoạt động tóm tắt
                 </h2>
                 <Badge variant="neutral">{LOG_ROWS.length} bản ghi</Badge>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onNav("logs")}
+                  className="text-[#276749] text-[12px] hidden sm:inline-flex"
+                >
+                  Xem toàn bộ nhật ký máy chủ →
+                </Button>
               </div>
 
               <div className="flex items-center gap-1.5 flex-wrap">

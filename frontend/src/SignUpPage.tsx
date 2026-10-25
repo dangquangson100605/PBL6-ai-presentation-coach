@@ -1,6 +1,5 @@
-import { GeminiIcon } from "./components/icons";
 import { useState } from "react";
-import { Button, Card, Badge } from "./components/common";
+import { Button, Card, Badge, BrandLogo } from "./components/common";
 
 function EyeOpenIcon() {
   return (
@@ -61,13 +60,11 @@ function SkillMetricRow({ label, score }: { label: string; score: number }) {
 interface SignUpPageProps {
   onBack: () => void;
   onLogin: () => void;
-  onSignUp: () => void;
 }
 
 export default function SignUpPage({
   onBack,
   onLogin,
-  onSignUp,
 }: SignUpPageProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -77,9 +74,40 @@ export default function SignUpPage({
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(true);
 
+  const [formError, setFormError] = useState<string | null>(null);
+  const [demoNotice, setDemoNotice] = useState<string | null>(null);
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    onSignUp();
+    setFormError(null);
+    setDemoNotice(null);
+
+    // Validation
+    if (!name.trim()) {
+      setFormError("Vui lòng nhập họ và tên.");
+      return;
+    }
+    if (!email.trim() || !email.includes("@")) {
+      setFormError("Vui lòng nhập địa chỉ email hợp lệ.");
+      return;
+    }
+    if (password.length < 8) {
+      setFormError("Mật khẩu phải có độ dài tối thiểu 8 ký tự.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setFormError("Mật khẩu xác nhận không khớp.");
+      return;
+    }
+    if (!agreeTerms) {
+      setFormError("Vui lòng đồng ý với Điều khoản sử dụng.");
+      return;
+    }
+
+    // Do NOT automatically grant a session!
+    setDemoNotice(
+      "Chức năng đăng ký tài khoản mới chưa khả dụng ở bản Demo Frontend (chờ kết nối Backend). Vui lòng quay lại màn hình Đăng nhập để sử dụng các tài khoản demo được cấp sẵn."
+    );
   }
 
   return (
@@ -90,14 +118,10 @@ export default function SignUpPage({
           {/* Logo */}
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-2.5 group self-start"
+            className="inline-flex items-center group self-start transition-opacity hover:opacity-85"
+            aria-label="Về trang chủ"
           >
-            <div className="w-9 h-9 rounded-xl bg-[#276749] text-white flex items-center justify-center shadow-sm">
-              <GeminiIcon />
-            </div>
-            <span className="text-[16px] font-bold text-[#24312B] tracking-tight group-hover:text-[#276749] transition-colors">
-              AI Coach
-            </span>
+            <BrandLogo height={38} className="h-[38px] w-auto max-w-[160px]" />
           </button>
 
           {/* Value Prop */}
@@ -138,18 +162,14 @@ export default function SignUpPage({
 
       {/* RIGHT COLUMN — Registration Form */}
       <div className="w-full lg:w-1/2 flex flex-col items-center justify-center px-6 sm:px-12 lg:px-16 xl:px-24 py-12">
-        <div className="w-full max-w-[400px] space-y-7">
+        <div className="w-full max-w-[400px] space-y-6">
           {/* Logo for mobile */}
           <button
             onClick={onBack}
-            className="lg:hidden inline-flex items-center gap-2.5"
+            className="lg:hidden inline-flex items-center self-start"
+            aria-label="Về trang chủ"
           >
-            <div className="w-8 h-8 rounded-xl bg-[#276749] text-white flex items-center justify-center shadow-sm">
-              <GeminiIcon />
-            </div>
-            <span className="text-[15px] font-bold text-[#24312B] tracking-tight">
-              AI Coach
-            </span>
+            <BrandLogo height={34} className="h-[34px] w-auto max-w-[145px]" />
           </button>
 
           {/* Headline */}
@@ -161,6 +181,37 @@ export default function SignUpPage({
               Đăng ký để bắt đầu trải nghiệm AI Huấn luyện viên thuyết trình.
             </p>
           </div>
+
+          {/* Demo notice banner */}
+          {demoNotice && (
+            <div className="p-4 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] text-[#1E40AF] text-[13px] space-y-3 animate-fade-in">
+              <div className="flex items-start gap-2.5">
+                <svg className="w-5 h-5 flex-shrink-0 text-[#2563EB] mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+                <div className="leading-relaxed font-medium">{demoNotice}</div>
+              </div>
+              <Button
+                type="button"
+                variant="primary"
+                size="sm"
+                className="w-full justify-center"
+                onClick={onLogin}
+              >
+                Đến trang Đăng nhập Demo
+              </Button>
+            </div>
+          )}
+
+          {/* Form Error */}
+          {formError && (
+            <div className="p-3.5 rounded-xl bg-[#FEF2F2] border border-[#FCA5A5] text-[#991B1B] text-[13px] flex items-start gap-2.5 animate-fade-in">
+              <svg className="w-4 h-4 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+              </svg>
+              <div className="flex-1 font-medium leading-relaxed">{formError}</div>
+            </div>
+          )}
 
           {/* Form */}
           <form className="space-y-4" onSubmit={handleSubmit}>
@@ -176,7 +227,10 @@ export default function SignUpPage({
                 id="name"
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (formError) setFormError(null);
+                }}
                 required
                 placeholder="Nguyễn Văn A"
                 className="w-full h-11 px-3.5 text-[13.5px] font-medium text-[#24312B] bg-white rounded-xl border border-[#DCE5DF] outline-none focus:border-[#276749] focus:ring-1 focus:ring-[#276749] transition-all"
@@ -195,7 +249,10 @@ export default function SignUpPage({
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (formError) setFormError(null);
+                }}
                 required
                 placeholder="student@university.edu.vn"
                 className="w-full h-11 px-3.5 text-[13.5px] font-medium text-[#24312B] bg-white rounded-xl border border-[#DCE5DF] outline-none focus:border-[#276749] focus:ring-1 focus:ring-[#276749] transition-all"
@@ -215,7 +272,10 @@ export default function SignUpPage({
                   id="password"
                   type={showPassword ? "text" : "password"}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    if (formError) setFormError(null);
+                  }}
                   required
                   placeholder="Tối thiểu 8 ký tự"
                   className="w-full h-11 px-3.5 pr-11 text-[13.5px] font-medium text-[#24312B] bg-white rounded-xl border border-[#DCE5DF] outline-none focus:border-[#276749] focus:ring-1 focus:ring-[#276749] transition-all"
@@ -244,7 +304,10 @@ export default function SignUpPage({
                   id="confirmPassword"
                   type={showConfirm ? "text" : "password"}
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    if (formError) setFormError(null);
+                  }}
                   required
                   placeholder="Nhập lại mật khẩu"
                   className="w-full h-11 px-3.5 pr-11 text-[13.5px] font-medium text-[#24312B] bg-white rounded-xl border border-[#DCE5DF] outline-none focus:border-[#276749] focus:ring-1 focus:ring-[#276749] transition-all"

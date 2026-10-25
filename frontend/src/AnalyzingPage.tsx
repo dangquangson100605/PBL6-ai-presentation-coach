@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Sidebar, { UserRole } from "./Sidebar";
 import { Button, Card, Badge } from "./components/common";
+import { createMockSession } from "./mocks/mockHistory";
 
 /* ── Circular Progress (Standardized Deep Forest Green) ───────── */
 function CircularProgress({ pct }: { pct: number }) {
@@ -97,13 +98,14 @@ const TIPS = [
 
 interface AnalyzingPageProps {
   onNav: (view: string) => void;
-  onDone?: () => void;
+  onDone?: (newSessionId: string | number) => void;
   userRole: UserRole;
 }
 
 export default function AnalyzingPage({ onNav, onDone, userRole }: AnalyzingPageProps) {
   const [progress, setProgress] = useState(42);
   const [tipIdx, setTipIdx] = useState(0);
+  const createdSessionRef = useRef<string | number | null>(null);
 
   useEffect(() => {
     const tInterval = window.setInterval(() => {
@@ -126,8 +128,22 @@ export default function AnalyzingPage({ onNav, onDone, userRole }: AnalyzingPage
   }, []);
 
   useEffect(() => {
-    if (progress >= 100 && onDone) {
-      const id = window.setTimeout(onDone, 800);
+    if (progress >= 100 && onDone && !createdSessionRef.current) {
+      // Cơ chế mock tối thiểu: Tạo phiên mới và chuyển tới báo cáo của chính phiên vừa tạo
+      const newSession = createMockSession({
+        title: "Phiên phân tích vừa ghi",
+        context: "Luyện tập tự do",
+        duration: "04:32",
+        score: 83,
+        trend: 3,
+        eyeContact: 84,
+        wpm: 156,
+        fillerWords: 5,
+      });
+      createdSessionRef.current = newSession.id;
+      const id = window.setTimeout(() => {
+        onDone(newSession.id);
+      }, 900);
       return () => window.clearTimeout(id);
     }
   }, [progress, onDone]);
@@ -238,7 +254,19 @@ export default function AnalyzingPage({ onNav, onDone, userRole }: AnalyzingPage
               variant="primary"
               size="lg"
               className="w-full justify-center shadow-sm"
-              onClick={onDone}
+              onClick={() => {
+                if (createdSessionRef.current) {
+                  onDone(createdSessionRef.current);
+                } else {
+                  const s = createMockSession({
+                    title: "Phiên phân tích vừa ghi",
+                    context: "Luyện tập tự do",
+                    duration: "04:32",
+                  });
+                  createdSessionRef.current = s.id;
+                  onDone(s.id);
+                }
+              }}
             >
               Xem báo cáo phân tích →
             </Button>

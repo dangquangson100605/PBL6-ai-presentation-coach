@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GeminiIcon } from "../components/icons";
-import { Button, Card, Badge } from "../components/common";
+import { Button, Card, Badge, BrandLogo } from "../components/common";
 
 function CheckIcon() {
   return (
@@ -125,13 +125,8 @@ export default function LandingPage({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-[#276749] text-white flex items-center justify-center shadow-sm">
-                <GeminiIcon />
-              </div>
-              <span className="text-[15.5px] font-bold text-[#24312B] tracking-tight">
-                AI Coach
-              </span>
+            <div className="flex items-center">
+              <BrandLogo height={36} className="h-9 w-auto max-w-[155px]" />
             </div>
 
             {/* Center Links */}

@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import Sidebar from "./Sidebar";
 import { Button, Card } from "./components/common";
+import { useAuth } from "./context/AuthContext";
 
 /* ── Field Label ─────────────────────────────────────────── */
 function FieldLabel({ children }: { children: React.ReactNode }) {
@@ -101,7 +102,7 @@ function PasswordStrength({ value }: { value: string }) {
 }
 
 /* ── Avatar Uploader ─────────────────────────────────────── */
-function AvatarUpload() {
+function AvatarUpload({ avatarText = "SA" }: { avatarText?: string }) {
   const ref = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -120,7 +121,7 @@ function AvatarUpload() {
           <img src={preview} alt="avatar" className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full bg-[#24312B] flex items-center justify-center text-white font-bold text-base">
-            SA
+            {avatarText}
           </div>
         )}
       </div>
@@ -176,8 +177,9 @@ export default function AdminSettingsPage({
   onNav,
   onLogout,
 }: AdminSettingsPageProps) {
-  const [adminName, setAdminName] = useState("System Administrator");
-  const [adminEmail, setAdminEmail] = useState("admin@system.edu.vn");
+  const { currentUser } = useAuth();
+  const [adminName, setAdminName] = useState(() => currentUser?.name || "System Administrator");
+  const [adminEmail, setAdminEmail] = useState(() => currentUser?.email || "admin@system.edu.vn");
   const [newPassword, setNewPassword] = useState("");
   const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
 
@@ -217,7 +219,7 @@ export default function AdminSettingsPage({
               </p>
             </div>
             <div className="p-5 sm:p-6 space-y-5">
-              <AvatarUpload />
+              <AvatarUpload avatarText={currentUser?.avatarText || "SA"} />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div>

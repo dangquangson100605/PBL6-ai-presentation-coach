@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import Sidebar, { UserRole } from "./Sidebar";
 import { Button, Card, Badge } from "./components/common";
+import { useAuth } from "./context/AuthContext";
 
 /* ── Form Field Label ────────────────────────────────────── */
 function FieldLabel({ children }: { children: React.ReactNode }) {
@@ -114,7 +115,7 @@ function PasswordStrength({ value }: { value: string }) {
 }
 
 /* ── Avatar Uploader ─────────────────────────────────────── */
-function AvatarUpload() {
+function AvatarUpload({ avatarText = "SV" }: { avatarText?: string }) {
   const ref = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -133,7 +134,7 @@ function AvatarUpload() {
           <img src={preview} alt="avatar" className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full bg-[#E8F1EB] flex items-center justify-center text-[#276749] font-bold text-base">
-            DQ
+            {avatarText}
           </div>
         )}
       </div>
@@ -225,8 +226,9 @@ interface SettingsPageProps {
 }
 
 export default function SettingsPage({ onNav, userRole }: SettingsPageProps) {
-  const [fullName, setFullName] = useState("Đặng Quang Sơn");
-  const [email, setEmail] = useState("son.dang@student.edu.vn");
+  const { currentUser } = useAuth();
+  const [fullName, setFullName] = useState(() => currentUser?.name || "Đặng Quang Sơn");
+  const [email, setEmail] = useState(() => currentUser?.email || "son.dang@student.edu.vn");
   const [wpm, setWpm] = useState("145");
   const [newPassword, setNewPassword] = useState("");
   const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
@@ -263,7 +265,7 @@ export default function SettingsPage({ onNav, userRole }: SettingsPageProps) {
             subtitle="Cập nhật ảnh đại diện và thông tin hồ sơ sinh viên của bạn"
           >
             <div className="space-y-5">
-              <AvatarUpload />
+              <AvatarUpload avatarText={currentUser?.avatarText || "SV"} />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div>

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
+import { BrandLogo } from "./components/common";
 import {
-  GeminiIcon,
   IconDashboard,
   IconStudio,
   IconUpload,
@@ -39,9 +39,13 @@ const ADMIN_NAV = [
 
 export default function Sidebar({ userRole, activeItem, onNav, onLogout }: SidebarProps) {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { currentUser, logout } = useAuth();
   const isAdmin = userRole === "admin";
   const navItems = isAdmin ? ADMIN_NAV : STUDENT_NAV;
+
+  const displayName = currentUser?.name || (isAdmin ? "System Administrator" : "Sinh viên");
+  const displayAvatar = currentUser?.avatarText || (isAdmin ? "SA" : "SV");
+  const displayRoleLabel = (currentUser?.role || userRole) === "admin" ? "Quản trị viên" : "Sinh viên";
 
   const handleLogout = () => {
     if (onLogout) {
@@ -55,13 +59,11 @@ export default function Sidebar({ userRole, activeItem, onNav, onLogout }: Sideb
   return (
     <aside className="w-16 md:w-60 flex-shrink-0 bg-white border-r border-[#DCE5DF] flex flex-col py-6 px-2 md:px-4 gap-2 transition-all">
       {/* Logo */}
-      <div className="flex items-center justify-center md:justify-start gap-2.5 px-1 md:px-2 mb-6">
-        <div className="w-8 h-8 rounded-xl bg-[#276749] text-white flex items-center justify-center shadow-sm flex-shrink-0">
-          <GeminiIcon />
-        </div>
-        <span className="hidden md:inline text-[15px] font-bold text-[#24312B] tracking-tight">
-          AI Coach
-        </span>
+      <div className="flex items-center justify-center md:justify-start px-1 md:px-2 mb-6">
+        <BrandLogo
+          height={34}
+          className="w-full max-w-[48px] md:max-w-[150px] h-auto"
+        />
       </div>
 
       {/* Role badge */}
@@ -118,15 +120,15 @@ export default function Sidebar({ userRole, activeItem, onNav, onLogout }: Sideb
             }`}
           >
             <span className="text-white text-[11px] font-bold">
-              {isAdmin ? "SA" : "DQ"}
+              {displayAvatar}
             </span>
           </div>
           <div className="hidden md:block min-w-0">
-            <p className="text-[12.5px] font-semibold text-[#24312B] truncate">
-              {isAdmin ? "System Admin" : "Đặng Quang Sơn"}
+            <p className="text-[12.5px] font-semibold text-[#24312B] truncate" title={displayName}>
+              {displayName}
             </p>
             <p className="text-[11px] text-[#69766F] truncate">
-              {isAdmin ? "Quản trị viên" : "Sinh viên"}
+              {displayRoleLabel}
             </p>
           </div>
         </div>

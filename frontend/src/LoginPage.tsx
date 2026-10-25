@@ -1,6 +1,7 @@
-import { GeminiIcon } from "./components/icons";
 import { useState } from "react";
-import { Button, Card, Badge } from "./components/common";
+import { Button, Card, Badge, BrandLogo } from "./components/common";
+import { useAuth } from "./context/AuthContext";
+import { UserRole } from "./types";
 
 function EyeOpenIcon() {
   return (
@@ -44,19 +45,76 @@ function EyeClosedIcon() {
 interface LoginPageProps {
   onBack: () => void;
   onSignUp?: () => void;
-  onLoginAsStudent: () => void;
-  onLoginAsAdmin: () => void;
+  onLoginSuccess?: (role: UserRole) => void;
 }
+
+const DEMO_PRESETS = [
+  {
+    label: "Student (Sơn)",
+    email: "son.dang@student.edu.vn",
+    pass: "Student@123",
+    roleBadge: "Sinh viên",
+    variant: "default",
+  },
+  {
+    label: "Student (Thắng)",
+    email: "thang.nguyen@student.edu.vn",
+    pass: "Student@123",
+    roleBadge: "Sinh viên",
+    variant: "default",
+  },
+  {
+    label: "Admin",
+    email: "admin@system.edu.vn",
+    pass: "Admin@123",
+    roleBadge: "Quản trị",
+    variant: "admin",
+  },
+  {
+    label: "Tài khoản khóa",
+    email: "nhan.vo@student.edu.vn",
+    pass: "Student@123",
+    roleBadge: "Bị khóa",
+    variant: "banned",
+  },
+];
 
 export default function LoginPage({
   onBack,
   onSignUp,
-  onLoginAsStudent,
-  onLoginAsAdmin,
+  onLoginSuccess,
 }: LoginPageProps) {
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("son.dang@student.edu.vn");
-  const [password, setPassword] = useState("password123");
+  const [password, setPassword] = useState("Student@123");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
+    setIsSubmitting(true);
+
+    const result = login(email, password);
+    setIsSubmitting(false);
+
+    if (result.success && result.user) {
+      if (onLoginSuccess) {
+        onLoginSuccess(result.user.role);
+      }
+    } else {
+      // Clear password field, keep email
+      setPassword("");
+      setErrorMessage(result.message || "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
+    }
+  };
+
+  const fillPreset = (presetEmail: string, presetPass: string) => {
+    setEmail(presetEmail);
+    setPassword(presetPass);
+    setErrorMessage(null);
+  };
 
   return (
     <div className="min-h-screen flex bg-[#F5F7F6] font-[Inter,sans-serif] text-[#24312B]">
@@ -66,14 +124,10 @@ export default function LoginPage({
           {/* Logo */}
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-2.5 group self-start"
+            className="inline-flex items-center group self-start transition-opacity hover:opacity-85"
+            aria-label="Về trang chủ"
           >
-            <div className="w-9 h-9 rounded-xl bg-[#276749] text-white flex items-center justify-center shadow-sm">
-              <GeminiIcon />
-            </div>
-            <span className="text-[16px] font-bold text-[#24312B] tracking-tight group-hover:text-[#276749] transition-colors">
-              AI Coach
-            </span>
+            <BrandLogo height={38} className="h-[38px] w-auto max-w-[160px]" />
           </button>
 
           {/* Value Prop */}
@@ -113,18 +167,14 @@ export default function LoginPage({
 
       {/* RIGHT COLUMN — Login Form */}
       <div className="w-full lg:w-1/2 flex flex-col items-center justify-center px-6 sm:px-12 lg:px-16 xl:px-24 py-12">
-        <div className="w-full max-w-[400px] space-y-7">
+        <div className="w-full max-w-[420px] space-y-6">
           {/* Logo for mobile */}
           <button
             onClick={onBack}
-            className="lg:hidden inline-flex items-center gap-2.5"
+            className="lg:hidden inline-flex items-center self-start"
+            aria-label="Về trang chủ"
           >
-            <div className="w-8 h-8 rounded-xl bg-[#276749] text-white flex items-center justify-center shadow-sm">
-              <GeminiIcon />
-            </div>
-            <span className="text-[15px] font-bold text-[#24312B] tracking-tight">
-              AI Coach
-            </span>
+            <BrandLogo height={34} className="h-[34px] w-auto max-w-[145px]" />
           </button>
 
           {/* Headline */}
@@ -133,18 +183,60 @@ export default function LoginPage({
               Chào mừng trở lại
             </h1>
             <p className="text-[13.5px] text-[#69766F]">
-              Đăng nhập để tiếp tục buổi luyện tập thuyết trình của bạn.
+              Đăng nhập bằng tài khoản được cấp để tiếp tục phiên làm việc.
             </p>
           </div>
 
+          {/* Demo account quick fill */}
+          <div className="p-3.5 rounded-xl bg-white border border-[#DCE5DF] space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-[#69766F] uppercase tracking-wider">
+                Điền nhanh tài khoản Demo
+              </span>
+              <span className="text-[10.5px] text-[#69766F]">Nhấn để điền mẫu</span>
+            </div>
+            <div className="grid grid-cols-2 gap-1.5">
+              {DEMO_PRESETS.map((p) => (
+                <button
+                  key={p.email}
+                  type="button"
+                  onClick={() => fillPreset(p.email, p.pass)}
+                  className={`text-left px-2.5 py-1.5 rounded-lg border text-[12px] font-medium transition-all ${
+                    email.toLowerCase() === p.email.toLowerCase()
+                      ? "border-[#276749] bg-[#E8F1EB] text-[#276749] font-semibold shadow-xs"
+                      : "border-[#DCE5DF] bg-[#F5F7F6] text-[#24312B] hover:border-[#69766F]"
+                  }`}
+                >
+                  <div className="truncate">{p.label}</div>
+                  <div className="text-[10px] text-[#69766F] truncate">{p.email}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Error Alert */}
+          {errorMessage && (
+            <div
+              role="alert"
+              className="p-3.5 rounded-xl bg-[#FEF2F2] border border-[#FCA5A5] text-[#991B1B] text-[13px] flex items-start gap-2.5 animate-fade-in"
+            >
+              <svg
+                className="w-4 h-4 flex-shrink-0 mt-0.5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <div className="flex-1 font-medium leading-relaxed">{errorMessage}</div>
+            </div>
+          )}
+
           {/* Form */}
-          <form
-            className="space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              onLoginAsStudent();
-            }}
-          >
+          <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Email Field with Visible Label */}
             <div className="space-y-1.5">
               <label
@@ -158,7 +250,10 @@ export default function LoginPage({
                   id="email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (errorMessage) setErrorMessage(null);
+                  }}
                   required
                   placeholder="name@student.edu.vn"
                   className="w-full h-11 px-3.5 text-[13.5px] font-medium text-[#24312B] bg-white rounded-xl border border-[#DCE5DF] outline-none focus:border-[#276749] focus:ring-1 focus:ring-[#276749] transition-all"
@@ -175,19 +270,19 @@ export default function LoginPage({
                 >
                   Mật khẩu
                 </label>
-                <a
-                  href="#"
-                  className="text-[12px] font-semibold text-[#276749] hover:underline"
-                >
-                  Quên mật khẩu?
-                </a>
+                <span className="text-[12px] text-[#69766F] select-none">
+                  Demo Auth
+                </span>
               </div>
               <div className="relative flex items-center">
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    if (errorMessage) setErrorMessage(null);
+                  }}
                   required
                   className="w-full h-11 px-3.5 pr-11 text-[13.5px] font-medium text-[#24312B] bg-white rounded-xl border border-[#DCE5DF] outline-none focus:border-[#276749] focus:ring-1 focus:ring-[#276749] transition-all"
                 />
@@ -202,28 +297,16 @@ export default function LoginPage({
               </div>
             </div>
 
-            {/* Role Select Buttons */}
-            <div className="space-y-2.5 pt-2">
-              <p className="text-[11px] text-[#69766F] text-center font-semibold uppercase tracking-wider">
-                Chọn vai trò để tiếp tục
-              </p>
+            {/* Single Login Submit Button */}
+            <div className="pt-2">
               <Button
-                type="button"
+                type="submit"
                 variant="primary"
                 size="lg"
+                disabled={isSubmitting}
                 className="w-full justify-center shadow-sm"
-                onClick={onLoginAsStudent}
               >
-                Đăng nhập với tư cách Sinh viên
-              </Button>
-              <Button
-                type="button"
-                variant="secondary"
-                size="lg"
-                className="w-full justify-center shadow-sm"
-                onClick={onLoginAsAdmin}
-              >
-                Đăng nhập với tư cách Quản trị viên
+                {isSubmitting ? "Đang xác thực..." : "Đăng nhập"}
               </Button>
             </div>
           </form>

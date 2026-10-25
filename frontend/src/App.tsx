@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUpPage";
+import DashboardPage from "./DashboardPage";
 import StudioPage from "./StudioPage";
 import AnalyzingPage from "./AnalyzingPage";
 import ReportPage from "./ReportPage";
@@ -12,10 +13,43 @@ import UploadPage from "./UploadPage";
 import SettingsPage from "./SettingsPage";
 import UsersPage from "./UsersPage";
 import AdminSettingsPage from "./AdminSettingsPage";
+import AdminDashboardPage from "./AdminDashboardPage";
+import AdminLogsPage from "./AdminLogsPage";
+
+/* ── Route Guard Components ──────────────────────────────── */
+function StudentRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, userRole } = useAuth();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  if (userRole !== "student") {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
+  return <>{children}</>;
+}
+
+function AdminRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, userRole } = useAuth();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  if (userRole !== "admin") {
+    return <Navigate to="/dashboard" replace />;
+  }
+  return <>{children}</>;
+}
+
+function GuestRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, userRole } = useAuth();
+  if (isAuthenticated) {
+    return <Navigate to={userRole === "admin" ? "/admin/dashboard" : "/dashboard"} replace />;
+  }
+  return <>{children}</>;
+}
 
 function AppRoutes() {
   const navigate = useNavigate();
-  const { isAuthenticated, userRole, loginAsStudent, loginAsAdmin, logout } = useAuth();
+  const { userRole, logout } = useAuth();
 
   const handleNav = (destination: string) => {
     if (destination === "settings" && userRole === "admin") {
@@ -26,165 +60,190 @@ function AppRoutes() {
       navigate("/admin/users");
       return;
     }
-    if (destination === "config" || destination === "logs") {
-      navigate("/admin");
+    if (destination === "config") {
+      navigate("/admin/config");
+      return;
+    }
+    if (destination === "logs") {
+      navigate("/admin/logs");
       return;
     }
     const destinationMap: Record<string, string> = {
-      dashboard: userRole === "admin" ? "/admin" : "/report",
+      dashboard: userRole === "admin" ? "/admin/dashboard" : "/dashboard",
       studio: "/studio",
       upload: "/upload",
       history: "/history",
       settings: "/settings",
-      admin: "/admin",
+      admin: "/admin/dashboard",
     };
     navigate(destinationMap[destination] || `/${destination}`);
   };
 
   return (
     <Routes>
-      {/* Public Routes */}
+      {/* Public Landing Page */}
       <Route
         path="/"
         element={
           <LandingPage
             onLogin={() => navigate("/login")}
             onSignUp={() => navigate("/signup")}
-            onAdmin={() => {
-              loginAsAdmin();
-              navigate("/admin");
-            }}
+            onAdmin={() => navigate("/login")}
           />
         }
       />
+
+      {/* Guest-only routes */}
       <Route
         path="/login"
         element={
-          <LoginPage
-            onBack={() => navigate("/")}
-            onSignUp={() => navigate("/signup")}
-            onLoginAsStudent={() => {
-              loginAsStudent();
-              navigate("/studio");
-            }}
-            onLoginAsAdmin={() => {
-              loginAsAdmin();
-              navigate("/admin");
-            }}
-          />
+          <GuestRoute>
+            <LoginPage
+              onBack={() => navigate("/")}
+              onSignUp={() => navigate("/signup")}
+              onLoginSuccess={(role) => {
+                navigate(role === "admin" ? "/admin/dashboard" : "/dashboard");
+              }}
+            />
+          </GuestRoute>
         }
       />
       <Route
         path="/signup"
         element={
-          <SignUpPage
-            onBack={() => navigate("/")}
-            onLogin={() => navigate("/login")}
-            onSignUp={() => {
-              loginAsStudent();
-              navigate("/studio");
-            }}
-          />
+          <GuestRoute>
+            <SignUpPage
+              onBack={() => navigate("/")}
+              onLogin={() => navigate("/login")}
+            />
+          </GuestRoute>
         }
       />
 
       {/* Student Protected Routes */}
       <Route
+        path="/dashboard"
+        element={
+          <StudentRoute>
+            <DashboardPage
+              onNav={handleNav}
+              onViewReport={(id) => navigate(`/report/${id}`)}
+              userRole="student"
+            />
+          </StudentRoute>
+        }
+      />
+      <Route
         path="/studio"
         element={
-          isAuthenticated ? (
-            <StudioPage onNav={handleNav} onAnalyze={() => navigate("/analyzing")} userRole={userRole || "student"} />
-          ) : (
-            <Navigate to="/login" replace />
-          )
+          <StudentRoute>
+            <StudioPage onNav={handleNav} onAnalyze={() => navigate("/analyzing")} userRole="student" />
+          </StudentRoute>
         }
       />
       <Route
         path="/upload"
         element={
-          isAuthenticated ? (
-            <UploadPage onNav={handleNav} onAnalyze={() => navigate("/analyzing")} userRole={userRole || "student"} />
-          ) : (
-            <Navigate to="/login" replace />
-          )
+          <StudentRoute>
+            <UploadPage onNav={handleNav} onAnalyze={() => navigate("/analyzing")} userRole="student" />
+          </StudentRoute>
         }
       />
       <Route
         path="/analyzing"
         element={
-          isAuthenticated ? (
-            <AnalyzingPage onNav={handleNav} onDone={() => navigate("/report")} userRole={userRole || "student"} />
-          ) : (
-            <Navigate to="/login" replace />
-          )
+          <StudentRoute>
+            <AnalyzingPage
+              onNav={handleNav}
+              onDone={(newId) => navigate(`/report/${newId}`)}
+              userRole="student"
+            />
+          </StudentRoute>
         }
       />
       <Route
-        path="/report"
+        path="/report/:sessionId"
         element={
-          isAuthenticated ? (
-            <ReportPage onNav={handleNav} userRole={userRole || "student"} />
-          ) : (
-            <Navigate to="/login" replace />
-          )
+          <StudentRoute>
+            <ReportPage onNav={handleNav} userRole="student" />
+          </StudentRoute>
         }
+      />
+      {/* Fallback khi truy cập /report không kèm ID */}
+      <Route
+        path="/report"
+        element={<Navigate to="/history" replace />}
       />
       <Route
         path="/history"
         element={
-          isAuthenticated ? (
-            <HistoryPage onNav={handleNav} onViewReport={() => navigate("/report")} userRole={userRole || "student"} />
-          ) : (
-            <Navigate to="/login" replace />
-          )
+          <StudentRoute>
+            <HistoryPage
+              onNav={handleNav}
+              onViewReport={(id) => navigate(`/report/${id}`)}
+              userRole="student"
+            />
+          </StudentRoute>
         }
       />
       <Route
         path="/settings"
         element={
-          isAuthenticated ? (
-            <SettingsPage onNav={handleNav} userRole={userRole || "student"} />
-          ) : (
-            <Navigate to="/login" replace />
-          )
+          <StudentRoute>
+            <SettingsPage onNav={handleNav} userRole="student" />
+          </StudentRoute>
         }
       />
 
       {/* Admin Protected Routes */}
       <Route
         path="/admin"
+        element={<Navigate to="/admin/dashboard" replace />}
+      />
+      <Route
+        path="/admin/dashboard"
         element={
-          isAuthenticated && userRole === "admin" ? (
-            <AdminPage onNav={handleNav} userRole="admin" />
-          ) : (
-            <Navigate to="/login" replace />
-          )
+          <AdminRoute>
+            <AdminDashboardPage onNav={handleNav} />
+          </AdminRoute>
         }
       />
       <Route
         path="/admin/users"
         element={
-          isAuthenticated && userRole === "admin" ? (
+          <AdminRoute>
             <UsersPage onNav={handleNav} />
-          ) : (
-            <Navigate to="/login" replace />
-          )
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/config"
+        element={
+          <AdminRoute>
+            <AdminPage onNav={handleNav} userRole="admin" />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/logs"
+        element={
+          <AdminRoute>
+            <AdminLogsPage onNav={handleNav} />
+          </AdminRoute>
         }
       />
       <Route
         path="/admin/settings"
         element={
-          isAuthenticated && userRole === "admin" ? (
+          <AdminRoute>
             <AdminSettingsPage
               onNav={handleNav}
               onLogout={() => {
                 logout();
-                navigate("/");
+                navigate("/login");
               }}
             />
-          ) : (
-            <Navigate to="/login" replace />
-          )
+          </AdminRoute>
         }
       />
 

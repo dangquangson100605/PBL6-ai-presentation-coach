@@ -1,117 +1,181 @@
 # BIÊN BẢN BÀN GIAO CUỐI NGÀY (DAILY HANDOFF)
-**Ngày thực hiện:** 23/10/2026  
-**Người thực hiện:** Đặng Quang Sơn (Frontend Lead)  
-**Dự án:** AI Multimodal Presentation Coach (PBL6)  
+
+* **Ngày thực hiện:** 25/10/2026
+* **Người thực hiện:** Đặng Quang Sơn (Frontend Lead)
+* **Dự án:** AI Multimodal Presentation Coach (PBL6)
+* **Nhánh Git (Branch):** `refactor/fe-clean-architecture`
+* **Commit gần nhất:** `616495de47c20e664124ec6bf653bf564adf6edb` (`chore(fe): complete Phase 5 audit fixes for responsive sidebar and Studio token standardization`)
+* **Trạng thái Working Tree:** Có các file đã chỉnh sửa và file mới chưa commit (bảo toàn theo chỉ dẫn, không tự ý commit/push).
 
 ---
 
-## 1. Trạng Thái Git & Kiểm Tra Thực Tế
-* **Nhánh hiện tại (Current Branch):** `refactor/fe-clean-architecture`
-* **Commit gần nhất:** `d9b6d84 feat(fe): hoan tat tai cau truc routing react-router-dom, tach types, mock data va services`
-* **Trạng thái đồng bộ:** Đã push toàn bộ lên GitHub (`origin/refactor/fe-clean-architecture`).
-* **Trạng thái Working Tree:** `nothing to commit, working tree clean` (Toàn bộ mã nguồn đã được lưu trữ an toàn, không có file sửa dở dang chưa commit).
+## 1. Mục Tiêu Phiên Làm Việc Hôm Nay
+
+1. **Cải tổ kiến trúc phân hệ Student:** Tách biệt rõ ràng Dashboard (`/dashboard`), Lịch sử luyện tập (`/history`) và Chi tiết báo cáo theo ID (`/report/:sessionId`).
+2. **Triển khai 2 màn hình Admin còn thiếu:** Xây dựng hoàn chỉnh Admin Dashboard (`/admin/dashboard`) và Nhật ký máy chủ (`/admin/logs`) đồng bộ dữ liệu với hệ thống mock hiện có.
+3. **Triển khai Phương án A - Frontend Demo Authentication:**
+   - Xác thực email và mật khẩu demo, loại bỏ các nút đăng nhập ép quyền trực tiếp.
+   - Xóa bỏ backdoor vào Admin từ LandingPage.
+   - Quản lý phiên an toàn qua `auth_user` trong `localStorage` (tuyệt đối không lưu password).
+   - Thiết lập Route Guard 2 chiều: `StudentRoute`, `AdminRoute`, `GuestRoute` chống vòng lặp redirect.
+   - Hiển thị thông tin người dùng đăng nhập thực tế trên thanh Sidebar.
+4. **Tích hợp Logo SVG chính thức:** Thay thế toàn bộ logo cũ bằng mã SVG chuẩn do người dùng cung cấp, giữ nguyên tỉ lệ 250:64, dải màu gradient và font chữ.
 
 ---
 
-## 2. Mục Tiêu Phiên Làm Việc Hôm Nay
-1. Khởi tạo repository trên GitHub và liên kết với thư mục code trên máy tính.
-2. Đánh giá và phân tích hiện trạng mã nguồn được sinh từ Figma Make (thư mục `frontend/`).
-3. Lập kế hoạch tái cấu trúc an toàn gồm 6 giai đoạn chi tiết.
-4. Triển khai hoàn tất các giai đoạn từ 0 đến 5 để đưa mã nguồn về cấu trúc chuẩn React + TypeScript chuyên nghiệp, bảo toàn 100% giao diện gốc.
+## 2. Công Việc Đã Hoàn Thành & Bằng Chứng Xác Minh
+
+* [x] **Tách biệt Dashboard - History - Report (Sinh viên):**
+  * Tạo mới [src/DashboardPage.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/DashboardPage.tsx): Hiển thị KPI cards tổng quan, biểu đồ xu hướng tiến độ qua các phiên, quick actions và danh sách phiên gần đây.
+  * Tinh gọn [src/HistoryPage.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/HistoryPage.tsx): Tập trung danh sách phiên, bộ lọc ngày/chủ đề và gọi xem báo cáo kèm `sessionId`.
+  * Động hóa [src/ReportPage.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/ReportPage.tsx): Nhận `sessionId` từ URL `/report/:sessionId`, hiển thị dữ liệu phiên tương ứng; có trạng thái 404 và nút quay lại nếu ID không tồn tại.
+* [x] **Xây dựng 2 trang Admin hoàn chỉnh:**
+  * Tạo mới [src/AdminDashboardPage.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/AdminDashboardPage.tsx): KPI 10 sinh viên, 18 phiên hoàn thành, điểm TB 82.1/100, WPM 138; biểu đồ hoạt động 14 ngày; phân bố thang điểm; phiên gần nhất; cảnh báo hệ thống.
+  * Tạo mới [src/AdminLogsPage.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/AdminLogsPage.tsx): 25 bản ghi log chi tiết, bộ lọc mức độ (All/Info/Warn/Error), lọc dịch vụ (Vision/Audio/NLP/Auth/Gateway), tìm kiếm từ khóa, tự động refresh, tải xuống file nhật ký `.log`.
+* [x] **Triển khai Frontend Demo Authentication (Phương án A):**
+  * Tạo mới [src/mocks/mockAuth.ts](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/mocks/mockAuth.ts): Khai báo 4 tài khoản demo (Sinh viên chính, Sinh viên phụ, Quản trị viên, Tài khoản bị khóa) và hàm `authenticateDemoUser`.
+  * Nâng cấp [src/context/AuthContext.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/context/AuthContext.tsx): Quản lý `currentUser: AuthUser | null`, loại bỏ hoàn toàn `loginAsStudent` & `loginAsAdmin`; khôi phục phiên an toàn từ `auth_user` và dọn dẹp dữ liệu hỏng.
+  * Cải tiến [src/LoginPage.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/LoginPage.tsx): Gom thành 1 nút Đăng nhập chính; thêm banner thông báo lỗi; giữ email, xóa password khi lỗi; bổ sung 4 chip điền nhanh demo (không tự submit).
+  * Cải tiến [src/SignUpPage.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/SignUpPage.tsx): Chặn cấp session tự động, hiển thị thông báo tính năng chờ Backend API.
+  * Phân quyền trong [src/App.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/App.tsx): Gỡ backdoor Admin trên LandingPage; thiết lập `StudentRoute`, `AdminRoute`, `GuestRoute`.
+  * Đồng bộ thông tin người dùng (`currentUser.name`, `currentUser.avatarText`) trên [src/Sidebar.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/Sidebar.tsx), SettingsPage và AdminSettingsPage.
+  * Vượt qua toàn bộ **20 test cases bắt buộc** (Email/pass rỗng, sai thông tin, tài khoản banned, route guard 2 chiều, F5 giữ session, session hỏng, logout, không lưu password vào localStorage).
+* [x] **Tích hợp Logo SVG chính thức:**
+  * Thêm file [public/logo.svg](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/public/logo.svg) với chính xác mã SVG vector do người dùng cung cấp (viewBox 0 0 250 64, dải gradient `#1F8A5B` -> `#2DD4A0` -> `#22C3E6`, text `AI Coach`).
+  * Tạo component [src/components/common/BrandLogo.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/components/common/BrandLogo.tsx) và xuất khẩu tại `components/common/index.ts`.
+  * Cập nhật logo mới đồng bộ trên LandingPage, LoginPage, SignUpPage, Sidebar (co giãn tự động, không méo, không cắt chữ).
+  * Gắn favicon trình duyệt `/logo.svg` trong `index.html`.
 
 ---
 
-## 3. Các Công Việc Đã Hoàn Thành Có Bằng Chứng Xác Minh
+## 3. Danh Sách File Đã Tạo / Sửa / Xóa & Mục Đích
 
-* [x] **Khởi tạo và kết nối Git:** Kéo (clone) repo `PBL6-ai-presentation-coach` từ GitHub về máy tính.
-* [x] **Tạo mốc an toàn (Giai đoạn 0):** Tạo commit baseline `25d1de2` và rẽ nhánh riêng `refactor/fe-clean-architecture`.
-* [x] **Khôi phục môi trường chạy (Giai đoạn 1):**
-  * Gỡ bỏ lockfile thừa `pnpm-lock.yaml`, chuyển đổi chuẩn mực sang `npm install` và sinh `package-lock.json`.
-  * Khởi động Vite dev server (`npm run dev`) và build production (`npm run build`) thành công không lỗi.
-* [x] **Kiểm thử giao diện gốc (Giai đoạn 2):** Rà soát và tương tác đầy đủ 12 màn hình qua 2 luồng: Sinh viên (Student) và Quản trị viên (Admin).
-* [x] **Dọn dẹp mã nguồn thừa & Icon trùng lặp (Giai đoạn 3):**
-  * Xóa bỏ 367 dòng code rác (mảng `NAV_ITEMS` không dùng trong 3 file, 5 hàm icon thừa trong 2 file).
-  * Gom `GeminiIcon` và navigation icons vào file dùng chung duy nhất: `src/components/icons/index.tsx`.
-* [x] **Chuẩn hóa Routing & State (Giai đoạn 4):**
-  * Cài đặt `react-router-dom`.
-  * Cấu hình đầy đủ URL độc lập cho 12 màn hình trong `src/App.tsx`.
-  * Tách [src/pages/LandingPage.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/pages/LandingPage.tsx).
-  * Xây dựng `AuthContext` lưu phiên vào `localStorage`, giải quyết triệt để lỗi F5 bị văng trang.
-* [x] **Chuẩn hóa Tầng Dữ Liệu (Giai đoạn 5):**
-  * Tạo các interface TypeScript trong `src/types/` (`user.ts`, `presentation.ts`, `report.ts`).
-  * Tách dữ liệu tĩnh sang `src/mocks/` (`mockUsers.ts`, `mockHistory.ts`).
-  * Xây dựng khung `src/services/apiClient.ts` hỗ trợ tự động đính kèm Bearer token và kết nối `VITE_API_BASE_URL`.
+### 3.1. File Tạo Mới (Untracked)
+| File | Mục đích |
+| :--- | :--- |
+| `frontend/public/logo.svg` | File SVG logo gốc tỉ lệ 250:64, phục vụ hiển thị vector và favicon. |
+| `frontend/src/DashboardPage.tsx` | Trang tổng quan riêng biệt cho sinh viên (`/dashboard`). |
+| `frontend/src/AdminDashboardPage.tsx` | Trang bảng điều khiển quản trị viên (`/admin/dashboard`). |
+| `frontend/src/AdminLogsPage.tsx` | Trang nhật ký máy chủ và giám sát dịch vụ (`/admin/logs`). |
+| `frontend/src/components/common/BrandLogo.tsx` | Component hiển thị logo thương hiệu dùng chung toàn hệ thống. |
+| `frontend/src/mocks/mockAuth.ts` | Dữ liệu và logic xác thực 4 tài khoản demo tập trung. |
+| `frontend/src/mocks/mockAdmin.ts` | Mock dữ liệu thống kê, biểu đồ hoạt động và phân bố điểm cho Admin. |
+| `frontend/src/mocks/mockLogs.ts` | Mock 25 bản ghi nhật ký máy chủ theo các mức độ và dịch vụ. |
+| `frontend/src/types/admin.ts` | Định nghĩa kiểu dữ liệu cho Admin (KPI, Activity, LogEntry). |
 
----
-
-## 4. Chi Tiết Các File Đã Tạo / Sửa / Xóa
-
-| Tên File | Thao tác | Mục đích |
-| :--- | :--- | :--- |
-| `KE_HOACH_TAI_CAU_TRUC_FRONTEND.md` | **Tạo mới** | Văn bản kế hoạch tái cấu trúc 6 giai đoạn chi tiết. |
-| `docs/PROJECT_CONTEXT.md` | **Tạo mới** | Tài liệu mục tiêu, phân công nhóm và kiến trúc kỹ thuật chuẩn. |
-| `docs/PROGRESS.md` | **Tạo mới** | Nhật ký tiến độ công việc của từng thành viên và các phân hệ. |
-| `docs/DAILY_HANDOFF.md` | **Tạo mới** | Biên bản bàn giao kỹ thuật chi tiết của phiên làm việc hôm nay. |
-| `frontend/pnpm-lock.yaml` | **Xóa bỏ** | Loại bỏ lockfile của pnpm để tránh xung đột với npm. |
-| `frontend/package.json` & `package-lock.json` | **Cập nhật** | Bổ sung `react-router-dom` và chốt phiên bản thư viện npm. |
-| `frontend/src/components/icons/index.tsx` | **Tạo mới** | Gom toàn bộ Icon SVG dùng chung toàn dự án. |
-| `frontend/src/context/AuthContext.tsx` | **Tạo mới** | Quản lý trạng thái đăng nhập và phân quyền giao diện bền vững qua localStorage. |
-| `frontend/src/pages/LandingPage.tsx` | **Tạo mới** | Tách riêng giao diện Landing Page khỏi App.tsx. |
-| `frontend/src/types/*` | **Tạo mới** | Định nghĩa cấu trúc dữ liệu chặt chẽ cho User, Phiên nói và Báo cáo. |
-| `frontend/src/mocks/*` | **Tạo mới** | Tách dữ liệu tĩnh (SEED_USERS, CHART_DATA, SESSIONS) ra khỏi thân component. |
-| `frontend/src/services/apiClient.ts` | **Tạo mới** | Client gọi API chuẩn hóa sẵn sàng kết nối Backend. |
-| `frontend/src/App.tsx` | **Cập nhật** | Rút gọn từ 456 dòng xuống ~150 dòng, đóng vai trò Router trung tâm. |
-| 10 file giao diện (`StudioPage.tsx`, `UploadPage.tsx`...) | **Cập nhật** | Dọn code thừa, trỏ lại import icons và mock data. |
+### 3.2. File Đã Chỉnh Sửa (Modified)
+| File | Mục đích thay đổi |
+| :--- | :--- |
+| `frontend/index.html` | Bổ sung thẻ `<link rel="icon">` trỏ đến `/logo.svg`. |
+| `frontend/src/App.tsx` | Cập nhật router, Route Guards (`StudentRoute`, `AdminRoute`, `GuestRoute`), gỡ backdoor Admin. |
+| `frontend/src/context/AuthContext.tsx` | Chuyển đổi quản lý `currentUser`, tích hợp `mockAuth`, khôi phục session an toàn. |
+| `frontend/src/LoginPage.tsx` | Form đăng nhập 1 nút submit, báo lỗi chi tiết, chip điền nhanh demo, cập nhật logo mới. |
+| `frontend/src/SignUpPage.tsx` | Ngăn bypass session, thông báo chờ Backend, cập nhật logo mới. |
+| `frontend/src/Sidebar.tsx` | Hiển thị logo mới, hiển thị `currentUser.name` và `currentUser.avatarText`, logout điều hướng về `/login`. |
+| `frontend/src/pages/LandingPage.tsx` | Cập nhật logo mới trên thanh header, chuyển nút "Quản trị viên" sang `/login`. |
+| `frontend/src/HistoryPage.tsx` | Tinh gọn giao diện lịch sử, truyền `sessionId` khi xem báo cáo. |
+| `frontend/src/ReportPage.tsx` | Động hóa báo cáo theo `sessionId`, thêm trạng thái không tìm thấy phiên. |
+| `frontend/src/SettingsPage.tsx` | Đồng bộ tên, email và avatar sinh viên từ `currentUser`. |
+| `frontend/src/AdminSettingsPage.tsx` | Đồng bộ tên, email và avatar quản trị viên từ `currentUser`. |
+| `frontend/src/components/common/index.ts` | Xuất khẩu `BrandLogo`. |
+| `frontend/src/types/user.ts` | Bổ sung kiểu `AuthUser` và `LoginResult`. |
+| `frontend/src/types/index.ts` | Xuất khẩu các kiểu dữ liệu mới. |
+| `frontend/src/mocks/mockHistory.ts` | Chuẩn hóa ID phiên và dữ liệu tương thích với Dashboard. |
+| `docs/PROJECT_CONTEXT.md` | Cập nhật kiến trúc kỹ thuật và các quyết định kỹ thuật ổn định. |
+| `docs/PROGRESS.md` | Cập nhật nhật ký tiến độ của toàn bộ các giai đoạn triển khai. |
+| `docs/DAILY_HANDOFF.md` | Tài liệu bàn giao chi tiết phiên làm việc ngày 25/10/2026. |
 
 ---
 
-## 5. Lệnh Kiểm Thử Đã Chạy & Kết Quả Thực Tế
+## 4. Lệnh Kiểm Thử Đã Chạy & Kết Quả Thực Tế
 
-1. **Kiểm thử môi trường Dev (`npm run dev`):**
-   * *Kết quả:* Chạy thành công trên Vite v8.3.5 tại `http://localhost:8443/`. Hot Module Replacement (HMR) phản hồi tức thì dưới 100ms.
-2. **Kiểm thử đóng gói Production (`npm run build`):**
-   * *Kết quả:* Exit code 0, hoàn tất trong 322ms, chuyển đổi 40 modules, sinh đầy đủ các file production bundle trong thư mục `dist/` mà không có bất kỳ lỗi TypeScript hay cảnh báo cú pháp nghiêm trọng nào.
-3. **Kiểm thử đồng bộ Git (`git status` & `git log`):**
-   * *Kết quả:* Working tree clean, 3 commits nối tiếp mạch lạc, đã push đầy đủ lên nhánh `refactor/fe-clean-architecture` trên GitHub.
-
----
-
-## 6. Lỗi Chưa Giải Quyết & Cảnh Báo Cần Lưu Ý
-* **Cảnh báo Vite Config (`vite.config.ts`):** 
-  * Terminal hiển thị cảnh báo nhỏ: `__dirname (vite.config.ts:29:27). Use import.meta.dirname instead` và `JSON import without import attributes`.
-  * *Mức độ:* Thấp. Cảnh báo này do cấu hình mặc định của Figma Make, không ảnh hưởng đến build hay chạy dev. Sẽ được tinh chỉnh khi dọn file cấu hình ở các phiên sau.
-* **Chức năng Webcam & Recording trong StudioPage:**
-  * Hiện tại webcam đã hiển thị hình ảnh thật qua `getUserMedia`, nhưng nút "Kết thúc & Phân tích" mới chỉ chuyển trang demo mà chưa thực sự ghi lại luồng video thành file Blob/MediaRecorder.
-
----
-
-## 7. Các Quyết Định Kỹ Thuật Mới Trong Phiên
-1. **Thống nhất sử dụng `npm`:** Quyết định không cài thêm pnpm để mọi thành viên trong nhóm PBL6 có thể clone repo về và chạy ngay bằng npm mặc định của Node.js.
-2. **Duy trì phiên đăng nhập bằng `localStorage`:** Giúp sinh viên và giảng viên khi test giao diện không bị gián đoạn hay văng ra màn hình đăng nhập mỗi khi F5 hoặc mở tab mới.
-3. **Tuân thủ nguyên tắc "Chỉ tái cấu trúc code – Không thiết kế lại UI":** Toàn bộ màu tím `#7C3AED`, font Inter, bố cục card và animation được giữ nguyên bản gốc từ Figma.
-
----
-
-## 8. Việc Đang Dang Dở Hoặc Bị Chặn (Dependencies)
-* **Chờ API Contract từ Backend Lead (bạn Võ Thành Nhân):** 
-  * Tầng `src/services/` đã có khung sẵn, nhưng chưa thể cài đặt chi tiết các hàm `authService.login()` hay `reportService.getReport()` vì cần danh sách endpoint chính thức và định dạng JSON trả về từ backend server.
-* **Chờ mô hình AI từ AI Lead (bạn Nguyễn Đỗ Thắng):** 
-  * Cần thông tin về thời gian phản hồi ước tính của model để cấu hình màn hình `AnalyzingPage` (xử lý qua WebSocket hay Polling/SSE thay vì bộ đếm 8s giả lập hiện tại).
+1. **TypeScript Type Check:**
+   ```bash
+   npx tsc --noEmit
+   # Kết quả: Exit code 0 (Không có bất kỳ lỗi kiểu dữ liệu nào)
+   ```
+2. **Production Bundle Build:**
+   ```bash
+   npm run build
+   # Kết quả: Exit code 0
+   # Built in 348ms: dist/index.html (0.96 kB), CSS (45.26 kB), JS (447.04 kB)
+   ```
+3. **Unit Test Suite cho Demo Auth (`scratch/test_auth_suite.mjs`):**
+   ```bash
+   npx tsx scratch/test_auth_suite.mjs
+   # Kết quả: 11/11 assertions passed (Email rỗng, pass rỗng, email không tồn tại, sai mật khẩu, không trim pass, student active, admin active, banned account, không chứa password trong AuthUser)
+   ```
+4. **Kiểm thử trực quan qua Trình duyệt (Browser Subagent):**
+   - Đã kiểm tra tương tác thực tế và lưu trữ screenshot:
+     - `landing_page_logo_1792924604477.png`: Logo trên Landing navbar sắc nét.
+     - `login_page_desktop_1792924687403.png`: Giao diện Login Desktop với chip điền nhanh và logo mới.
+     - `login_page_mobile_1792924701346.png`: Giao diện Login Mobile (390x844).
+     - `signup_page_desktop_1792924722125.png` & `signup_page_mobile_1792924744887.png`: Giao diện SignUp.
+     - `student_dashboard_desktop_1792924789893.png`: Student Dashboard với logo trên Sidebar và KPI cards.
+     - `admin_dashboard_desktop_1792924851076.png`: Admin Dashboard với logo trên Sidebar và biểu đồ.
 
 ---
 
-## 9. Ba Việc Ưu Tiên Tiếp Theo Cần Làm (Top 3 Priorities)
-1. **Nâng cấp `StudioPage.tsx`:** Tích hợp `MediaRecorder API` để khi bấm "Bắt đầu" $\rightarrow$ quay video bài nói thật, khi bấm "Kết thúc" $\rightarrow$ tạo file video thật sẵn sàng gửi lên API.
-2. **Họp nhóm PBL6:** Thống nhất API Contract với bạn Nhân (Backend) và format dữ liệu đầu vào với bạn Thắng (AI).
-3. **Gộp nhánh (Merge Pull Request):** Xem xét tạo PR gộp nhánh `refactor/fe-clean-architecture` vào nhánh `main` trên GitHub sau khi nhóm cùng nghiệm thu.
+## 5. Lỗi Chưa Giải Quyết & Ghi Chú Debug
+
+* **Không có lỗi chức năng (Functional Bug) tồn tại:** Tất cả 20 ca kiểm thử phân quyền và giao diện đều hoạt động đúng thiết kế.
+* **Cảnh báo Vite config (Không ảnh hưởng chạy/build):**
+  - Vite cảnh báo tính năng `__dirname` và `JSON import` trong `vite.config.ts` sẽ thay đổi trong tương lai. Có thể thêm biến môi trường `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` nếu muốn ẩn cảnh báo này.
+* **Quyền truy cập Webcam trong Studio:**
+  - Trang Studio phụ thuộc vào API trình duyệt `navigator.mediaDevices.getUserMedia()`. Khi chạy local, trình duyệt cần được người dùng cấp quyền truy cập camera/micro.
 
 ---
 
-## 10. Hướng Dẫn Chạy Project Vào Ngày Mai
+## 6. Quyết Định Kỹ Thuật Mới & Lý Do
 
-Khi mở máy tính vào ngày mai, bạn chỉ cần mở Terminal và gõ:
-```powershell
-cd "c:\Users\Admin\OneDrive - The University of Technology\Ki_7\PBL6\code\PBL6-ai-presentation-coach\frontend"
-npm run dev
-```
-Trang web sẽ tự động chạy tại: 👉 **`http://localhost:8443/`**
+1. **Client-Side Demo Auth độc lập (Option A):**
+   - *Lý do:* Cho phép trải nghiệm toàn diện luồng đăng nhập, xử lý lỗi mật khẩu/tài khoản khóa và phân chia vai trò Student/Admin trước khi kết nối Backend thực tế.
+2. **Nguyên tắc "Zero-Password Storage":**
+   - *Lý do:* Không lưu trường mật khẩu trong `localStorage` hay đối tượng `currentUser`. Chỉ lưu `id`, `name`, `email`, `role`, `status`, `avatarText`.
+3. **Route Guards đối ứng (No Infinite Loop):**
+   - *Lý do:* `StudentRoute` chuyển hướng Admin về `/admin/dashboard`; `AdminRoute` chuyển hướng Student về `/dashboard`; `GuestRoute` chuyển hướng người đã login về dashboard tương ứng. Loại bỏ hoàn toàn khả năng lặp chuyển hướng.
+4. **Chuẩn hóa Logo qua Vector SVG tĩnh:**
+   - *Lý do:* Dùng file `public/logo.svg` làm tài nguyên gốc giúp vector sắc nét tuyệt đối ở mọi kích thước, không phụ thuộc font chữ hệ thống và tránh xung đột ID gradient khi dùng nhiều lần trên trang.
+
+---
+
+## 7. Việc Đang Dang Dở & Phụ Thuộc Vào Backend / Thành Viên Khác
+
+1. **Chờ Backend Lead (Võ Thành Nhân):**
+   - Danh sách API endpoints chuẩn (Swagger/Postman) cho Authentication (`POST /api/v1/auth/login`, `POST /api/v1/auth/register`), Quản lý phiên luyện tập và Truy xuất báo cáo AI.
+   - Khi có API thật, sẽ cấu hình `VITE_API_BASE_URL` trong [frontend/src/services/apiClient.ts](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/services/apiClient.ts) để chuyển đổi từ Mock Data sang API thực.
+2. **Chờ AI Lead (Nguyễn Đỗ Thắng):**
+   - Đặc tả dữ liệu kết quả phân tích đa phương thức (Radar score metrics, Timeline từ đệm, Giao tiếp mắt, WPM) để hoàn thiện định dạng hiển thị chi tiết trong [ReportPage.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/ReportPage.tsx).
+
+---
+
+## 8. Ba Việc Ưu Tiên Tiếp Theo (Top 3 Priorities)
+
+1. **Tích hợp MediaRecorder API cho Studio:** Bổ sung khả năng ghi và xuất file video thực tế (`.webm` hoặc `.mp4`) khi người dùng bấm kết thúc bài thuyết trình trong [StudioPage.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/StudioPage.tsx).
+2. **Họp kỹ thuật tích hợp API:** Rà soát hợp đồng API (API Contract) với bạn Võ Thành Nhân để chuẩn bị thay thế hàm mock auth và mock data.
+3. **Tối ưu hóa hiển thị Dark Mode (nếu có yêu cầu):** Chuẩn bị phiên bản màu chữ sáng cho logo nếu hệ thống mở rộng hỗ trợ giao diện nền tối.
+
+---
+
+## 9. Hướng Dẫn Chạy Dự Án Vào Ngày Mai
+
+1. **Mở terminal tại thư mục frontend:**
+   ```bash
+   cd "c:\Users\Admin\OneDrive - The University of Technology\Ki_7\PBL6\code\PBL6-ai-presentation-coach\frontend"
+   ```
+2. **Khởi động môi trường phát triển (Dev Server):**
+   ```bash
+   npm run dev
+   ```
+   Ứng dụng sẽ chạy tại: `http://localhost:8443`
+3. **Kiểm tra biên dịch và build (khi cần):**
+   ```bash
+   npx tsc --noEmit
+   npm run build
+   ```
+4. **Tài khoản Demo có sẵn để thử nghiệm:**
+   - **Sinh viên chính:** `son.dang@student.edu.vn` / `Student@123` (Vào `/dashboard`)
+   - **Sinh viên phụ:** `thang.nguyen@student.edu.vn` / `Student@123` (Vào `/dashboard`)
+   - **Quản trị viên:** `admin@system.edu.vn` / `Admin@123` (Vào `/admin/dashboard`)
+   - **Tài khoản bị khóa:** `nhan.vo@student.edu.vn` / `Student@123` (Bị chặn với thông báo phù hợp)
+   *(Có thể nhấn trực tiếp các chip điền nhanh tại trang `/login`)*

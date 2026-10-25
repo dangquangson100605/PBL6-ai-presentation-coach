@@ -1,18 +1,25 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import Sidebar, { UserRole } from "./Sidebar";
 import { Button, Card, Badge } from "./components/common";
+import { getReportBySessionId, DetailedSessionReport } from "./mocks/mockHistory";
 
-/* ── Radar Chart (Standardized Deep Forest Green) ─────────────── */
-function RadarChart() {
+/* ── Dynamic Radar Chart ─────────────────────────────────────── */
+function RadarChart({
+  metrics,
+}: {
+  metrics: DetailedSessionReport["radarMetrics"];
+}) {
   const cx = 110,
     cy = 110,
     r = 76;
+
   const axes = [
-    { label: "Tốc độ (WPM)", angle: -90, value: 0.62 },
-    { label: "Giao tiếp mắt", angle: -18, value: 0.88 },
-    { label: "Cảm xúc", angle: 54, value: 0.74 },
-    { label: "Ngôn ngữ cơ thể", angle: 126, value: 0.68 },
-    { label: "Âm lượng giọng", angle: 198, value: 0.8 },
+    { label: "Tốc độ (WPM)", angle: -90, value: metrics.wpmPercent },
+    { label: "Giao tiếp mắt", angle: -18, value: metrics.eyeContactPercent },
+    { label: "Cảm xúc", angle: 54, value: metrics.emotionPercent },
+    { label: "Ngôn ngữ cơ thể", angle: 126, value: metrics.bodyLanguagePercent },
+    { label: "Âm lượng giọng", angle: 198, value: metrics.volumePercent },
   ];
 
   const toXY = (angle: number, radius: number) => ({
@@ -120,31 +127,6 @@ function RadarChart() {
   );
 }
 
-/* ── Timeline markers with visual symbol & label ───────────── */
-const MARKERS = [
-  {
-    pct: 22,
-    color: "#C24141",
-    symbol: "⚠️",
-    label: "Nói từ đệm liên tục — 4× 'ừm'",
-    severity: "Cần lưu ý",
-  },
-  {
-    pct: 47,
-    color: "#B7791F",
-    symbol: "⚡",
-    label: "Tốc độ nói tăng lên 190 WPM",
-    severity: "Nhẹ",
-  },
-  {
-    pct: 71,
-    color: "#B7791F",
-    symbol: "⚡",
-    label: "Mất giao tiếp mắt trong 8 giây",
-    severity: "Nhẹ",
-  },
-];
-
 /* ── Score ring (Deep Forest Green) ─────────────────────────── */
 function ScoreRing({ score }: { score: number }) {
   const R = 44,
@@ -204,7 +186,7 @@ function MetricBar({
       <div className="h-1.5 bg-[#DCE5DF] rounded-full overflow-hidden">
         <div
           className="h-full rounded-full bg-[#276749] transition-all"
-          style={{ width: `${(value / max) * 100}%` }}
+          style={{ width: `${Math.min(100, (value / max) * 100)}%` }}
         />
       </div>
     </div>
@@ -218,12 +200,49 @@ interface ReportPageProps {
 }
 
 export default function ReportPage({ onNav, userRole }: ReportPageProps) {
+  const { sessionId } = useParams<{ sessionId: string }>();
   const [hoverMarker, setHoverMarker] = useState<number | null>(null);
   const [playhead, setPlayhead] = useState(34);
 
+  const report = sessionId ? getReportBySessionId(sessionId) : null;
+
+  /* Trạng thái khi không tìm thấy phiên hoặc ID không hợp lệ */
+  if (!report) {
+    return (
+      <div className="flex h-screen bg-[#F5F7F6] overflow-hidden font-[Inter,sans-serif] text-[#24312B]">
+        <Sidebar userRole={userRole} activeItem="history" onNav={onNav} />
+        <main className="flex-1 flex items-center justify-center p-6">
+          <Card className="max-w-md w-full p-8 text-center space-y-4">
+            <div className="w-12 h-12 rounded-full bg-[#FEE2E2] text-[#C24141] flex items-center justify-center mx-auto text-xl font-bold">
+              !
+            </div>
+            <div className="space-y-1">
+              <h2 className="text-[16px] font-bold text-[#24312B]">
+                Không tìm thấy phiên luyện tập
+              </h2>
+              <p className="text-[12px] text-[#69766F] leading-relaxed">
+                Phiên luyện tập với mã nhận diện "{sessionId || "chưa xác định"}" không tồn tại hoặc đã bị gỡ bỏ khỏi hệ thống.
+              </p>
+            </div>
+            <div className="pt-2">
+              <Button
+                variant="primary"
+                size="md"
+                onClick={() => onNav("history")}
+                className="w-full justify-center"
+              >
+                Quay lại danh sách lịch sử
+              </Button>
+            </div>
+          </Card>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen bg-[#F5F7F6] overflow-hidden font-[Inter,sans-serif] text-[#24312B]">
-      <Sidebar userRole={userRole} activeItem="dashboard" onNav={onNav} />
+      <Sidebar userRole={userRole} activeItem="history" onNav={onNav} />
 
       {/* ── MAIN CONTENT ──────────────────────────────────── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -250,12 +269,12 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-[15.5px] font-bold text-[#24312B] leading-tight">
-                  Luyện tập bảo vệ đề án — Tuần 5
+                  {report.title}
                 </h1>
                 <Badge variant="primary">Báo cáo hoàn chỉnh</Badge>
               </div>
               <p className="text-[12px] text-[#69766F] mt-0.5">
-                Ngày ghi: 11/09/2026 · Thời lượng: 4 phút 32 giây · Ngữ cảnh: Bảo vệ đề án
+                Ngày ghi: {report.date} · Thời lượng: {report.duration} · Ngữ cảnh: {report.context}
               </p>
             </div>
           </div>
@@ -298,13 +317,13 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
               {/* Top Session Info Pill */}
               <div className="absolute top-3 left-3">
                 <span className="bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-md border border-white/10">
-                  Phiên #47 — Video đã lưu
+                  Phiên #{report.sessionId} — Video đã lưu
                 </span>
               </div>
 
               {/* Top-right Duration Pill */}
               <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11.5px] font-mono font-medium px-2.5 py-1 rounded-md border border-white/10">
-                04:32
+                {report.duration}
               </div>
 
               {/* Bottom Playback Controls */}
@@ -322,6 +341,7 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                     <button
                       type="button"
                       className="w-7 h-7 rounded-md bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+                      aria-label="Phát video"
                     >
                       <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
                         <path d="M3 2l7 4-7 4V2z" fill="white" />
@@ -331,7 +351,7 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                       {`0${Math.floor((playhead / 100) * 4)}:${String(
                         Math.floor((playhead / 100) * 60) % 60
                       ).padStart(2, "0")}`}{" "}
-                      / 04:32
+                      / {report.duration}
                     </span>
                   </div>
 
@@ -389,7 +409,7 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                   style={{ left: `calc(${playhead}% - 7px)` }}
                 />
 
-                {MARKERS.map((m, i) => (
+                {report.timelineMarkers.map((m, i) => (
                   <div
                     key={i}
                     className="absolute top-1/2 -translate-y-1/2 z-10 cursor-pointer"
@@ -412,7 +432,7 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
 
               {/* Marker Legend Detailed List */}
               <div className="flex flex-col gap-2 pt-2 border-t border-[#DCE5DF]">
-                {MARKERS.map((m, i) => (
+                {report.timelineMarkers.map((m, i) => (
                   <div key={i} className="flex items-center gap-2.5 text-[12px]">
                     <span className="text-[12px]">{m.symbol}</span>
                     <span
@@ -425,11 +445,6 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                       {m.severity}:
                     </span>
                     <span className="text-[#24312B]">{m.label}</span>
-                    <span className="ml-auto text-[#69766F] font-mono text-[11px]">
-                      {`${Math.floor((m.pct / 100) * 4)}:${String(
-                        Math.floor((m.pct / 100) * 272) % 60
-                      ).padStart(2, "0")}`}
-                    </span>
                   </div>
                 ))}
               </div>
@@ -441,33 +456,12 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                 <p className="text-[12px] font-semibold text-[#69766F] uppercase tracking-wider">
                   Bản ghi lời nói (Transcript)
                 </p>
-                <Badge variant="warning">Phát hiện 5 từ đệm</Badge>
+                <Badge variant={report.rawMetrics.fillerWords > 6 ? "warning" : "success"}>
+                  Phát hiện {report.rawMetrics.fillerWords} từ đệm
+                </Badge>
               </div>
               <p className="text-[13px] text-[#24312B] leading-relaxed">
-                Xin chào mọi người,{" "}
-                <mark className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] font-medium px-1.5 py-0.5 rounded">
-                  ừm
-                </mark>
-                , hôm nay nhóm chúng em xin trình bày dự án về hệ thống huấn luyện
-                thuyết trình bằng AI. Nhóm chúng em đã làm việc trong{" "}
-                <mark className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] font-medium px-1.5 py-0.5 rounded">
-                  à
-                </mark>
-                , tám tuần qua. Nền tảng sử dụng MediaPipe và Google Gemini để
-                cung cấp phản hồi thời gian thực về giao tiếp mắt, tốc độ nói và{" "}
-                <mark className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] font-medium px-1.5 py-0.5 rounded">
-                  ừm
-                </mark>
-                , ngôn ngữ cơ thể. Chúng em tin rằng{" "}
-                <mark className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] font-medium px-1.5 py-0.5 rounded">
-                  kiểu như
-                </mark>
-                , luyện tập đều đặn sẽ dẫn đến sự tự tin khi thuyết trình. Hãy để
-                chúng em trình bày demo hôm nay.{" "}
-                <mark className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] font-medium px-1.5 py-0.5 rounded">
-                  Ừm
-                </mark>
-                , bắt đầu với tổng quan kiến trúc hệ thống.
+                {report.transcript}
               </p>
             </Card>
           </div>
@@ -480,15 +474,17 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                 <p className="text-[12px] font-semibold text-[#69766F] uppercase tracking-wider">
                   1. Tổng quan &amp; Điểm số chính
                 </p>
-                <Badge variant="success">Đạt yêu cầu</Badge>
+                <Badge variant={report.overallScore >= 80 ? "success" : "neutral"}>
+                  {report.overallScore >= 80 ? "Đạt yêu cầu" : "Cần rèn luyện"}
+                </Badge>
               </div>
 
               <div className="flex items-center gap-5">
                 <div className="relative flex-shrink-0">
-                  <ScoreRing score={85} />
+                  <ScoreRing score={report.overallScore} />
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className="text-[24px] font-bold text-[#24312B] leading-none">
-                      85
+                      {report.overallScore}
                     </span>
                     <span className="text-[10px] font-semibold text-[#69766F] uppercase tracking-wide">
                       / 100
@@ -497,27 +493,29 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                 </div>
 
                 <div className="flex-1 space-y-2">
-                  <MetricBar label="Giao tiếp mắt" value={88} />
-                  <MetricBar label="Tốc độ nói" value={62} />
-                  <MetricBar label="Độ tự tin" value={80} />
-                  <MetricBar label="Hạn chế từ đệm" value={75} />
+                  <MetricBar label="Giao tiếp mắt" value={report.metricBars.eyeContact} />
+                  <MetricBar label="Tốc độ nói" value={report.metricBars.wpmSpeed} />
+                  <MetricBar label="Độ tự tin" value={report.metricBars.confidence} />
+                  <MetricBar label="Hạn chế từ đệm" value={report.metricBars.fillerWordControl} />
                 </div>
               </div>
 
               {/* Grade Banner */}
               <div className="flex items-center gap-3 bg-[#F5F7F6] border border-[#DCE5DF] rounded-xl p-3 text-[12px]">
                 <div className="w-9 h-9 rounded-lg bg-[#E8F1EB] border border-[#D4E5D9] font-bold text-[#276749] text-base flex items-center justify-center flex-shrink-0">
-                  B+
+                  {report.grade}
                 </div>
                 <div className="min-w-0">
-                  <p className="font-semibold text-[#24312B]">Trên trung bình</p>
+                  <p className="font-semibold text-[#24312B]">{report.gradeDescription}</p>
                   <p className="text-[#69766F] text-[11px] truncate">
-                    Xếp hạng top 30% sinh viên trong tháng này
+                    Xếp hạng theo thang đo AI Coach
                   </p>
                 </div>
-                <div className="ml-auto font-medium text-[#276749] text-right whitespace-nowrap">
-                  +4 điểm vs tuần trước
-                </div>
+                {report.trendScore !== null && (
+                  <div className="ml-auto font-medium text-[#276749] text-right whitespace-nowrap">
+                    {report.trendScore >= 0 ? "+" : ""}{report.trendScore} điểm
+                  </div>
+                )}
               </div>
             </Card>
 
@@ -534,12 +532,10 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
               </div>
 
               <p className="text-[12.5px] font-semibold text-[#24312B]">
-                Giao tiếp mắt xuất sắc (88% thời lượng)
+                {report.strengths.title}
               </p>
               <p className="text-[12px] text-[#69766F] leading-relaxed">
-                Bạn duy trì giao tiếp mắt rất tốt với người nghe qua camera trong
-                suốt phiên — vượt xa mức chuẩn đề xuất là 70%. Cử chỉ tự nhiên và
-                tập trung giúp tạo dựng niềm tin và sự hiện diện vững vàng.
+                {report.strengths.description}
               </p>
             </Card>
 
@@ -556,12 +552,10 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
               </div>
 
               <p className="text-[12.5px] font-semibold text-[#24312B]">
-                5 từ đệm ("ừm", "à") · Tốc độ nói 175 WPM (Hơi nhanh)
+                {report.improvements.title}
               </p>
               <p className="text-[12px] text-[#69766F] leading-relaxed">
-                Tốc độ nói trung bình vượt quá ngưỡng lý tưởng từ 130–160 WPM. Việc
-                chủ động nói chậm lại ở các đoạn giới thiệu định nghĩa sẽ giúp hội
-                đồng tiếp thu các luận điểm kỹ thuật dễ dàng hơn.
+                {report.improvements.description}
               </p>
             </Card>
 
@@ -571,14 +565,29 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                 4. Phân tích đa chiều (Biểu đồ Radar)
               </p>
               <div className="flex flex-col items-center gap-3">
-                <RadarChart />
+                <RadarChart metrics={report.radarMetrics} />
                 <div className="grid grid-cols-5 gap-1.5 w-full pt-2 border-t border-[#DCE5DF] text-center">
                   {[
-                    { label: "WPM", value: "62%" },
-                    { label: "Mắt", value: "88%" },
-                    { label: "Cảm xúc", value: "74%" },
-                    { label: "Cơ thể", value: "68%" },
-                    { label: "Âm lượng", value: "80%" },
+                    {
+                      label: "WPM",
+                      value: `${Math.round(report.radarMetrics.wpmPercent * 100)}%`,
+                    },
+                    {
+                      label: "Mắt",
+                      value: `${Math.round(report.radarMetrics.eyeContactPercent * 100)}%`,
+                    },
+                    {
+                      label: "Cảm xúc",
+                      value: `${Math.round(report.radarMetrics.emotionPercent * 100)}%`,
+                    },
+                    {
+                      label: "Cơ thể",
+                      value: `${Math.round(report.radarMetrics.bodyLanguagePercent * 100)}%`,
+                    },
+                    {
+                      label: "Âm lượng",
+                      value: `${Math.round(report.radarMetrics.volumePercent * 100)}%`,
+                    },
                   ].map(({ label, value }) => (
                     <div key={label}>
                       <span className="text-[12px] font-bold text-[#24312B] block">
@@ -606,12 +615,10 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
               </div>
 
               <p className="text-[12.5px] font-semibold text-[#24312B]">
-                Áp dụng bài tập "Dừng lại 1 nhịp &amp; Hít thở"
+                {report.recommendation.title}
               </p>
               <p className="text-[12px] text-[#69766F] leading-relaxed">
-                Trước khi chuyển đổi sang slide hoặc luận điểm mới, hãy tạm dừng
-                1–2 giây thay vì phát âm "ừm" hoặc "à". Thói quen ngắt quãng có chủ
-                đích sẽ giúp bài thuyết trình tăng tính thuyết phục và chuyên nghiệp.
+                {report.recommendation.description}
               </p>
             </Card>
           </div>
