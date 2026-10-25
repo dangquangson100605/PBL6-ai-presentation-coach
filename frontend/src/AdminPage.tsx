@@ -1,19 +1,27 @@
-import { GeminiIcon } from "./components/icons";
 import { useState } from "react";
 import Sidebar, { UserRole } from "./Sidebar";
+import { Button, Card, Badge } from "./components/common";
 
-/* ── Shared progress bar (Clean & Unified) ───────────────── */
+/* ── Shared progress bar ─────────────────────────────────── */
 function UtilBar({ label, pct }: { label: string; pct: number }) {
   const isHigh = pct >= 80;
   return (
     <div className="space-y-1.5">
-      <div className="flex justify-between items-center text-xs">
-        <span className="font-medium text-gray-600">{label}</span>
-        <span className={`font-semibold ${isHigh ? "text-amber-600" : "text-gray-900"}`}>{pct}%</span>
+      <div className="flex justify-between items-center text-[12px]">
+        <span className="font-medium text-[#69766F]">{label}</span>
+        <span
+          className={`font-semibold ${
+            isHigh ? "text-[#B7791F]" : "text-[#24312B]"
+          }`}
+        >
+          {pct}%
+        </span>
       </div>
-      <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+      <div className="h-1.5 bg-[#DCE5DF] rounded-full overflow-hidden">
         <div
-          className={`h-full rounded-full transition-all ${isHigh ? "bg-amber-500" : "bg-emerald-500"}`}
+          className={`h-full rounded-full transition-all duration-300 ${
+            isHigh ? "bg-[#B7791F]" : "bg-[#276749]"
+          }`}
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -21,10 +29,18 @@ function UtilBar({ label, pct }: { label: string; pct: number }) {
   );
 }
 
-/* ── Mini sparkline (Neutral & Professional) ─────────────── */
-function Sparkline({ data, color = "#10B981" }: { data: number[]; color?: string }) {
-  const max = Math.max(...data), min = Math.min(...data);
-  const W = 80, H = 26;
+/* ── Mini sparkline ──────────────────────────────────────── */
+function Sparkline({
+  data,
+  color = "#276749",
+}: {
+  data: number[];
+  color?: string;
+}) {
+  const max = Math.max(...data),
+    min = Math.min(...data);
+  const W = 80,
+    H = 26;
   const pts = data.map((v, i) => {
     const x = (i / (data.length - 1)) * W;
     const y = H - ((v - min) / (max - min || 1)) * H * 0.75 - H * 0.12;
@@ -32,50 +48,86 @@ function Sparkline({ data, color = "#10B981" }: { data: number[]; color?: string
   });
   return (
     <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
-      <polyline points={pts.join(" ")} fill="none" stroke={color} strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" />
-      <circle cx={pts[pts.length - 1].split(",")[0]} cy={pts[pts.length - 1].split(",")[1]} r="2" fill={color} />
+      <polyline
+        points={pts.join(" ")}
+        fill="none"
+        stroke={color}
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      <circle
+        cx={pts[pts.length - 1].split(",")[0]}
+        cy={pts[pts.length - 1].split(",")[1]}
+        r="2"
+        fill={color}
+      />
     </svg>
   );
 }
 
 /* ── Inline form input ──────────────────────────────────── */
 function ConfigInput({
-  label, value, onChange, suffix, helper,
+  label,
+  value,
+  onChange,
+  suffix,
+  helper,
 }: {
-  label: string; value: string; onChange: (v: string) => void;
-  suffix?: string; helper?: string;
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  suffix?: string;
+  helper?: string;
 }) {
   return (
-    <div className="space-y-1.5 flex-1">
-      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</label>
-      <div className="flex items-center rounded-lg border border-gray-200 overflow-hidden bg-gray-50 focus-within:bg-white focus-within:border-emerald-500 focus-within:ring-1 focus-within:ring-emerald-500 transition-colors">
+    <div className="space-y-1.5 flex-1 min-w-[140px]">
+      <label className="block text-[11px] font-semibold text-[#69766F] uppercase tracking-wider">
+        {label}
+      </label>
+      <div className="flex items-center h-10 rounded-lg border border-[#DCE5DF] overflow-hidden bg-[#F5F7F6] focus-within:bg-white focus-within:border-[#276749] focus-within:ring-1 focus-within:ring-[#276749] transition-all">
         <input
           type="number"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 px-3 py-2 text-sm font-semibold text-gray-900 bg-transparent outline-none"
+          className="flex-1 px-3 py-2 text-[13.5px] font-semibold text-[#24312B] bg-transparent outline-none"
         />
         {suffix && (
-          <span className="pr-3 text-xs font-medium text-gray-400 select-none">{suffix}</span>
+          <span className="pr-3 text-[12px] font-medium text-[#69766F] select-none">
+            {suffix}
+          </span>
         )}
       </div>
-      {helper && <p className="text-[11px] text-gray-500">{helper}</p>}
+      {helper && <p className="text-[11px] text-[#69766F]">{helper}</p>}
     </div>
   );
 }
 
-/* ── Donut mini-chart (Clean Light Green) ────────────────── */
+/* ── Donut mini-chart ────────────────────────────────────── */
 function Donut({ pct, size = 38 }: { pct: number; size?: number }) {
-  const r = size / 2 - 4, circ = 2 * Math.PI * r;
+  const r = size / 2 - 4,
+    circ = 2 * Math.PI * r;
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#F3F4F6" strokeWidth="4" />
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      className="-rotate-90 flex-shrink-0"
+    >
       <circle
         cx={size / 2}
         cy={size / 2}
         r={r}
         fill="none"
-        stroke="#10B981"
+        stroke="#DCE5DF"
+        strokeWidth="4"
+      />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        fill="none"
+        stroke="#276749"
         strokeWidth="4"
         strokeDasharray={`${(pct / 100) * circ} ${circ}`}
         strokeLinecap="round"
@@ -91,7 +143,7 @@ const LOG_ROWS = [
     user: "usr_102230046",
     action: "Tải lên video",
     status: "Thành công",
-    statusColor: "text-emerald-700 bg-emerald-50 border-emerald-200/60",
+    variant: "success" as const,
     size: "48 MB",
     duration: "2.1s",
   },
@@ -100,7 +152,7 @@ const LOG_ROWS = [
     user: "usr_99887711",
     action: "Phân tích AI",
     status: "Đang xử lý",
-    statusColor: "text-gray-700 bg-gray-50 border-gray-200",
+    variant: "primary" as const,
     size: "—",
     duration: "đang chạy",
   },
@@ -109,7 +161,7 @@ const LOG_ROWS = [
     user: "usr_77340021",
     action: "Xuất PDF",
     status: "Thành công",
-    statusColor: "text-emerald-700 bg-emerald-50 border-emerald-200/60",
+    variant: "success" as const,
     size: "1.2 MB",
     duration: "0.4s",
   },
@@ -118,13 +170,12 @@ const LOG_ROWS = [
     user: "usr_44512983",
     action: "Tải lên video",
     status: "Thất bại",
-    statusColor: "text-rose-700 bg-rose-50 border-rose-200/60",
+    variant: "danger" as const,
     size: "120 MB",
     duration: "—",
   },
 ];
 
-/* ── Main ───────────────────────────────────────────────── */
 interface AdminPageProps {
   onNav: (view: string) => void;
   userRole: UserRole;
@@ -141,81 +192,111 @@ export default function AdminPage({ onNav, userRole }: AdminPageProps) {
     setTimeout(() => setSaved(false), 2500);
   }
 
-  const filteredLogs = logFilter === "Tất cả" ? LOG_ROWS : LOG_ROWS.filter((r) => r.status === logFilter);
+  const filteredLogs =
+    logFilter === "Tất cả"
+      ? LOG_ROWS
+      : LOG_ROWS.filter((r) => r.status === logFilter);
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans text-gray-900 antialiased">
+    <div className="flex h-screen bg-[#F5F7F6] overflow-hidden font-[Inter,sans-serif] text-[#24312B]">
       <Sidebar userRole={userRole} activeItem="config" onNav={onNav} />
 
-      {/* ── MAIN ────────────────────────────────────── */}
+      {/* ── MAIN CONTENT ──────────────────────────────────── */}
       <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between sticky top-0 z-10">
-          <div className="flex items-center gap-4">
+        <header className="h-16 flex-shrink-0 bg-white border-b border-[#DCE5DF] px-6 sm:px-8 flex items-center justify-between sticky top-0 z-10">
+          <div className="flex items-center gap-3 sm:gap-4">
             <div>
-              <h1 className="text-lg font-bold text-gray-900 tracking-tight leading-none">Quản trị hệ thống</h1>
-              <p className="text-xs text-gray-500 mt-1">AI Presentation Coach · Bảng cấu hình và giám sát</p>
+              <h1 className="text-[17px] font-bold text-[#24312B] tracking-tight leading-tight">
+                Quản trị hệ thống
+              </h1>
+              <p className="text-[12px] text-[#69766F]">
+                AI Presentation Coach · Bảng cấu hình và giám sát máy chủ
+              </p>
             </div>
-            <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200/60 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <Badge variant="success" withDot>
               Hệ thống ổn định
-            </div>
+            </Badge>
           </div>
-          <div className="flex items-center gap-3 text-xs text-gray-500">
-            <span className="font-mono">Cập nhật: 14:32:01</span>
-            <button
-              type="button"
-              className="border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-            >
+
+          <div className="flex items-center gap-3 text-[12px] text-[#69766F]">
+            <span className="font-mono hidden sm:inline">Cập nhật: 14:32:01</span>
+            <Button variant="secondary" size="sm">
               Làm mới
-            </button>
+            </Button>
           </div>
         </header>
 
-        <div className="p-8 space-y-6">
+        {/* Workspace Body */}
+        <div className="p-6 sm:p-8 space-y-6">
           {/* ── TOP ROW: Health Cards ─────────────── */}
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Card 1: Worker Queue */}
-            <div className="col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-5">
+            <Card className="lg:col-span-2 p-5 sm:p-6 space-y-5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
+                  <div className="w-8 h-8 rounded-lg bg-[#E8F1EB] border border-[#D4E5D9] flex items-center justify-center text-[#276749]">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <rect x="1" y="4" width="14" height="3" rx="1" stroke="currentColor" strokeWidth="1.3" />
-                      <rect x="1" y="9" width="14" height="3" rx="1" stroke="currentColor" strokeWidth="1.3" />
+                      <rect
+                        x="1"
+                        y="4"
+                        width="14"
+                        height="3"
+                        rx="1"
+                        stroke="currentColor"
+                        strokeWidth="1.3"
+                      />
+                      <rect
+                        x="1"
+                        y="9"
+                        width="14"
+                        height="3"
+                        rx="1"
+                        stroke="currentColor"
+                        strokeWidth="1.3"
+                      />
                       <circle cx="3" cy="5.5" r="0.8" fill="currentColor" />
                       <circle cx="3" cy="10.5" r="0.8" fill="currentColor" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">Hàng đợi AI Worker</p>
-                    <p className="text-xs text-gray-500">Redis · Trực tiếp</p>
+                    <p className="text-[14px] font-semibold text-[#24312B]">
+                      Hàng đợi AI Worker
+                    </p>
+                    <p className="text-[11.5px] text-[#69766F]">Redis · Trực tiếp</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span className="text-xs font-medium text-emerald-700">Đang hoạt động</span>
-                </div>
+
+                <Badge variant="success" withDot>
+                  Đang hoạt động
+                </Badge>
               </div>
 
-              {/* Standard Stat Trio (Clean White Cards) */}
-              <div className="grid grid-cols-3 gap-4">
+              {/* Standard Stat Trio */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                 {[
                   { label: "Tác vụ chờ", value: 12, spark: [3, 5, 8, 12, 10, 12] },
                   { label: "Worker đang chạy", value: 4, spark: [4, 4, 3, 4, 4, 4] },
                   { label: "Tác vụ lỗi", value: 0, spark: [1, 0, 1, 0, 0, 0] },
                 ].map(({ label, value, spark }) => (
-                  <div key={label} className="bg-gray-50/70 border border-gray-100 rounded-xl p-4 flex flex-col justify-between gap-3">
+                  <div
+                    key={label}
+                    className="bg-[#F5F7F6]/60 border border-[#DCE5DF] rounded-xl p-4 flex flex-col justify-between gap-3"
+                  >
                     <div className="flex items-start justify-between">
                       <div>
-                        <p className="text-xs font-medium text-gray-500 leading-tight">{label}</p>
-                        <p className="text-2xl font-bold text-gray-900 leading-none mt-1.5">{value}</p>
+                        <p className="text-[12px] font-medium text-[#69766F] leading-tight">
+                          {label}
+                        </p>
+                        <p className="text-[22px] font-bold text-[#24312B] leading-none mt-1.5">
+                          {value}
+                        </p>
                       </div>
                       <Donut pct={value === 0 ? 0 : value === 4 ? 40 : 60} />
                     </div>
-                    <div className="flex items-center justify-between pt-1">
-                      <Sparkline data={spark} color="#10B981" />
-                      <span className="text-[10px] text-gray-400 font-mono">24h</span>
+                    <div className="flex items-center justify-between pt-1 border-t border-[#DCE5DF]/60">
+                      <Sparkline data={spark} color="#276749" />
+                      <span className="text-[10px] text-[#69766F] font-mono">24h</span>
                     </div>
                   </div>
                 ))}
@@ -223,32 +304,55 @@ export default function AdminPage({ onNav, userRole }: AdminPageProps) {
 
               {/* Queue Utilization Bar */}
               <div className="space-y-1.5 pt-1">
-                <div className="flex justify-between text-xs font-medium text-gray-500">
+                <div className="flex justify-between text-[12px] font-medium text-[#69766F]">
                   <span>Mức sử dụng hàng đợi</span>
-                  <span className="font-semibold text-gray-900">12 / 50 tối đa (24%)</span>
+                  <span className="font-semibold text-[#24312B]">
+                    12 / 50 tối đa (24%)
+                  </span>
                 </div>
-                <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: "24%" }} />
+                <div className="h-1.5 bg-[#DCE5DF] rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-[#276749] transition-all"
+                    style={{ width: "24%" }}
+                  />
                 </div>
               </div>
-            </div>
+            </Card>
 
             {/* Card 2: Server Utilization */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-4">
+            <Card className="p-5 sm:p-6 space-y-4">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-600">
+                <div className="w-8 h-8 rounded-lg bg-[#F5F7F6] border border-[#DCE5DF] flex items-center justify-center text-[#69766F]">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" strokeWidth="1.3" />
-                    <path d="M4 8h3M9 5l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                    <rect
+                      x="1"
+                      y="1"
+                      width="14"
+                      height="14"
+                      rx="2"
+                      stroke="currentColor"
+                      strokeWidth="1.3"
+                    />
+                    <path
+                      d="M4 8h3M9 5l3 3-3 3"
+                      stroke="currentColor"
+                      strokeWidth="1.3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">Tài nguyên máy chủ</p>
-                  <p className="text-xs text-gray-500">Ubuntu 22.04 · 16 nhân</p>
+                  <p className="text-[14px] font-semibold text-[#24312B]">
+                    Tài nguyên máy chủ
+                  </p>
+                  <p className="text-[11.5px] text-[#69766F]">
+                    Ubuntu 22.04 · 16 nhân
+                  </p>
                 </div>
               </div>
 
-              {/* Standardized Utilization Bars */}
+              {/* Utilization Bars */}
               <div className="space-y-3 pt-1">
                 <UtilBar label="Lưu trữ" pct={65} />
                 <UtilBar label="Bộ nhớ (RAM)" pct={40} />
@@ -256,7 +360,7 @@ export default function AdminPage({ onNav, userRole }: AdminPageProps) {
                 <UtilBar label="Mạng I/O" pct={81} />
               </div>
 
-              <div className="grid grid-cols-2 gap-2 pt-3 border-t border-gray-100">
+              <div className="grid grid-cols-2 gap-2 pt-3 border-t border-[#DCE5DF]">
                 {[
                   { label: "Uptime", value: "99.97%" },
                   { label: "Khu vực", value: "ap-se-1" },
@@ -264,46 +368,52 @@ export default function AdminPage({ onNav, userRole }: AdminPageProps) {
                   { label: "GPU", value: "Không" },
                 ].map(({ label, value }) => (
                   <div key={label}>
-                    <p className="text-[10px] text-gray-400 font-medium">{label}</p>
-                    <p className="text-xs font-semibold text-gray-800 font-mono">{value}</p>
+                    <p className="text-[10.5px] text-[#69766F] font-medium">
+                      {label}
+                    </p>
+                    <p className="text-[12px] font-semibold text-[#24312B] font-mono">
+                      {value}
+                    </p>
                   </div>
                 ))}
               </div>
-            </div>
+            </Card>
           </div>
 
           {/* ── MIDDLE: Rate Limit Config ──────────── */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-5">
-            <div className="flex items-start justify-between">
+          <Card className="p-5 sm:p-6 space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-lg bg-[#E8F1EB] border border-[#D4E5D9] flex items-center justify-center text-[#276749] flex-shrink-0 mt-0.5">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                    <path d="M9 2l1.5 4.5H15l-3.75 2.75 1.5 4.5L9 11 5.25 13.75l1.5-4.5L3 6.5h4.5L9 2z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+                    <path
+                      d="M9 2l1.5 4.5H15l-3.75 2.75 1.5 4.5L9 11 5.25 13.75l1.5-4.5L3 6.5h4.5L9 2z"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </div>
                 <div>
-                  <h2 className="text-sm font-semibold text-gray-900">Cấu hình giới hạn tốc độ Nginx</h2>
-                  <p className="text-xs text-gray-500 mt-0.5">Bảo vệ máy chủ khỏi spam và tràn bộ nhớ xử lý video.</p>
+                  <h2 className="text-[14px] font-semibold text-[#24312B]">
+                    Cấu hình giới hạn tốc độ Nginx
+                  </h2>
+                  <p className="text-[12px] text-[#69766F] mt-0.5">
+                    Bảo vệ máy chủ khỏi spam và tràn bộ nhớ xử lý video.
+                  </p>
                 </div>
               </div>
+
               <div className="flex items-center gap-2">
-                {saved && (
-                  <span className="text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-3 py-1 rounded-md">
-                    ✓ Đã lưu cấu hình
-                  </span>
-                )}
-                <button
-                  type="button"
-                  onClick={handleSave}
-                  className="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors shadow-sm"
-                >
+                {saved && <Badge variant="success">✓ Đã lưu cấu hình</Badge>}
+                <Button variant="primary" size="sm" onClick={handleSave}>
                   Lưu cấu hình
-                </button>
+                </Button>
               </div>
             </div>
 
             {/* Config Form Row */}
-            <div className="flex gap-4 items-start">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
               <ConfigInput
                 label="Tải lên tối đa / IP"
                 value={maxUploads}
@@ -311,7 +421,6 @@ export default function AdminPage({ onNav, userRole }: AdminPageProps) {
                 suffix="lần"
                 helper="Số file video tối đa một IP có thể tải lên."
               />
-              <div className="flex items-center self-center pt-3 text-gray-300 font-bold text-base flex-shrink-0">/</div>
               <ConfigInput
                 label="Cửa sổ thời gian"
                 value={timeWindow}
@@ -319,10 +428,6 @@ export default function AdminPage({ onNav, userRole }: AdminPageProps) {
                 suffix="phút"
                 helper="Thời gian trước khi bộ đếm reset cho một IP."
               />
-              <div className="flex-shrink-0 self-center pt-4 space-y-1 text-center hidden lg:block">
-                <div className="w-px h-6 bg-gray-200 mx-auto" />
-                <p className="text-[11px] text-gray-400 font-mono">{maxUploads} req / {timeWindow}m</p>
-              </div>
               <ConfigInput
                 label="Dung lượng tối đa"
                 value="200"
@@ -332,32 +437,35 @@ export default function AdminPage({ onNav, userRole }: AdminPageProps) {
               />
             </div>
 
-            {/* Neutral Warning Note */}
-            <div className="flex items-start gap-3 bg-gray-50 border border-gray-200 rounded-lg p-3.5 text-xs text-gray-600">
-              <span className="font-semibold text-gray-800">Lưu ý:</span>
-              Thay đổi sẽ tự động nạp lại Nginx và có hiệu lực ngay lập tức. Hãy thông báo trước khi áp dụng trong khung giờ cao điểm.
+            <div className="flex items-start gap-2.5 bg-[#F5F7F6] border border-[#DCE5DF] rounded-xl p-3.5 text-[12px] text-[#69766F]">
+              <span className="font-semibold text-[#24312B]">Lưu ý:</span>
+              <span>
+                Thay đổi sẽ tự động nạp lại Nginx và có hiệu lực ngay lập tức. Hãy
+                thông báo trước khi áp dụng trong khung giờ cao điểm.
+              </span>
             </div>
-          </div>
+          </Card>
 
           {/* ── BOTTOM: Activity Logs ──────────────── */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <Card className="overflow-hidden p-0">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between px-5 sm:px-6 py-4 border-b border-[#DCE5DF] gap-3">
               <div className="flex items-center gap-3">
-                <h2 className="text-sm font-semibold text-gray-900">Nhật ký hệ thống gần đây</h2>
-                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md font-mono">
-                  {LOG_ROWS.length} bản ghi
-                </span>
+                <h2 className="text-[14px] font-semibold text-[#24312B]">
+                  Nhật ký hệ thống gần đây
+                </h2>
+                <Badge variant="neutral">{LOG_ROWS.length} bản ghi</Badge>
               </div>
-              <div className="flex items-center gap-2">
+
+              <div className="flex items-center gap-1.5 flex-wrap">
                 {["Tất cả", "Thành công", "Đang xử lý", "Thất bại"].map((f) => (
                   <button
                     key={f}
                     type="button"
                     onClick={() => setLogFilter(f)}
-                    className={`text-xs font-medium px-3 py-1 rounded-md border transition-colors ${
+                    className={`text-[12px] font-medium px-3 py-1 rounded-lg border transition-all ${
                       logFilter === f
-                        ? "bg-gray-900 text-white border-gray-900"
-                        : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
+                        ? "bg-[#276749] text-white border-[#276749]"
+                        : "bg-white text-[#69766F] border-[#DCE5DF] hover:bg-[#F5F7F6]"
                     }`}
                   >
                     {f}
@@ -366,35 +474,48 @@ export default function AdminPage({ onNav, userRole }: AdminPageProps) {
               </div>
             </div>
 
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="bg-gray-50/70 border-b border-gray-100 text-gray-500 uppercase tracking-wider font-semibold">
-                  <th className="px-6 py-3">Thời gian</th>
-                  <th className="px-6 py-3">User ID</th>
-                  <th className="px-6 py-3">Hành động</th>
-                  <th className="px-6 py-3">Dung lượng</th>
-                  <th className="px-6 py-3">Thời lượng</th>
-                  <th className="px-6 py-3">Trạng thái</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {filteredLogs.map((row, i) => (
-                  <tr key={i} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-3 font-mono text-gray-500">{row.ts}</td>
-                    <td className="px-6 py-3 font-mono text-gray-700">{row.user}</td>
-                    <td className="px-6 py-3 font-medium text-gray-800">{row.action}</td>
-                    <td className="px-6 py-3 font-mono text-gray-500">{row.size}</td>
-                    <td className="px-6 py-3 font-mono text-gray-500">{row.duration}</td>
-                    <td className="px-6 py-3">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium border ${row.statusColor}`}>
-                        {row.status}
-                      </span>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-[12.5px]">
+                <thead>
+                  <tr className="bg-[#F5F7F6] border-b border-[#DCE5DF] text-[#69766F] uppercase tracking-wider font-semibold text-[11px]">
+                    <th className="px-6 py-3">Thời gian</th>
+                    <th className="px-6 py-3">User ID</th>
+                    <th className="px-6 py-3">Hành động</th>
+                    <th className="px-6 py-3">Dung lượng</th>
+                    <th className="px-6 py-3">Thời lượng</th>
+                    <th className="px-6 py-3">Trạng thái</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-[#DCE5DF]">
+                  {filteredLogs.map((row, i) => (
+                    <tr
+                      key={i}
+                      className="hover:bg-[#F5F7F6]/50 transition-colors"
+                    >
+                      <td className="px-6 py-3 font-mono text-[#69766F]">
+                        {row.ts}
+                      </td>
+                      <td className="px-6 py-3 font-mono text-[#24312B]">
+                        {row.user}
+                      </td>
+                      <td className="px-6 py-3 font-medium text-[#24312B]">
+                        {row.action}
+                      </td>
+                      <td className="px-6 py-3 font-mono text-[#69766F]">
+                        {row.size}
+                      </td>
+                      <td className="px-6 py-3 font-mono text-[#69766F]">
+                        {row.duration}
+                      </td>
+                      <td className="px-6 py-3">
+                        <Badge variant={row.variant}>{row.status}</Badge>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
         </div>
       </main>
     </div>

@@ -1,72 +1,96 @@
 import { useState } from "react";
 import { GeminiIcon } from "../components/icons";
+import { Button, Card, Badge } from "../components/common";
 
 function CheckIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <circle cx="8" cy="8" r="8" fill="#10B981" fillOpacity="0.15" />
-      <path d="M5 8l2 2 4-4" stroke="#059669" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="8" cy="8" r="8" fill="#E8F1EB" />
+      <path
+        d="M5 8l2 2 4-4"
+        stroke="#276749"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function ArrowRight() {
   return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M5 12h14M12 5l7 7-7 7"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
-function EyeIcon({ color = "#059669" }: { color?: string }) {
+function EyeIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-      <ellipse cx="9" cy="9" rx="7" ry="4.5" stroke={color} strokeWidth="1.5" />
-      <circle cx="9" cy="9" r="2" fill={color} />
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 
-function MicIcon({ color = "#059669" }: { color?: string }) {
+function MicIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-      <rect x="6.5" y="2" width="5" height="8" rx="2.5" stroke={color} strokeWidth="1.5" />
-      <path d="M3.5 9A5.5 5.5 0 0 0 14.5 9" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M9 14.5v2" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
-function StarIcon({ color = "#22C55E" }: { color?: string }) {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <circle cx="8" cy="8" r="8" fill={color} fillOpacity="0.15" />
-      <path d="M8 4l1.2 2.5L12 7l-2 1.9.5 2.6L8 10.2 5.5 11.5l.5-2.6L4 7l2.8-.5L8 4z" fill={color} />
-    </svg>
-  );
-}
-
-function WarnIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <circle cx="8" cy="8" r="8" fill="#F97316" fillOpacity="0.15" />
-      <path d="M8 5v4" stroke="#F97316" strokeWidth="1.5" strokeLinecap="round" />
-      <circle cx="8" cy="11" r="0.75" fill="#F97316" />
-    </svg>
-  );
-}
-
-function ProgressBar({ label, value, max = 100, unit = "%" }: { label: string; value: number; max?: number; unit?: string }) {
+function ProgressBar({
+  label,
+  value,
+  max = 100,
+  unit = "%",
+}: {
+  label: string;
+  value: number;
+  max?: number;
+  unit?: string;
+}) {
   const pct = Math.round((value / max) * 100);
   return (
     <div className="space-y-1">
-      <div className="flex justify-between items-center">
-        <span className="text-[11px] font-medium text-slate-600">{label}</span>
-        <span className="text-[11px] font-semibold text-slate-800">{value}{unit}</span>
+      <div className="flex justify-between items-center text-[11.5px]">
+        <span className="font-medium text-[#69766F]">{label}</span>
+        <span className="font-semibold text-[#24312B]">
+          {value}
+          {unit}
+        </span>
       </div>
-      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+      <div className="h-1.5 bg-[#DCE5DF] rounded-full overflow-hidden">
         <div
-          className="h-full rounded-full bg-emerald-500 transition-all"
+          className="h-full rounded-full bg-[#276749] transition-all"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -74,15 +98,11 @@ function ProgressBar({ label, value, max = 100, unit = "%" }: { label: string; v
   );
 }
 
-const NAV_LINKS = ["Tính năng", "Cách hoạt động", "Cho Đại học", "Giới thiệu", "Admin"];
-
-const UNIVERSITY_LOGOS = [
-  { name: "MIT", abbr: "MIT" },
-  { name: "Stanford University", abbr: "Stanford" },
-  { name: "Harvard University", abbr: "Harvard" },
-  { name: "UC Berkeley", abbr: "Berkeley" },
-  { name: "Carnegie Mellon", abbr: "CMU" },
-  { name: "Oxford University", abbr: "Oxford" },
+const NAV_LINKS = [
+  "Tính năng",
+  "Quy trình phân tích",
+  "Đề án PBL6",
+  "Quản trị viên",
 ];
 
 interface LandingPageProps {
@@ -91,21 +111,27 @@ interface LandingPageProps {
   onAdmin: () => void;
 }
 
-export default function LandingPage({ onLogin, onSignUp, onAdmin }: LandingPageProps) {
+export default function LandingPage({
+  onLogin,
+  onSignUp,
+  onAdmin,
+}: LandingPageProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-full bg-slate-50 overflow-x-hidden font-sans">
+    <div className="min-h-full bg-[#F5F7F6] overflow-x-hidden font-[Inter,sans-serif] text-[#24312B]">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#DCE5DF]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-[#276749] text-white flex items-center justify-center shadow-sm">
                 <GeminiIcon />
               </div>
-              <span className="text-[15px] font-bold text-slate-900 tracking-tight">AI Coach</span>
+              <span className="text-[15.5px] font-bold text-[#24312B] tracking-tight">
+                AI Coach
+              </span>
             </div>
 
             {/* Center Links */}
@@ -113,200 +139,272 @@ export default function LandingPage({ onLogin, onSignUp, onAdmin }: LandingPageP
               {NAV_LINKS.map((link) => (
                 <button
                   key={link}
-                  onClick={() => link === "Admin" && onAdmin()}
-                  className="text-[13.5px] font-medium text-slate-600 hover:text-slate-900 transition-colors"
+                  onClick={() => link === "Quản trị viên" && onAdmin()}
+                  className="text-[13.5px] font-medium text-[#69766F] hover:text-[#24312B] transition-colors"
                 >
                   {link}
                 </button>
               ))}
             </div>
 
-            {/* Right CTA */}
-            <div className="hidden md:flex items-center gap-4">
-              <button onClick={onLogin} className="text-[13.5px] font-medium text-slate-600 hover:text-slate-900 transition-colors">
+            {/* Right CTAs */}
+            <div className="hidden md:flex items-center gap-3">
+              <Button variant="ghost" size="sm" onClick={onLogin}>
                 Đăng nhập
-              </button>
-              <button
-                onClick={onSignUp}
-                className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[13.5px] font-semibold px-4 py-2 rounded-lg transition-colors shadow-sm"
-              >
-                Dùng thử miễn phí
-              </button>
+              </Button>
+              <Button variant="primary" size="sm" onClick={onSignUp}>
+                Bắt đầu luyện tập
+              </Button>
             </div>
 
-            {/* Mobile toggle */}
+            {/* Mobile menu button */}
             <button
-              className="md:hidden p-2 rounded-md text-slate-500 hover:text-slate-900"
+              className="md:hidden p-2 rounded-lg text-[#69766F] hover:text-[#24312B]"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Mở menu"
             >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M4 6h16M4 12h16M4 18h16"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
               </svg>
             </button>
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile dropdown */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 bg-white px-4 py-4 space-y-3">
+          <div className="md:hidden border-t border-[#DCE5DF] bg-white px-4 py-4 space-y-3">
             {NAV_LINKS.map((link) => (
-              <a key={link} href="#" className="block text-sm font-medium text-slate-600 hover:text-slate-900">
-                {link}
-              </a>
-            ))}
-            <div className="flex items-center gap-3 pt-2 border-t border-gray-200">
-              <button onClick={onLogin} className="text-sm font-medium text-slate-600 w-full text-left py-1">
-                Đăng nhập
-              </button>
               <button
-                onClick={onSignUp}
-                className="bg-emerald-600 text-white text-xs font-semibold px-3 py-2 rounded-lg w-full text-center"
+                key={link}
+                onClick={() => {
+                  if (link === "Quản trị viên") onAdmin();
+                  setMobileMenuOpen(false);
+                }}
+                className="block text-left w-full text-[13.5px] font-medium text-[#69766F] hover:text-[#24312B]"
               >
-                Dùng thử
+                {link}
               </button>
+            ))}
+            <div className="flex flex-col gap-2 pt-3 border-t border-[#DCE5DF]">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="w-full justify-center"
+                onClick={onLogin}
+              >
+                Đăng nhập
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                className="w-full justify-center"
+                onClick={onSignUp}
+              >
+                Bắt đầu luyện tập
+              </Button>
             </div>
           </div>
         )}
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-16 pb-20 lg:pt-24 lg:pb-32 overflow-hidden">
+      <section className="relative pt-12 pb-16 lg:pt-20 lg:pb-28 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            {/* Left Content */}
-            <div className="lg:col-span-7 space-y-8">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+            {/* Left Column: Headline & Purpose */}
+            <div className="lg:col-span-7 space-y-6 sm:space-y-8">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200/80 rounded-full px-3.5 py-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[12px] font-semibold text-emerald-700">Công nghệ AI Multimodal thế hệ mới</span>
-              </div>
+              <Badge variant="primary" withDot>
+                Hệ thống hỗ trợ huấn luyện thuyết trình bằng AI
+              </Badge>
 
-              {/* Headline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-slate-900 leading-[1.12] tracking-tight">
-                Làm chủ kỹ năng thuyết trình với{" "}
-                <span className="text-emerald-600">
-                  AI Huấn luyện viên
-                </span>
+              {/* Main Headline */}
+              <h1 className="text-3xl sm:text-4xl lg:text-[50px] font-extrabold text-[#24312B] leading-[1.15] tracking-tight">
+                Nâng cao kỹ năng thuyết trình với{" "}
+                <span className="text-[#276749]">AI Multimodal Coach</span>
               </h1>
 
               {/* Subheadline */}
-              <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">
-                Phân tích video và giọng nói của bạn theo thời gian thực. Đánh giá ánh mắt, cử chỉ, tốc độ nói và từ đệm với độ chính xác cao dựa trên AI.
+              <p className="text-base sm:text-[17px] text-[#69766F] leading-relaxed max-w-xl">
+                Phân tích video và giọng nói của sinh viên theo thời gian thực.
+                Đo lường mức độ giao tiếp mắt, tư thế, tốc độ nói và từ đệm với
+                phản hồi khách quan và chi tiết từ AI.
               </p>
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <button
+                <Button
+                  variant="primary"
+                  size="lg"
                   onClick={onSignUp}
-                  className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-[14.5px] font-semibold px-6 py-3 rounded-xl transition-colors shadow-sm"
+                  rightIcon={<ArrowRight />}
                 >
                   Bắt đầu luyện tập ngay
-                  <ArrowRight />
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="lg"
                   onClick={onLogin}
-                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 text-[14.5px] font-semibold px-6 py-3 rounded-xl border border-gray-200 transition-colors shadow-sm"
                 >
-                  Xem demo sản phẩm
-                </button>
+                  Xem demo hệ thống
+                </Button>
               </div>
 
-              {/* Trust signals */}
-              <div className="flex flex-wrap items-center gap-6 pt-2">
+              {/* Feature Highlights */}
+              <div className="flex flex-wrap items-center gap-5 sm:gap-6 pt-2">
                 <div className="flex items-center gap-2">
                   <CheckIcon />
-                  <span className="text-[12.5px] font-medium text-slate-600">Phân tích webcam trực tiếp</span>
+                  <span className="text-[13px] font-medium text-[#24312B]">
+                    Ghi hình trực tiếp qua webcam
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckIcon />
-                  <span className="text-[12.5px] font-medium text-slate-600">Hỗ trợ tải video MP4</span>
+                  <span className="text-[13px] font-medium text-[#24312B]">
+                    Tải tệp video MP4 &amp; WebM
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckIcon />
-                  <span className="text-[12.5px] font-medium text-slate-600">Báo cáo đa chiều chi tiết</span>
+                  <span className="text-[13px] font-medium text-[#24312B]">
+                    Báo cáo phân tích đa chiều
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Right Card Mockup */}
+            {/* Right Column: Live Mockup Card */}
             <div className="lg:col-span-5">
               <div className="relative mx-auto max-w-md lg:max-w-none">
-                <div className="bg-white border border-gray-200 shadow-sm rounded-2xl p-6 space-y-5">
+                <Card className="p-6 space-y-5 bg-white border-[#DCE5DF] shadow-md">
                   {/* Card Header */}
-                  <div className="flex items-center justify-between pb-4 border-b border-gray-200">
+                  <div className="flex items-center justify-between pb-3.5 border-b border-[#DCE5DF]">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-xl bg-[#E8F1EB] text-[#276749] flex items-center justify-center">
                         <GeminiIcon />
                       </div>
                       <div>
-                        <h2 className="text-[14px] font-bold text-slate-900 leading-none">Báo cáo phân tích gần nhất</h2>
-                        <span className="text-[11px] text-slate-400">Luyện tập bảo vệ đề tài PBL6</span>
+                        <h2 className="text-[14px] font-bold text-[#24312B] leading-none">
+                          Báo cáo phân tích phiên mẫu
+                        </h2>
+                        <span className="text-[11.5px] text-[#69766F]">
+                          Bảo vệ đề án PBL6 · 04:32
+                        </span>
                       </div>
                     </div>
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      85/100 Điểm
-                    </span>
+                    <Badge variant="success">85/100 Điểm</Badge>
                   </div>
 
-                  {/* Metrics Grid */}
+                  {/* Core Metrics Grid */}
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-slate-50 rounded-xl p-3 border border-gray-200 space-y-1">
-                      <div className="flex items-center gap-1.5 text-emerald-700">
-                        <EyeIcon color="#059669" />
-                        <span className="text-[11px] font-semibold">Giao tiếp mắt</span>
+                    <div className="bg-[#F5F7F6] rounded-xl p-3 border border-[#DCE5DF] space-y-1">
+                      <div className="flex items-center gap-1.5 text-[#276749]">
+                        <EyeIcon />
+                        <span className="text-[11px] font-semibold">
+                          Giao tiếp mắt
+                        </span>
                       </div>
-                      <p className="text-[18px] font-bold text-slate-900">88%</p>
-                      <span className="text-[10px] text-emerald-600 font-medium">+12% so với lần trước</span>
+                      <p className="text-[18px] font-bold text-[#24312B]">88%</p>
+                      <span className="text-[10.5px] text-[#276749] font-medium">
+                        Vượt mức chuẩn 70%
+                      </span>
                     </div>
 
-                    <div className="bg-slate-50 rounded-xl p-3 border border-gray-200 space-y-1">
-                      <div className="flex items-center gap-1.5 text-emerald-700">
-                        <MicIcon color="#059669" />
-                        <span className="text-[11px] font-semibold">Tốc độ nói</span>
+                    <div className="bg-[#F5F7F6] rounded-xl p-3 border border-[#DCE5DF] space-y-1">
+                      <div className="flex items-center gap-1.5 text-[#276749]">
+                        <MicIcon />
+                        <span className="text-[11px] font-semibold">
+                          Tốc độ nói
+                        </span>
                       </div>
-                      <p className="text-[18px] font-bold text-slate-900">175 WPM</p>
-                      <span className="text-[10px] text-slate-500 font-medium">Khoảng lý tưởng</span>
+                      <p className="text-[18px] font-bold text-[#24312B]">
+                        158 WPM
+                      </p>
+                      <span className="text-[10.5px] text-[#69766F] font-medium">
+                        Khoảng tối ưu
+                      </span>
                     </div>
                   </div>
 
-                  {/* Progress bars */}
-                  <div className="space-y-3 pt-1">
-                    <ProgressBar label="Ngôn ngữ cơ thể & Cử chỉ" value={78} />
-                    <ProgressBar label="Âm lượng & Biểu cảm giọng nói" value={82} />
-                    <ProgressBar label="Từ đệm (à, ừm, thì, là)" value={90} />
+                  {/* Detail Progress bars */}
+                  <div className="space-y-2.5 pt-1">
+                    <ProgressBar
+                      label="Ngôn ngữ cơ thể &amp; Cử chỉ"
+                      value={78}
+                    />
+                    <ProgressBar
+                      label="Âm lượng &amp; Biểu cảm giọng nói"
+                      value={82}
+                    />
+                    <ProgressBar
+                      label="Hạn chế từ đệm (à, ừm)"
+                      value={90}
+                    />
                   </div>
 
-                  {/* AI Feedback */}
-                  <div className="bg-emerald-50/60 rounded-xl p-3.5 border border-emerald-200/80 flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <GeminiIcon size={12} />
+                  {/* Constructive AI Feedback */}
+                  <div className="bg-[#E8F1EB]/70 rounded-xl p-3.5 border border-[#D4E5D9] flex items-start gap-2.5">
+                    <div className="w-5 h-5 rounded-md bg-[#276749] text-white flex items-center justify-center flex-shrink-0 text-[11px] font-bold mt-0.5">
+                      ✓
                     </div>
-                    <div className="space-y-0.5">
-                      <p className="text-[12px] font-bold text-slate-900">Nhận xét từ AI Coach</p>
-                      <p className="text-[11.5px] text-slate-600 leading-relaxed">
-                        Bạn duy trì giao tiếp mắt rất tốt. Nên giảm tốc độ ở phần giải thích kiến trúc hệ thống để người nghe dễ theo dõi hơn.
+                    <div className="space-y-0.5 min-w-0">
+                      <p className="text-[12px] font-bold text-[#24312B]">
+                        Đánh giá từ AI Coach
+                      </p>
+                      <p className="text-[11.5px] text-[#69766F] leading-relaxed">
+                        Bạn duy trì giao tiếp mắt rất tốt. Nên giữ khoảng ngắt nhịp
+                        1–2 giây khi chuyển đổi luận điểm để hội đồng tiếp thu trọn vẹn hơn.
                       </p>
                     </div>
                   </div>
-                </div>
+                </Card>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* University Logos */}
-      <section className="py-12 border-y border-gray-200 bg-white/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-            Nghiên cứu & phát triển dựa trên chuẩn đánh giá thuyết trình quốc tế
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-14 opacity-60 grayscale hover:grayscale-0 transition-all">
-            {UNIVERSITY_LOGOS.map((uni) => (
-              <span key={uni.name} className="text-sm sm:text-base font-bold text-slate-600 tracking-tight">
-                {uni.abbr}
-              </span>
-            ))}
+      {/* Feature Section: 3 Core Pillars */}
+      <section className="py-12 border-t border-[#DCE5DF] bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="p-5 space-y-2 border-[#DCE5DF] bg-[#F5F7F6]/40">
+              <span className="text-2xl">📹</span>
+              <h3 className="text-[14.5px] font-bold text-[#24312B]">
+                Studio Ghi hình Trực tiếp
+              </h3>
+              <p className="text-[12px] text-[#69766F] leading-relaxed">
+                Tích hợp máy nhắc chữ (teleprompter), bộ đếm thời gian và nhận
+                diện cử chỉ khuôn mặt qua MediaPipe ngay trên trình duyệt.
+              </p>
+            </Card>
+
+            <Card className="p-5 space-y-2 border-[#DCE5DF] bg-[#F5F7F6]/40">
+              <span className="text-2xl">📤</span>
+              <h3 className="text-[14.5px] font-bold text-[#24312B]">
+                Tải lên Video có sẵn
+              </h3>
+              <p className="text-[12px] text-[#69766F] leading-relaxed">
+                Hỗ trợ tệp MP4 hoặc WebM đã quay từ trước. Hệ thống tự động phân
+                tách luồng hình ảnh và âm thanh để xử lý đa phương thức.
+              </p>
+            </Card>
+
+            <Card className="p-5 space-y-2 border-[#DCE5DF] bg-[#F5F7F6]/40">
+              <span className="text-2xl">📊</span>
+              <h3 className="text-[14.5px] font-bold text-[#24312B]">
+                Báo cáo &amp; Biểu đồ Radar
+              </h3>
+              <p className="text-[12px] text-[#69766F] leading-relaxed">
+                Cung cấp báo cáo 5 chiều chuyên sâu, đánh dấu vị trí từ đệm trên
+                dòng thời gian và đề xuất bài tập cải thiện cho từng sinh viên.
+              </p>
+            </Card>
           </div>
         </div>
       </section>

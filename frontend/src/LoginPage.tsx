@@ -1,36 +1,42 @@
 import { GeminiIcon } from "./components/icons";
 import { useState } from "react";
-
-
-function CheckCircleIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-      <circle cx="10" cy="10" r="10" fill="#22C55E" fillOpacity="0.15" />
-      <path
-        d="M6.5 10l2.5 2.5 4.5-4.5"
-        stroke="#22C55E"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+import { Button, Card, Badge } from "./components/common";
 
 function EyeOpenIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <ellipse cx="8" cy="8" rx="6" ry="4" stroke="#9CA3AF" strokeWidth="1.3" />
-      <circle cx="8" cy="8" r="1.8" fill="#9CA3AF" />
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 
 function EyeClosedIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M2 8s2.5-4 6-4 6 4 6 4-2.5 4-6 4-6-4-6-4z" stroke="#9CA3AF" strokeWidth="1.3" />
-      <path d="M3 3l10 10" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round" />
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <line
+        x1="1"
+        y1="1"
+        x2="23"
+        y2="23"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -42,261 +48,198 @@ interface LoginPageProps {
   onLoginAsAdmin: () => void;
 }
 
-export default function LoginPage({ onBack, onSignUp, onLoginAsStudent, onLoginAsAdmin }: LoginPageProps) {
+export default function LoginPage({
+  onBack,
+  onSignUp,
+  onLoginAsStudent,
+  onLoginAsAdmin,
+}: LoginPageProps) {
   const [showPassword, setShowPassword] = useState(false);
-  const [email] = useState("thang.nguyen@student.edu.vn");
-  const [focused, setFocused] = useState<string | null>(null);
+  const [email, setEmail] = useState("son.dang@student.edu.vn");
+  const [password, setPassword] = useState("password123");
 
   return (
-    <div className="min-h-screen flex">
-
-      {/* LEFT COLUMN — Branding */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-gray-50 flex-col items-center justify-center p-12 overflow-hidden">
-
-        {/* Soft background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full bg-emerald-100/60 blur-3xl opacity-50 pointer-events-none" />
-
-        <div className="relative z-10 max-w-[420px] w-full flex flex-col gap-10">
-
+    <div className="min-h-screen flex bg-[#F5F7F6] font-[Inter,sans-serif] text-[#24312B]">
+      {/* LEFT COLUMN — Brand Presentation */}
+      <div className="hidden lg:flex lg:w-1/2 relative bg-white border-r border-[#DCE5DF] flex-col items-center justify-center p-12 overflow-hidden">
+        <div className="relative z-10 max-w-[420px] w-full flex flex-col gap-8">
           {/* Logo */}
           <button
             onClick={onBack}
             className="inline-flex items-center gap-2.5 group self-start"
           >
-            <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-[#276749] text-white flex items-center justify-center shadow-sm">
               <GeminiIcon />
             </div>
-            <span className="text-[15px] font-bold text-slate-900 tracking-tight group-hover:text-emerald-700 transition-colors">
+            <span className="text-[16px] font-bold text-[#24312B] tracking-tight group-hover:text-[#276749] transition-colors">
               AI Coach
             </span>
           </button>
 
-          {/* Motivational quote */}
-          <div className="space-y-4">
-            <blockquote className="text-[36px] font-bold leading-[1.15] tracking-tight text-slate-900">
-              "Tự tin bảo vệ{" "}
-              <span className="text-emerald-600">đề án của bạn."</span>
-            </blockquote>
-            <p className="text-[15px] text-slate-600 leading-relaxed">
-              Phân tích AI thời gian thực về giao tiếp mắt, tốc độ nói và ngôn ngữ cơ thể — để mọi bài thuyết trình đều có giá trị.
+          {/* Value Prop */}
+          <div className="space-y-3">
+            <h2 className="text-[34px] font-bold leading-[1.2] tracking-tight text-[#24312B]">
+              Tự tin bảo vệ{" "}
+              <span className="text-[#276749]">đề án thuyết trình</span>
+            </h2>
+            <p className="text-[14.5px] text-[#69766F] leading-relaxed">
+              Nền tảng ứng dụng AI đa phương thức giúp sinh viên phân tích ánh
+              mắt, nhịp độ nói, từ đệm và ngôn ngữ cơ thể theo thời gian thực.
             </p>
           </div>
 
-          {/* Floating card */}
-          <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/80 border border-slate-100 p-5 flex items-start gap-4 w-fit">
-            <div className="mt-0.5 flex-shrink-0">
-              <CheckCircleIcon />
+          {/* Clean Metric Feature Card */}
+          <Card className="p-4 flex items-start gap-3.5 border-[#DCE5DF] bg-[#F5F7F6]/50">
+            <div className="w-9 h-9 rounded-xl bg-[#E8F1EB] text-[#276749] flex items-center justify-center flex-shrink-0 font-bold text-sm">
+              ✓
             </div>
-            <div className="space-y-0.5">
-              <p className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">
-                Phiên gần nhất
-              </p>
-              <p className="text-[14px] font-semibold text-slate-800">
-                Tốc độ nói:{" "}
-                <span className="text-emerald-700 font-bold">145 WPM</span>
-              </p>
-              <p className="text-[12px] text-slate-500">Mức tối ưu · Tiếp tục phát huy!</p>
-            </div>
-            <div className="ml-4 flex-shrink-0 self-center">
-              <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">
-                Tối ưu
+            <div className="space-y-0.5 flex-1 min-w-0">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold text-[#276749] uppercase tracking-wider">
+                  Phiên mẫu gần nhất
+                </span>
+                <Badge variant="success">Tối ưu</Badge>
               </div>
+              <p className="text-[13.5px] font-semibold text-[#24312B]">
+                Tốc độ nói: 145 WPM · Giao tiếp mắt: 88%
+              </p>
+              <p className="text-[11.5px] text-[#69766F]">
+                Đạt chuẩn thuyết trình bảo vệ đề tài tốt nghiệp PBL6
+              </p>
             </div>
-          </div>
-
-          {/* Decorative dots */}
-          <div className="flex gap-2">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="rounded-full"
-                style={{
-                  width: i === 0 ? 24 : 8,
-                  height: 8,
-                  backgroundColor: i === 0 ? "#10B981" : "#E5E7EB",
-                }}
-              />
-            ))}
-          </div>
+          </Card>
         </div>
       </div>
 
       {/* RIGHT COLUMN — Login Form */}
-      <div className="w-full lg:w-1/2 bg-white flex flex-col items-center justify-center px-6 sm:px-12 lg:px-16 xl:px-24">
-
-        <div className="w-full max-w-[400px] space-y-8">
-
-          {/* Mobile logo */}
+      <div className="w-full lg:w-1/2 flex flex-col items-center justify-center px-6 sm:px-12 lg:px-16 xl:px-24 py-12">
+        <div className="w-full max-w-[400px] space-y-7">
+          {/* Logo for mobile */}
           <button
             onClick={onBack}
             className="lg:hidden inline-flex items-center gap-2.5"
           >
-            <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[#276749] text-white flex items-center justify-center shadow-sm">
               <GeminiIcon />
             </div>
-            <span className="text-[14px] font-bold text-slate-900 tracking-tight">AI Coach</span>
+            <span className="text-[15px] font-bold text-[#24312B] tracking-tight">
+              AI Coach
+            </span>
           </button>
 
-          {/* Desktop logo top-left */}
-          <div className="hidden lg:block">
-            <button onClick={onBack} className="inline-flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shadow-sm">
-                <GeminiIcon />
-              </div>
-              <span className="text-[14px] font-bold text-slate-900 tracking-tight">AI Coach</span>
-            </button>
-          </div>
-
           {/* Headline */}
-          <div className="space-y-1.5">
-            <h1 className="text-[32px] font-bold text-slate-900 tracking-tight">
+          <div className="space-y-1">
+            <h1 className="text-[28px] font-bold text-[#24312B] tracking-tight">
               Chào mừng trở lại
             </h1>
-            <p className="text-[15px] text-slate-500 font-medium">
-              Tiếp tục hành trình luyện tập thuyết trình của bạn.
+            <p className="text-[13.5px] text-[#69766F]">
+              Đăng nhập để tiếp tục buổi luyện tập thuyết trình của bạn.
             </p>
           </div>
 
           {/* Form */}
-          <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); onLoginAsStudent(); }}>
-
-            {/* Email */}
+          <form
+            className="space-y-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              onLoginAsStudent();
+            }}
+          >
+            {/* Email Field with Visible Label */}
             <div className="space-y-1.5">
-              <label className="block text-[13px] font-semibold text-slate-700" htmlFor="email">
+              <label
+                className="block text-[12px] font-semibold text-[#24312B]"
+                htmlFor="email"
+              >
                 Địa chỉ Email
               </label>
-              <div
-                className="relative rounded-xl border transition-all overflow-hidden"
-                style={{
-                  borderColor: focused === "email" ? "#10B981" : "#E5E7EB",
-                  boxShadow: focused === "email" ? "0 0 0 3px rgba(16,185,129,0.12)" : "none",
-                }}
-              >
-                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke={focused === "email" ? "#10B981" : "#9CA3AF"} strokeWidth="1.3" />
-                    <path d="M1.5 5.5l6.5 4 6.5-4" stroke={focused === "email" ? "#10B981" : "#9CA3AF"} strokeWidth="1.3" />
-                  </svg>
-                </div>
+              <div className="relative">
                 <input
                   id="email"
                   type="email"
-                  defaultValue={email}
-                  onFocus={() => setFocused("email")}
-                  onBlur={() => setFocused(null)}
-                  className="w-full pl-10 pr-4 py-3 text-[14px] text-slate-700 bg-white outline-none placeholder:text-slate-300"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="name@student.edu.vn"
+                  className="w-full h-11 px-3.5 text-[13.5px] font-medium text-[#24312B] bg-white rounded-xl border border-[#DCE5DF] outline-none focus:border-[#276749] focus:ring-1 focus:ring-[#276749] transition-all"
                 />
               </div>
             </div>
 
-            {/* Password */}
+            {/* Password Field with Visible Label */}
             <div className="space-y-1.5">
-              <label className="block text-[13px] font-semibold text-slate-700" htmlFor="password">
-                Mật khẩu
-              </label>
-              <div
-                className="relative rounded-xl border transition-all overflow-hidden"
-                style={{
-                  borderColor: focused === "password" ? "#10B981" : "#E5E7EB",
-                  boxShadow: focused === "password" ? "0 0 0 3px rgba(16,185,129,0.12)" : "none",
-                }}
-              >
-                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <rect x="3" y="7" width="10" height="7" rx="1.5" stroke={focused === "password" ? "#10B981" : "#9CA3AF"} strokeWidth="1.3" />
-                    <path d="M5 7V5a3 3 0 0 1 6 0v2" stroke={focused === "password" ? "#10B981" : "#9CA3AF"} strokeWidth="1.3" strokeLinecap="round" />
-                  </svg>
-                </div>
+              <div className="flex items-center justify-between">
+                <label
+                  className="block text-[12px] font-semibold text-[#24312B]"
+                  htmlFor="password"
+                >
+                  Mật khẩu
+                </label>
+                <a
+                  href="#"
+                  className="text-[12px] font-semibold text-[#276749] hover:underline"
+                >
+                  Quên mật khẩu?
+                </a>
+              </div>
+              <div className="relative flex items-center">
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  defaultValue="password123"
-                  onFocus={() => setFocused("password")}
-                  onBlur={() => setFocused(null)}
-                  className="w-full pl-10 pr-11 py-3 text-[14px] text-slate-700 bg-white outline-none"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full h-11 px-3.5 pr-11 text-[13.5px] font-medium text-[#24312B] bg-white rounded-xl border border-[#DCE5DF] outline-none focus:border-[#276749] focus:ring-1 focus:ring-[#276749] transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 p-0.5 text-slate-400 hover:text-slate-600 transition-colors"
-                  tabIndex={-1}
+                  className="absolute right-3.5 p-1 text-[#69766F] hover:text-[#24312B] transition-colors"
+                  aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
                 >
                   {showPassword ? <EyeClosedIcon /> : <EyeOpenIcon />}
                 </button>
               </div>
             </div>
 
-            {/* Forgot password */}
-            <div className="flex justify-end -mt-2">
-              <a
-                href="#"
-                className="text-[13px] font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
-              >
-                Quên mật khẩu?
-              </a>
-            </div>
-
-            {/* Demo role buttons */}
-            <div className="space-y-3 pt-1">
-              <p className="text-[11px] text-slate-400 text-center font-medium uppercase tracking-wider">Chọn vai trò để tiếp tục</p>
-              <button
+            {/* Role Select Buttons */}
+            <div className="space-y-2.5 pt-2">
+              <p className="text-[11px] text-[#69766F] text-center font-semibold uppercase tracking-wider">
+                Chọn vai trò để tiếp tục
+              </p>
+              <Button
                 type="button"
+                variant="primary"
+                size="lg"
+                className="w-full justify-center shadow-sm"
                 onClick={onLoginAsStudent}
-                className="btn-primary w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 rounded-xl shadow-sm text-[15px] tracking-wide flex items-center justify-center gap-2 transition-colors"
               >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle cx="8" cy="5" r="3" stroke="white" strokeWidth="1.4" />
-                  <path d="M2 14c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
-                </svg>
                 Đăng nhập với tư cách Sinh viên
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                variant="secondary"
+                size="lg"
+                className="w-full justify-center shadow-sm"
                 onClick={onLoginAsAdmin}
-                className="w-full bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 font-semibold py-3.5 rounded-xl shadow-sm text-[15px] tracking-wide flex items-center justify-center gap-2 transition-colors"
               >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle cx="8" cy="6" r="2.5" stroke="currentColor" strokeWidth="1.4" />
-                  <path d="M8 1.5v2M8 10.5v2M1.5 8h2M10.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M3.4 12.6l1.4-1.4M11.2 4.8l1.4-1.4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                </svg>
                 Đăng nhập với tư cách Quản trị viên
-              </button>
+              </Button>
             </div>
           </form>
 
-          {/* Divider */}
-          <div className="flex items-center gap-4">
-            <div className="flex-1 h-px bg-slate-100" />
-            <span className="text-[12px] text-slate-400 font-medium">hoặc tiếp tục với</span>
-            <div className="flex-1 h-px bg-slate-100" />
-          </div>
-
-          {/* Social logins */}
-          <div className="grid grid-cols-2 gap-3">
-            <button className="flex items-center justify-center gap-2 border border-slate-200 rounded-xl py-2.5 text-[13px] font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition-all">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885-.995.9-2.35 1.438-3.954 1.438a6.13 6.13 0 0 1-6.13-6.13 6.13 6.13 0 0 1 6.13-6.13c1.662 0 3.063.607 4.146 1.608l-1.65 1.65c-.453-.432-1.11-.713-2.496-.713a4.073 4.073 0 0 0-4.073 4.073 4.073 4.073 0 0 0 4.073 4.073c2.17 0 3.51-1.116 3.707-2.772H8.346V6.558h7.2z" fill="#4285F4"/>
-              </svg>
-              Google
-            </button>
-            <button className="flex items-center justify-center gap-2 border border-slate-200 rounded-xl py-2.5 text-[13px] font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition-all">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" fill="#333"/>
-              </svg>
-              GitHub
-            </button>
-          </div>
-
-          {/* Sign up footer */}
-          <p className="text-center text-[14px] text-slate-500">
+          {/* Sign Up Link */}
+          <p className="text-center text-[13px] text-[#69766F] pt-2">
             Chưa có tài khoản?{" "}
-            <button onClick={onSignUp} className="font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
-              Đăng ký
+            <button
+              onClick={onSignUp}
+              className="font-semibold text-[#276749] hover:underline"
+            >
+              Đăng ký ngay
             </button>
           </p>
         </div>
       </div>
-
     </div>
   );
 }
