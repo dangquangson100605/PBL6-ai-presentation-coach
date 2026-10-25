@@ -53,30 +53,32 @@ export default function Sidebar({ userRole, activeItem, onNav, onLogout }: Sideb
   };
 
   return (
-    <aside className="w-60 flex-shrink-0 bg-white border-r border-[#DCE5DF] flex flex-col py-6 px-4 gap-2">
+    <aside className="w-16 md:w-60 flex-shrink-0 bg-white border-r border-[#DCE5DF] flex flex-col py-6 px-2 md:px-4 gap-2 transition-all">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-2 mb-6">
-        <div className="w-8 h-8 rounded-xl bg-[#276749] text-white flex items-center justify-center shadow-sm">
+      <div className="flex items-center justify-center md:justify-start gap-2.5 px-1 md:px-2 mb-6">
+        <div className="w-8 h-8 rounded-xl bg-[#276749] text-white flex items-center justify-center shadow-sm flex-shrink-0">
           <GeminiIcon />
         </div>
-        <span className="text-[15px] font-bold text-[#24312B] tracking-tight">AI Coach</span>
+        <span className="hidden md:inline text-[15px] font-bold text-[#24312B] tracking-tight">
+          AI Coach
+        </span>
       </div>
 
       {/* Role badge */}
-      <div className="px-2 mb-2">
+      <div className="px-1 md:px-2 mb-2 flex justify-center md:justify-start">
         <span
-          className={`inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-wide px-2.5 py-1 rounded-full ${
+          className={`inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-wide px-2 md:px-2.5 py-1 rounded-full ${
             isAdmin
               ? "bg-[#F5F7F6] text-[#24312B] border border-[#DCE5DF]"
               : "bg-[#E8F1EB] text-[#276749] border border-[#D4E5D9]"
           }`}
         >
           <span
-            className={`w-1.5 h-1.5 rounded-full ${
+            className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
               isAdmin ? "bg-[#69766F]" : "bg-[#276749]"
             }`}
           />
-          {isAdmin ? "Bảng quản trị" : "Sinh viên"}
+          <span className="hidden md:inline">{isAdmin ? "Bảng quản trị" : "Sinh viên"}</span>
         </span>
       </div>
 
@@ -88,16 +90,19 @@ export default function Sidebar({ userRole, activeItem, onNav, onLogout }: Sideb
             <button
               key={id}
               onClick={() => onNav(id)}
-              className={`nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-left w-full transition-colors ${
+              title={label}
+              className={`nav-link flex items-center justify-center md:justify-start gap-3 px-2 md:px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-left w-full transition-colors ${
                 active
                   ? "bg-[#E8F1EB] text-[#276749] font-semibold"
                   : "text-[#69766F] hover:bg-[#F5F7F6] hover:text-[#24312B]"
               }`}
             >
-              <Icon active={active} />
-              <span>{label}</span>
+              <div className="flex-shrink-0">
+                <Icon active={active} />
+              </div>
+              <span className="hidden md:inline truncate">{label}</span>
               {active && (
-                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#276749]" />
+                <span className="hidden md:inline ml-auto w-1.5 h-1.5 rounded-full bg-[#276749] flex-shrink-0" />
               )}
             </button>
           );
@@ -105,7 +110,7 @@ export default function Sidebar({ userRole, activeItem, onNav, onLogout }: Sideb
       </nav>
 
       {/* User profile & Logout */}
-      <div className="pt-4 border-t border-[#DCE5DF] flex items-center justify-between px-2 gap-2">
+      <div className="pt-4 border-t border-[#DCE5DF] flex flex-col md:flex-row items-center justify-center md:justify-between px-1 md:px-2 gap-2">
         <div className="flex items-center gap-2.5 min-w-0">
           <div
             className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ${
@@ -116,7 +121,7 @@ export default function Sidebar({ userRole, activeItem, onNav, onLogout }: Sideb
               {isAdmin ? "SA" : "DQ"}
             </span>
           </div>
-          <div className="min-w-0">
+          <div className="hidden md:block min-w-0">
             <p className="text-[12.5px] font-semibold text-[#24312B] truncate">
               {isAdmin ? "System Admin" : "Đặng Quang Sơn"}
             </p>

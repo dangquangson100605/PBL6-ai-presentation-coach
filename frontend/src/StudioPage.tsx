@@ -202,10 +202,10 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
               {/* AI Face & Posture Tracking Bounding Box */}
               <div className="absolute top-[14%] left-[38%] w-[24%] h-[50%] pointer-events-none">
                 <div className="absolute inset-0 border border-[#276749]/80 rounded-lg">
-                  <div className="absolute -top-0.5 -left-0.5 w-3.5 h-3.5 border-t-2 border-l-2 border-emerald-400 rounded-tl" />
-                  <div className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 border-t-2 border-r-2 border-emerald-400 rounded-tr" />
-                  <div className="absolute -bottom-0.5 -left-0.5 w-3.5 h-3.5 border-b-2 border-l-2 border-emerald-400 rounded-bl" />
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 border-b-2 border-r-2 border-emerald-400 rounded-br" />
+                  <div className="absolute -top-0.5 -left-0.5 w-3.5 h-3.5 border-t-2 border-l-2 border-[#276749] rounded-tl" />
+                  <div className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 border-t-2 border-r-2 border-[#276749] rounded-tr" />
+                  <div className="absolute -bottom-0.5 -left-0.5 w-3.5 h-3.5 border-b-2 border-l-2 border-[#276749] rounded-bl" />
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 border-b-2 border-r-2 border-[#276749] rounded-br" />
                 </div>
                 <div className="absolute -top-5 left-0 bg-[#276749]/90 text-white text-[10px] font-medium px-2 py-0.5 rounded shadow-sm">
                   AI Tracking
@@ -219,7 +219,7 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                     <IconMic />
                     <span>Micro: Bật</span>
                   </div>
-                  <div className="inline-flex items-center gap-1.5 bg-black/50 backdrop-blur-md border border-emerald-500/30 text-emerald-300 text-[11px] font-medium px-3 py-1 rounded-full">
+                  <div className="inline-flex items-center gap-1.5 bg-black/50 backdrop-blur-md border border-[#276749]/40 text-[#E8F1EB] text-[11px] font-medium px-3 py-1 rounded-full">
                     <IconEye />
                     <span>Ánh mắt: Chuẩn</span>
                   </div>
@@ -248,7 +248,7 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                 {Array.from({ length: 48 }).map((_, i) => (
                   <div
                     key={i}
-                    className="w-1 bg-emerald-400/60 rounded-full transition-all duration-150"
+                    className="w-1 bg-[#276749]/80 rounded-full transition-all duration-150"
                     style={{
                       height: `${4 + Math.abs(Math.sin(i * 0.5 + Date.now() * 0.001)) * 16}px`,
                     }}
