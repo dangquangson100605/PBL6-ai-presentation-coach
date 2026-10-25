@@ -1,16 +1,18 @@
-import { GeminiIcon } from "./components/icons";
 import { useState } from "react";
 import Sidebar, { UserRole } from "./Sidebar";
+import { Button, Card, Badge } from "./components/common";
 
-/* ── Radar Chart (Clean Emerald Light Green) ─────────────── */
+/* ── Radar Chart (Standardized Deep Forest Green) ─────────────── */
 function RadarChart() {
-  const cx = 110, cy = 110, r = 78;
+  const cx = 110,
+    cy = 110,
+    r = 76;
   const axes = [
-    { label: "WPM",              angle: -90,  value: 0.62 },
-    { label: "Giao tiếp mắt",   angle: -18,  value: 0.88 },
-    { label: "Cảm xúc",          angle:  54,  value: 0.74 },
-    { label: "Ngôn ngữ cơ thể",  angle: 126,  value: 0.68 },
-    { label: "Âm lượng",         angle: 198,  value: 0.80 },
+    { label: "Tốc độ (WPM)", angle: -90, value: 0.62 },
+    { label: "Giao tiếp mắt", angle: -18, value: 0.88 },
+    { label: "Cảm xúc", angle: 54, value: 0.74 },
+    { label: "Ngôn ngữ cơ thể", angle: 126, value: 0.68 },
+    { label: "Âm lượng giọng", angle: 198, value: 0.8 },
   ];
 
   const toXY = (angle: number, radius: number) => ({
@@ -20,41 +22,84 @@ function RadarChart() {
 
   const rings = [0.25, 0.5, 0.75, 1];
   const dataPoints = axes.map((a) => toXY(a.angle, r * a.value));
-  const dataPath = dataPoints.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ") + " Z";
+  const dataPath =
+    dataPoints
+      .map(
+        (p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`
+      )
+      .join(" ") + " Z";
 
   return (
     <svg viewBox="0 0 220 220" className="w-full max-w-[210px]">
       <defs>
         <linearGradient id="radarFill" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#10B981" stopOpacity="0.22" />
-          <stop offset="100%" stopColor="#34D399" stopOpacity="0.08" />
+          <stop offset="0%" stopColor="#276749" stopOpacity="0.25" />
+          <stop offset="100%" stopColor="#276749" stopOpacity="0.06" />
         </linearGradient>
       </defs>
 
       {/* Grid rings */}
       {rings.map((s) => {
         const pts = axes.map((a) => toXY(a.angle, r * s));
-        const d = pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ") + " Z";
-        return <path key={s} d={d} fill="none" stroke="#E5E7EB" strokeWidth="1" />;
+        const d =
+          pts
+            .map(
+              (p, i) =>
+                `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`
+            )
+            .join(" ") + " Z";
+        return (
+          <path
+            key={s}
+            d={d}
+            fill="none"
+            stroke="#DCE5DF"
+            strokeWidth="1"
+          />
+        );
       })}
 
       {/* Axis spokes */}
       {axes.map((a) => {
         const end = toXY(a.angle, r);
-        return <line key={a.label} x1={cx} y1={cy} x2={end.x.toFixed(1)} y2={end.y.toFixed(1)} stroke="#E5E7EB" strokeWidth="1" />;
+        return (
+          <line
+            key={a.label}
+            x1={cx}
+            y1={cy}
+            x2={end.x.toFixed(1)}
+            y2={end.y.toFixed(1)}
+            stroke="#DCE5DF"
+            strokeWidth="1"
+          />
+        );
       })}
 
       {/* Data polygon */}
-      <path d={dataPath} fill="url(#radarFill)" stroke="#10B981" strokeWidth="1.8" strokeLinejoin="round" />
+      <path
+        d={dataPath}
+        fill="url(#radarFill)"
+        stroke="#276749"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
 
       {/* Data dots */}
       {dataPoints.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r="3.5" fill="#10B981" stroke="white" strokeWidth="1.5" />
+        <circle
+          key={i}
+          cx={p.x}
+          cy={p.y}
+          r="3.5"
+          fill="#276749"
+          stroke="white"
+          strokeWidth="1.5"
+        />
       ))}
 
       {/* Labels */}
       {axes.map((a) => {
-        const pos = toXY(a.angle, r + 16);
+        const pos = toXY(a.angle, r + 15);
         return (
           <text
             key={a.label}
@@ -62,9 +107,9 @@ function RadarChart() {
             y={pos.y}
             textAnchor="middle"
             dominantBaseline="middle"
-            fontSize="9.5"
+            fontSize="9"
             fontWeight="500"
-            fill="#64748B"
+            fill="#69766F"
             fontFamily="Inter, sans-serif"
           >
             {a.label}
@@ -75,27 +120,58 @@ function RadarChart() {
   );
 }
 
-/* ── Timeline markers ───────────────────────────────────── */
+/* ── Timeline markers with visual symbol & label ───────────── */
 const MARKERS = [
-  { pct: 22, color: "#EF4444", label: "Nói từ đệm liên tục — 4× 'ừm'", severity: "Cần lưu ý" },
-  { pct: 47, color: "#F59E0B", label: "Tốc độ nói tăng lên 190 WPM", severity: "Nhẹ" },
-  { pct: 71, color: "#F59E0B", label: "Mất giao tiếp mắt trong 8 giây", severity: "Nhẹ" },
+  {
+    pct: 22,
+    color: "#C24141",
+    symbol: "⚠️",
+    label: "Nói từ đệm liên tục — 4× 'ừm'",
+    severity: "Cần lưu ý",
+  },
+  {
+    pct: 47,
+    color: "#B7791F",
+    symbol: "⚡",
+    label: "Tốc độ nói tăng lên 190 WPM",
+    severity: "Nhẹ",
+  },
+  {
+    pct: 71,
+    color: "#B7791F",
+    symbol: "⚡",
+    label: "Mất giao tiếp mắt trong 8 giây",
+    severity: "Nhẹ",
+  },
 ];
 
-/* ── Score ring (Clean Emerald) ─────────────────────────── */
+/* ── Score ring (Deep Forest Green) ─────────────────────────── */
 function ScoreRing({ score }: { score: number }) {
-  const R = 44, sw = 6;
+  const R = 44,
+    sw = 6.5;
   const circ = 2 * Math.PI * (R - sw / 2);
   const dash = (score / 100) * circ;
   return (
-    <svg width={R * 2} height={R * 2} viewBox={`0 0 ${R * 2} ${R * 2}`} className="-rotate-90">
-      <circle cx={R} cy={R} r={R - sw / 2} fill="none" stroke="#F3F4F6" strokeWidth={sw} />
+    <svg
+      width={R * 2}
+      height={R * 2}
+      viewBox={`0 0 ${R * 2} ${R * 2}`}
+      className="-rotate-90"
+    >
       <circle
         cx={R}
         cy={R}
         r={R - sw / 2}
         fill="none"
-        stroke="#10B981"
+        stroke="#DCE5DF"
+        strokeWidth={sw}
+      />
+      <circle
+        cx={R}
+        cy={R}
+        r={R - sw / 2}
+        fill="none"
+        stroke="#276749"
         strokeWidth={sw}
         strokeDasharray={`${dash} ${circ}`}
         strokeLinecap="round"
@@ -105,21 +181,37 @@ function ScoreRing({ score }: { score: number }) {
 }
 
 /* ── Unified Metric Bar ─────────────────────────────────── */
-function MetricBar({ label, value, max = 100, unit = "%" }: { label: string; value: number; max?: number; unit?: string }) {
+function MetricBar({
+  label,
+  value,
+  max = 100,
+  unit = "%",
+}: {
+  label: string;
+  value: number;
+  max?: number;
+  unit?: string;
+}) {
   return (
     <div className="space-y-1">
-      <div className="flex justify-between text-xs">
-        <span className="font-medium text-gray-600">{label}</span>
-        <span className="font-semibold text-gray-900">{value}{unit}</span>
+      <div className="flex justify-between text-[12px]">
+        <span className="font-medium text-[#69766F]">{label}</span>
+        <span className="font-semibold text-[#24312B]">
+          {value}
+          {unit}
+        </span>
       </div>
-      <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-        <div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: `${(value / max) * 100}%` }} />
+      <div className="h-1.5 bg-[#DCE5DF] rounded-full overflow-hidden">
+        <div
+          className="h-full rounded-full bg-[#276749] transition-all"
+          style={{ width: `${(value / max) * 100}%` }}
+        />
       </div>
     </div>
   );
 }
 
-/* ── Main ───────────────────────────────────────────────── */
+/* ── Main Report Page ─────────────────────────────────────── */
 interface ReportPageProps {
   onNav: (view: string) => void;
   userRole: UserRole;
@@ -130,66 +222,92 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
   const [playhead, setPlayhead] = useState(34);
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans text-gray-900 antialiased">
+    <div className="flex h-screen bg-[#F5F7F6] overflow-hidden font-[Inter,sans-serif] text-[#24312B]">
       <Sidebar userRole={userRole} activeItem="dashboard" onNav={onNav} />
 
-      {/* ── MAIN ────────────────────────────────────── */}
+      {/* ── MAIN CONTENT ──────────────────────────────────── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Header */}
-        <header className="h-14 flex-shrink-0 bg-white border-b border-gray-200 flex items-center justify-between px-6">
+        <header className="h-16 flex-shrink-0 bg-white border-b border-[#DCE5DF] flex items-center justify-between px-6 z-10">
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => onNav("history")}
-              className="p-1 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              className="p-1.5 rounded-lg text-[#69766F] hover:text-[#24312B] hover:bg-[#F5F7F6] transition-colors"
               title="Quay lại lịch sử"
+              aria-label="Quay lại lịch sử"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M15 19l-7-7 7-7"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
             <div>
-              <h1 className="text-sm font-semibold text-gray-900 leading-tight">Luyện tập bảo vệ đề án — Tuần 5</h1>
-              <p className="text-xs text-gray-500">11/09/2026 · Thời lượng: 4 phút 32 giây</p>
+              <div className="flex items-center gap-2">
+                <h1 className="text-[15.5px] font-bold text-[#24312B] leading-tight">
+                  Luyện tập bảo vệ đề án — Tuần 5
+                </h1>
+                <Badge variant="primary">Báo cáo hoàn chỉnh</Badge>
+              </div>
+              <p className="text-[12px] text-[#69766F] mt-0.5">
+                Ngày ghi: 11/09/2026 · Thời lượng: 4 phút 32 giây · Ngữ cảnh: Bảo vệ đề án
+              </p>
             </div>
           </div>
-          <button
-            type="button"
-            className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors shadow-sm"
+
+          <Button
+            variant="secondary"
+            size="sm"
+            leftIcon={
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 3v12M7 10l5 5 5-5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            }
           >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M7 1v8M4 6l3 3 3-3M1 10v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
             Xuất PDF
-          </button>
+          </Button>
         </header>
 
-        {/* Body Layout: 60 / 40 */}
-        <div className="flex-1 flex gap-0 min-h-0 overflow-hidden">
-          {/* ── LEFT: 60% ───────────────────────────── */}
-          <div className="flex-[6] min-w-0 flex flex-col overflow-y-auto p-5 space-y-5 border-r border-gray-200">
+        {/* Body Layout: 60 / 40 Split */}
+        <div className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden">
+          {/* ── LEFT: Video, Timeline & Transcript (60%) ───── */}
+          <div className="flex-1 lg:flex-[6] min-w-0 flex flex-col overflow-y-auto p-5 space-y-4 border-r border-[#DCE5DF]">
             {/* Video Player Box */}
-            <div className="rounded-xl overflow-hidden bg-gray-950 border border-gray-800 shadow-sm relative" style={{ aspectRatio: "16/9" }}>
+            <div
+              className="rounded-xl overflow-hidden bg-[#1A231F] border border-[#DCE5DF] shadow-sm relative"
+              style={{ aspectRatio: "16/9" }}
+            >
               <img
                 src="https://images.unsplash.com/photo-1758876020207-67890de8aa73?w=900&h=506&fit=crop&auto=format"
                 alt="Recorded presentation session"
-                className="w-full h-full object-cover opacity-85"
+                className="w-full h-full object-cover opacity-90"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />
 
-              {/* Top-left: Session Info */}
+              {/* Top Session Info Pill */}
               <div className="absolute top-3 left-3">
-                <span className="bg-black/50 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-md border border-white/10">
-                  Phiên #47 — Tuần 5
+                <span className="bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-md border border-white/10">
+                  Phiên #47 — Video đã lưu
                 </span>
               </div>
 
-              {/* Top-right: Duration */}
-              <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm text-white text-xs font-mono font-medium px-2.5 py-1 rounded-md border border-white/10">
+              {/* Top-right Duration Pill */}
+              <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11.5px] font-mono font-medium px-2.5 py-1 rounded-md border border-white/10">
                 04:32
               </div>
 
-              {/* Bottom Controls Bar */}
+              {/* Bottom Playback Controls */}
               <div className="absolute bottom-0 left-0 right-0 px-4 py-3 flex flex-col gap-2">
                 <input
                   type="range"
@@ -197,55 +315,80 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                   max={100}
                   value={playhead}
                   onChange={(e) => setPlayhead(Number(e.target.value))}
-                  className="w-full h-1 accent-emerald-500 cursor-pointer"
+                  className="w-full h-1 accent-[#276749] cursor-pointer"
                 />
-                <div className="flex items-center justify-between text-xs text-white">
+                <div className="flex items-center justify-between text-[12px] text-white">
                   <div className="flex items-center gap-2.5">
                     <button
                       type="button"
                       className="w-7 h-7 rounded-md bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
                     >
-                      <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                      <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
                         <path d="M3 2l7 4-7 4V2z" fill="white" />
                       </svg>
                     </button>
-                    <span className="font-mono text-white/90">
-                      {`0${Math.floor((playhead / 100) * 4)}:${String(Math.floor((playhead / 100) * 60) % 60).padStart(2, "0")}`} / 04:32
+                    <span className="font-mono text-white/90 text-[12px]">
+                      {`0${Math.floor((playhead / 100) * 4)}:${String(
+                        Math.floor((playhead / 100) * 60) % 60
+                      ).padStart(2, "0")}`}{" "}
+                      / 04:32
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-xs text-white/80">
-                    <button type="button" className="hover:text-white px-1.5 py-0.5 rounded">0.5×</button>
-                    <button type="button" className="text-white font-semibold bg-white/20 px-1.5 py-0.5 rounded">1×</button>
-                    <button type="button" className="hover:text-white px-1.5 py-0.5 rounded">1.5×</button>
+
+                  <div className="flex items-center gap-1.5 text-[11.5px] text-white/80">
+                    <button
+                      type="button"
+                      className="hover:text-white px-1.5 py-0.5 rounded"
+                    >
+                      0.5×
+                    </button>
+                    <button
+                      type="button"
+                      className="text-white font-semibold bg-white/20 px-1.5 py-0.5 rounded"
+                    >
+                      1×
+                    </button>
+                    <button
+                      type="button"
+                      className="hover:text-white px-1.5 py-0.5 rounded"
+                    >
+                      1.5×
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Timeline */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 space-y-3">
+            {/* Event Timeline & Warnings */}
+            <Card className="p-5 space-y-3">
               <div className="flex items-center justify-between">
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Dòng thời gian sự kiện</p>
-                <div className="flex items-center gap-3 text-xs text-gray-500">
+                <p className="text-[12px] font-semibold text-[#69766F] uppercase tracking-wider">
+                  Dòng thời gian sự kiện
+                </p>
+                <div className="flex items-center gap-3 text-[11.5px] text-[#69766F]">
                   <span className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-rose-500" />
-                    Cần lưu ý
+                    <span className="w-2 h-2 rounded-full bg-[#C24141]" />
+                    <span>⚠️ Cần lưu ý</span>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-amber-500" />
-                    Nhẹ
+                    <span className="w-2 h-2 rounded-full bg-[#B7791F]" />
+                    <span>⚡ Nhẹ</span>
                   </span>
                 </div>
               </div>
 
-              {/* Track */}
+              {/* Timeline Track with Markers */}
               <div className="relative h-7 flex items-center">
-                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 bg-gray-100 rounded-full" />
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-1.5 bg-emerald-100 rounded-full" style={{ width: `${playhead}%` }} />
+                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 bg-[#DCE5DF] rounded-full" />
                 <div
-                  className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-emerald-600 border-2 border-white shadow-sm z-20"
-                  style={{ left: `calc(${playhead}% - 6px)` }}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 h-1.5 bg-[#E8F1EB] rounded-full"
+                  style={{ width: `${playhead}%` }}
                 />
+                <div
+                  className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#276749] border-2 border-white shadow-sm z-20"
+                  style={{ left: `calc(${playhead}% - 7px)` }}
+                />
+
                 {MARKERS.map((m, i) => (
                   <div
                     key={i}
@@ -255,97 +398,181 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                     onMouseLeave={() => setHoverMarker(null)}
                   >
                     <div
-                      className="w-3 h-3 rounded-full border-2 border-white shadow-sm"
+                      className="w-3.5 h-3.5 rounded-full border-2 border-white shadow-sm"
                       style={{ background: m.color }}
                     />
                     {hoverMarker === i && (
-                      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[11px] font-medium px-2.5 py-1 rounded-md whitespace-nowrap shadow-md z-30 pointer-events-none">
-                        {m.severity}: {m.label}
+                      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#24312B] text-white text-[11px] font-medium px-2.5 py-1 rounded-md whitespace-nowrap shadow-md z-30 pointer-events-none">
+                        {m.symbol} {m.severity}: {m.label}
                       </div>
                     )}
                   </div>
                 ))}
               </div>
 
-              {/* Marker Legend List */}
-              <div className="flex flex-col gap-2 pt-2 border-t border-gray-100">
+              {/* Marker Legend Detailed List */}
+              <div className="flex flex-col gap-2 pt-2 border-t border-[#DCE5DF]">
                 {MARKERS.map((m, i) => (
-                  <div key={i} className="flex items-center gap-2.5 text-xs">
-                    <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: m.color }} />
-                    <span className="font-semibold text-gray-800">{m.severity}</span>
-                    <span className="text-gray-600">{m.label}</span>
-                    <span className="ml-auto text-gray-400 font-mono text-[11px]">
-                      {`${Math.floor((m.pct / 100) * 4)}:${String(Math.floor((m.pct / 100) * 272) % 60).padStart(2, "0")}`}
+                  <div key={i} className="flex items-center gap-2.5 text-[12px]">
+                    <span className="text-[12px]">{m.symbol}</span>
+                    <span
+                      className={`font-semibold ${
+                        m.severity === "Cần lưu ý"
+                          ? "text-[#C24141]"
+                          : "text-[#B7791F]"
+                      }`}
+                    >
+                      {m.severity}:
+                    </span>
+                    <span className="text-[#24312B]">{m.label}</span>
+                    <span className="ml-auto text-[#69766F] font-mono text-[11px]">
+                      {`${Math.floor((m.pct / 100) * 4)}:${String(
+                        Math.floor((m.pct / 100) * 272) % 60
+                      ).padStart(2, "0")}`}
                     </span>
                   </div>
                 ))}
               </div>
-            </div>
+            </Card>
 
-            {/* Transcript (Clean SaaS text box) */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 space-y-3">
+            {/* Speech Transcript */}
+            <Card className="p-5 space-y-3">
               <div className="flex items-center justify-between">
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Bản ghi lời nói</p>
-                <span className="text-xs font-medium text-gray-700 bg-gray-100 border border-gray-200 px-2.5 py-0.5 rounded-full">
-                  Phát hiện 5 từ đệm
-                </span>
+                <p className="text-[12px] font-semibold text-[#69766F] uppercase tracking-wider">
+                  Bản ghi lời nói (Transcript)
+                </p>
+                <Badge variant="warning">Phát hiện 5 từ đệm</Badge>
               </div>
-              <p className="text-sm text-gray-700 leading-relaxed">
+              <p className="text-[13px] text-[#24312B] leading-relaxed">
                 Xin chào mọi người,{" "}
-                <mark className="bg-amber-50 text-amber-900 border border-amber-200/60 font-medium px-1.5 py-0.5 rounded">ừm</mark>
-                , hôm nay nhóm chúng em xin trình bày dự án về hệ thống huấn luyện thuyết trình bằng AI. Nhóm chúng em đã làm việc trong{" "}
-                <mark className="bg-amber-50 text-amber-900 border border-amber-200/60 font-medium px-1.5 py-0.5 rounded">à</mark>
-                , tám tuần qua. Nền tảng sử dụng MediaPipe và Google Gemini để cung cấp phản hồi thời gian thực về giao tiếp mắt, tốc độ nói và{" "}
-                <mark className="bg-amber-50 text-amber-900 border border-amber-200/60 font-medium px-1.5 py-0.5 rounded">ừm</mark>
+                <mark className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] font-medium px-1.5 py-0.5 rounded">
+                  ừm
+                </mark>
+                , hôm nay nhóm chúng em xin trình bày dự án về hệ thống huấn luyện
+                thuyết trình bằng AI. Nhóm chúng em đã làm việc trong{" "}
+                <mark className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] font-medium px-1.5 py-0.5 rounded">
+                  à
+                </mark>
+                , tám tuần qua. Nền tảng sử dụng MediaPipe và Google Gemini để
+                cung cấp phản hồi thời gian thực về giao tiếp mắt, tốc độ nói và{" "}
+                <mark className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] font-medium px-1.5 py-0.5 rounded">
+                  ừm
+                </mark>
                 , ngôn ngữ cơ thể. Chúng em tin rằng{" "}
-                <mark className="bg-amber-50 text-amber-900 border border-amber-200/60 font-medium px-1.5 py-0.5 rounded">kiểu như</mark>
-                , luyện tập đều đặn sẽ dẫn đến sự tự tin khi thuyết trình. Hãy để chúng em trình bày demo hôm nay.{" "}
-                <mark className="bg-amber-50 text-amber-900 border border-amber-200/60 font-medium px-1.5 py-0.5 rounded">Ừm</mark>
+                <mark className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] font-medium px-1.5 py-0.5 rounded">
+                  kiểu như
+                </mark>
+                , luyện tập đều đặn sẽ dẫn đến sự tự tin khi thuyết trình. Hãy để
+                chúng em trình bày demo hôm nay.{" "}
+                <mark className="bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] font-medium px-1.5 py-0.5 rounded">
+                  Ừm
+                </mark>
                 , bắt đầu với tổng quan kiến trúc hệ thống.
               </p>
-            </div>
+            </Card>
           </div>
 
-          {/* ── RIGHT: 40% ──────────────────────────── */}
-          <div className="flex-[4] min-w-0 flex flex-col gap-5 overflow-y-auto p-5">
-            {/* Overall Score Card */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 space-y-4">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Điểm tổng thể</p>
+          {/* ── RIGHT: Prioritized Evaluation & Analysis (40%) ─── */}
+          <div className="flex-1 lg:flex-[4] min-w-0 flex flex-col gap-4 overflow-y-auto p-5">
+            {/* 1. TỔNG QUAN & ĐIỂM SỐ CHÍNH */}
+            <Card className="p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <p className="text-[12px] font-semibold text-[#69766F] uppercase tracking-wider">
+                  1. Tổng quan &amp; Điểm số chính
+                </p>
+                <Badge variant="success">Đạt yêu cầu</Badge>
+              </div>
+
               <div className="flex items-center gap-5">
                 <div className="relative flex-shrink-0">
                   <ScoreRing score={85} />
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-2xl font-bold text-gray-900 leading-none">85</span>
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">/ 100</span>
+                    <span className="text-[24px] font-bold text-[#24312B] leading-none">
+                      85
+                    </span>
+                    <span className="text-[10px] font-semibold text-[#69766F] uppercase tracking-wide">
+                      / 100
+                    </span>
                   </div>
                 </div>
+
                 <div className="flex-1 space-y-2">
                   <MetricBar label="Giao tiếp mắt" value={88} />
                   <MetricBar label="Tốc độ nói" value={62} />
                   <MetricBar label="Độ tự tin" value={80} />
-                  <MetricBar label="Từ đệm" value={75} />
+                  <MetricBar label="Hạn chế từ đệm" value={75} />
                 </div>
               </div>
 
-              {/* Grade Badge */}
-              <div className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs">
-                <div className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-200/60 font-bold text-emerald-700 text-sm flex items-center justify-center">
+              {/* Grade Banner */}
+              <div className="flex items-center gap-3 bg-[#F5F7F6] border border-[#DCE5DF] rounded-xl p-3 text-[12px]">
+                <div className="w-9 h-9 rounded-lg bg-[#E8F1EB] border border-[#D4E5D9] font-bold text-[#276749] text-base flex items-center justify-center flex-shrink-0">
                   B+
                 </div>
-                <div>
-                  <p className="font-semibold text-gray-900">Trên trung bình</p>
-                  <p className="text-gray-500 text-[11px]">Top 30% tất cả phiên tháng này</p>
+                <div className="min-w-0">
+                  <p className="font-semibold text-[#24312B]">Trên trung bình</p>
+                  <p className="text-[#69766F] text-[11px] truncate">
+                    Xếp hạng top 30% sinh viên trong tháng này
+                  </p>
                 </div>
-                <div className="ml-auto font-medium text-emerald-600">+4 điểm so với tuần trước</div>
+                <div className="ml-auto font-medium text-[#276749] text-right whitespace-nowrap">
+                  +4 điểm vs tuần trước
+                </div>
               </div>
-            </div>
+            </Card>
 
-            {/* Radar Chart Card */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 space-y-3">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Phân tích đa chiều</p>
+            {/* 2. NHỮNG ĐIỂM LÀM TỐT */}
+            <Card className="p-4 space-y-2 border-l-4 border-l-[#276749]">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">🌟</span>
+                  <span className="text-[12px] font-bold text-[#24312B] uppercase tracking-wider">
+                    2. Những điểm làm tốt
+                  </span>
+                </div>
+                <Badge variant="success">Điểm mạnh</Badge>
+              </div>
+
+              <p className="text-[12.5px] font-semibold text-[#24312B]">
+                Giao tiếp mắt xuất sắc (88% thời lượng)
+              </p>
+              <p className="text-[12px] text-[#69766F] leading-relaxed">
+                Bạn duy trì giao tiếp mắt rất tốt với người nghe qua camera trong
+                suốt phiên — vượt xa mức chuẩn đề xuất là 70%. Cử chỉ tự nhiên và
+                tập trung giúp tạo dựng niềm tin và sự hiện diện vững vàng.
+              </p>
+            </Card>
+
+            {/* 3. NHỮNG ĐIỂM CẦN CẢI THIỆN */}
+            <Card className="p-4 space-y-2 border-l-4 border-l-[#B7791F]">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">⚠️</span>
+                  <span className="text-[12px] font-bold text-[#24312B] uppercase tracking-wider">
+                    3. Những điểm cần cải thiện
+                  </span>
+                </div>
+                <Badge variant="warning">Cần tối ưu</Badge>
+              </div>
+
+              <p className="text-[12.5px] font-semibold text-[#24312B]">
+                5 từ đệm ("ừm", "à") · Tốc độ nói 175 WPM (Hơi nhanh)
+              </p>
+              <p className="text-[12px] text-[#69766F] leading-relaxed">
+                Tốc độ nói trung bình vượt quá ngưỡng lý tưởng từ 130–160 WPM. Việc
+                chủ động nói chậm lại ở các đoạn giới thiệu định nghĩa sẽ giúp hội
+                đồng tiếp thu các luận điểm kỹ thuật dễ dàng hơn.
+              </p>
+            </Card>
+
+            {/* 4. CÁC CHỈ SỐ CHI TIẾT & BIỂU ĐỒ (RADAR) */}
+            <Card className="p-5 space-y-3">
+              <p className="text-[12px] font-semibold text-[#69766F] uppercase tracking-wider">
+                4. Phân tích đa chiều (Biểu đồ Radar)
+              </p>
               <div className="flex flex-col items-center gap-3">
                 <RadarChart />
-                <div className="grid grid-cols-5 gap-2 w-full pt-1 border-t border-gray-100 text-center">
+                <div className="grid grid-cols-5 gap-1.5 w-full pt-2 border-t border-[#DCE5DF] text-center">
                   {[
                     { label: "WPM", value: "62%" },
                     { label: "Mắt", value: "88%" },
@@ -354,63 +581,39 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                     { label: "Âm lượng", value: "80%" },
                   ].map(({ label, value }) => (
                     <div key={label}>
-                      <span className="text-xs font-bold text-gray-900 block">{value}</span>
-                      <span className="text-[10px] text-gray-400 font-medium">{label}</span>
+                      <span className="text-[12px] font-bold text-[#24312B] block">
+                        {value}
+                      </span>
+                      <span className="text-[10px] text-[#69766F] font-medium">
+                        {label}
+                      </span>
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
+            </Card>
 
-            {/* AI Coach Feedback (Standardized Clean White Cards) */}
-            <div className="space-y-3">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-0.5">Phản hồi từ AI Coach</p>
-
-              {/* Strength Card */}
-              <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-1.5 shadow-sm">
+            {/* 5. KHUYẾN NGHỊ LUYỆN TẬP TIẾP THEO */}
+            <Card className="p-4 space-y-2 border-l-4 border-l-[#276749]">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-md">
-                    Điểm mạnh
+                  <span className="text-sm">🎯</span>
+                  <span className="text-[12px] font-bold text-[#24312B] uppercase tracking-wider">
+                    5. Khuyến nghị luyện tập tiếp theo
                   </span>
                 </div>
-                <p className="text-xs font-semibold text-gray-900">
-                  Giao tiếp mắt xuất sắc (88%)
-                </p>
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  Bạn duy trì giao tiếp mắt tốt với camera trong suốt phiên — vượt xa mức chuẩn 70%. Điều này tạo dựng niềm tin và sự hiện diện tích cực.
-                </p>
+                <Badge variant="primary">Kế hoạch rèn luyện</Badge>
               </div>
 
-              {/* Area to Improve Card */}
-              <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-1.5 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200/60 px-2 py-0.5 rounded-md">
-                    Cần cải thiện
-                  </span>
-                </div>
-                <p className="text-xs font-semibold text-gray-900">
-                  5 từ đệm ("ừm", "à") · Tốc độ nói 175 WPM (Hơi nhanh)
-                </p>
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  Tốc độ nói vượt quá khoảng lý tưởng 130–160 WPM. Nói chậm lại giúp người nghe tiếp thu ý chính rõ ràng hơn.
-                </p>
-              </div>
-
-              {/* Suggestion Card */}
-              <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-1.5 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-gray-700 bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-md">
-                    Bài tập đề xuất
-                  </span>
-                </div>
-                <p className="text-xs font-semibold text-gray-900">
-                  Thử bài tập "Dừng lại &amp; Hít thở" trước buổi ghi hình tiếp theo.
-                </p>
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  Trước mỗi câu, hãy dừng lại 1 nhịp. Điều này tự nhiên giảm bớt từ đệm và thể hiện phong thái bình tĩnh.
-                </p>
-              </div>
-            </div>
+              <p className="text-[12.5px] font-semibold text-[#24312B]">
+                Áp dụng bài tập "Dừng lại 1 nhịp &amp; Hít thở"
+              </p>
+              <p className="text-[12px] text-[#69766F] leading-relaxed">
+                Trước khi chuyển đổi sang slide hoặc luận điểm mới, hãy tạm dừng
+                1–2 giây thay vì phát âm "ừm" hoặc "à". Thói quen ngắt quãng có chủ
+                đích sẽ giúp bài thuyết trình tăng tính thuyết phục và chuyên nghiệp.
+              </p>
+            </Card>
           </div>
         </div>
       </div>

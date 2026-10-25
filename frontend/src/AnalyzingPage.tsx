@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
 import Sidebar, { UserRole } from "./Sidebar";
+import { Button, Card, Badge } from "./components/common";
 
-/* ── Circular Progress (Clean Light Green Emerald) ───────── */
+/* ── Circular Progress (Standardized Deep Forest Green) ───────── */
 function CircularProgress({ pct }: { pct: number }) {
-  const R = 80;
-  const stroke = 8;
+  const R = 75;
+  const stroke = 7;
   const norm = R - stroke / 2;
   const circ = 2 * Math.PI * norm;
   const dash = (pct / 100) * circ;
 
   return (
-    <div className="relative flex items-center justify-center" style={{ width: R * 2 + stroke, height: R * 2 + stroke }}>
+    <div
+      className="relative flex items-center justify-center"
+      style={{ width: R * 2 + stroke, height: R * 2 + stroke }}
+    >
       <svg
         width={R * 2 + stroke}
         height={R * 2 + stroke}
@@ -23,7 +27,7 @@ function CircularProgress({ pct }: { pct: number }) {
           cy={R + stroke / 2}
           r={norm}
           fill="none"
-          stroke="#F3F4F6"
+          stroke="#DCE5DF"
           strokeWidth={stroke}
         />
         {/* Main Arc */}
@@ -32,18 +36,22 @@ function CircularProgress({ pct }: { pct: number }) {
           cy={R + stroke / 2}
           r={norm}
           fill="none"
-          stroke="#10B981"
+          stroke="#276749"
           strokeWidth={stroke}
           strokeDasharray={`${dash} ${circ}`}
           strokeLinecap="round"
-          style={{ transition: "stroke-dasharray 0.4s ease" }}
+          style={{ transition: "stroke-dasharray 0.35s ease" }}
         />
       </svg>
 
       {/* Center Label */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold text-gray-900 leading-none tracking-tight">{pct}%</span>
-        <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mt-1">Đang xử lý</span>
+        <span className="text-[28px] font-bold text-[#24312B] leading-none tracking-tight">
+          {pct}%
+        </span>
+        <span className="text-[10px] font-semibold text-[#69766F] uppercase tracking-wider mt-1.5">
+          {pct >= 100 ? "Hoàn thành" : "Đang xử lý"}
+        </span>
       </div>
     </div>
   );
@@ -63,19 +71,21 @@ const STEPS = [
 function StepIcon({ done, active }: { done: boolean; active: boolean }) {
   if (done) {
     return (
-      <div className="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
+      <div className="w-5 h-5 rounded-full bg-[#276749] text-white flex items-center justify-center text-[10px] font-bold flex-shrink-0">
         ✓
       </div>
     );
   }
   if (active) {
     return (
-      <div className="w-5 h-5 rounded-full border-2 border-emerald-500 bg-white flex items-center justify-center flex-shrink-0">
-        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+      <div className="w-5 h-5 rounded-full border-2 border-[#276749] bg-white flex items-center justify-center flex-shrink-0">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#276749] animate-pulse" />
       </div>
     );
   }
-  return <div className="w-5 h-5 rounded-full border border-gray-200 bg-gray-50 flex-shrink-0" />;
+  return (
+    <div className="w-5 h-5 rounded-full border border-[#DCE5DF] bg-[#F5F7F6] flex-shrink-0" />
+  );
 }
 
 const TIPS = [
@@ -122,94 +132,116 @@ export default function AnalyzingPage({ onNav, onDone, userRole }: AnalyzingPage
     }
   }, [progress, onDone]);
 
+  const isCompleted = progress >= 100;
+
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans text-gray-900 antialiased">
+    <div className="flex h-screen bg-[#F5F7F6] overflow-hidden font-[Inter,sans-serif] text-[#24312B]">
       <Sidebar userRole={userRole} activeItem="analyzing" onNav={onNav} />
 
-      {/* ── MAIN ────────────────────────────────────── */}
-      <main className="flex-1 flex flex-col items-center justify-center p-8 overflow-y-auto">
-        <div className="flex flex-col items-center gap-6 max-w-lg w-full">
-          {/* Progress Dial */}
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 flex flex-col items-center gap-4 w-full">
+      {/* ── MAIN CONTENT ──────────────────────────────────── */}
+      <main className="flex-1 flex flex-col items-center justify-center p-6 sm:p-8 overflow-y-auto">
+        <div className="flex flex-col items-center gap-5 max-w-lg w-full">
+          {/* Progress & Session Info Card */}
+          <Card className="p-6 flex flex-col items-center gap-4 w-full">
+            {/* Session Indicator Badge */}
+            <div className="flex items-center gap-2">
+              <Badge variant="primary" withDot>
+                Phiên #47
+              </Badge>
+              <span className="text-[12px] text-[#69766F]">
+                bai_thuyet_trinh_pbl6.mp4 (04:32)
+              </span>
+            </div>
+
             <CircularProgress pct={Math.min(progress, 100)} />
 
             <div className="text-center space-y-1">
-              <h1 className="text-base font-semibold text-gray-900">
-                Đang phân tích đa phương thức...
+              <h1 className="text-[16px] font-bold text-[#24312B] tracking-tight">
+                {isCompleted
+                  ? "Phân tích đa phương thức hoàn tất!"
+                  : "Đang phân tích đa phương thức..."}
               </h1>
-              <p className="text-xs text-gray-500">
-                Mô hình AI đang trích xuất giao tiếp mắt, tốc độ nói và từ đệm
+              <p className="text-[12px] text-[#69766F] max-w-sm">
+                Mô hình AI đang trích xuất giao tiếp mắt, tốc độ nói, ngôn ngữ cơ thể và từ đệm
               </p>
             </div>
 
-            {/* Overall Progress Bar */}
-            <div className="w-full space-y-1.5 pt-2">
-              <div className="flex justify-between text-xs font-medium text-gray-500">
+            {/* Overall Linear Progress Bar */}
+            <div className="w-full space-y-1.5 pt-2 border-t border-[#DCE5DF]">
+              <div className="flex justify-between text-[12px] font-medium text-[#69766F]">
                 <span>Tiến độ tổng thể</span>
-                <span className="font-semibold text-gray-900">{Math.min(progress, 100)}%</span>
+                <span className="font-semibold text-[#24312B]">
+                  {Math.min(progress, 100)}%
+                </span>
               </div>
-              <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden w-full">
+              <div className="h-1.5 bg-[#DCE5DF] rounded-full overflow-hidden w-full">
                 <div
-                  className="h-full bg-emerald-500 rounded-full transition-all duration-300"
+                  className="h-full bg-[#276749] rounded-full transition-all duration-300"
                   style={{ width: `${Math.min(progress, 100)}%` }}
                 />
               </div>
             </div>
-          </div>
+          </Card>
 
-          {/* Step List (Clean White Card) */}
-          <div className="w-full bg-white rounded-xl border border-gray-200 shadow-sm divide-y divide-gray-100 overflow-hidden">
+          {/* Analysis Workflow Steps Card */}
+          <Card className="w-full divide-y divide-[#DCE5DF] overflow-hidden p-0">
             {STEPS.map(({ label, done, active }, i) => (
               <div
                 key={i}
-                className={`flex items-center gap-3 px-4 py-3 text-xs ${
-                  active ? "bg-emerald-50/40" : ""
+                className={`flex items-center gap-3 px-4 py-3 text-[12.5px] transition-colors ${
+                  active ? "bg-[#E8F1EB]/50" : "bg-white"
                 }`}
               >
                 <StepIcon done={done} active={active} />
                 <span
                   className={`flex-1 ${
                     done
-                      ? "text-gray-400 line-through"
+                      ? "text-[#69766F] line-through opacity-75"
                       : active
-                      ? "text-gray-900 font-semibold"
-                      : "text-gray-600"
+                      ? "text-[#24312B] font-semibold"
+                      : "text-[#69766F]"
                   }`}
                 >
                   {label}
                 </span>
+
                 {done && (
-                  <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
-                    Xong
-                  </span>
+                  <Badge variant="success">Hoàn thành</Badge>
                 )}
                 {active && (
-                  <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
+                  <Badge variant="primary" withDot>
                     Đang xử lý
-                  </span>
+                  </Badge>
                 )}
               </div>
             ))}
-          </div>
+          </Card>
 
-          {/* Clean Tip Box */}
-          <div className="w-full bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-start gap-3">
-            <span className="text-base">💡</span>
-            <div className="space-y-0.5">
-              <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Mẹo luyện tập</p>
-              <p className="text-xs text-gray-700 leading-relaxed">{TIPS[tipIdx]}</p>
+          {/* Coaching Tip Box */}
+          <Card className="w-full p-4 flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#E8F1EB] text-[#276749] flex items-center justify-center flex-shrink-0 text-sm font-semibold">
+              💡
             </div>
-          </div>
+            <div className="space-y-0.5 min-w-0">
+              <p className="text-[11px] font-semibold text-[#69766F] uppercase tracking-wider">
+                Mẹo luyện tập
+              </p>
+              <p className="text-[12px] text-[#24312B] leading-relaxed">
+                {TIPS[tipIdx]}
+              </p>
+            </div>
+          </Card>
 
-          {/* Action Button */}
+          {/* Quick Action Button */}
           {onDone && (
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              size="lg"
+              className="w-full justify-center shadow-sm"
               onClick={onDone}
-              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-medium py-2.5 rounded-lg transition-colors shadow-sm"
             >
-              Xem báo cáo ngay →
-            </button>
+              Xem báo cáo phân tích →
+            </Button>
           )}
         </div>
       </main>
