@@ -9,7 +9,7 @@ export function GeminiIcon({ size = 16 }: { size?: number }) {
 }
 
 export function IconDashboard({ active, size = 18 }: { active?: boolean; size?: number }) {
-  const c = active ? "#10B981" : "#94A3B8";
+  const c = active ? "#276749" : "#69766F";
   return (
     <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
       <rect x="1.5" y="1.5" width="6" height="6" rx="1.5" stroke={c} strokeWidth="1.5" />
@@ -21,7 +21,7 @@ export function IconDashboard({ active, size = 18 }: { active?: boolean; size?: 
 }
 
 export function IconStudio({ active, size = 18 }: { active?: boolean; size?: number }) {
-  const c = active ? "#10B981" : "#94A3B8";
+  const c = active ? "#276749" : "#69766F";
   return (
     <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
       <circle cx="9" cy="9" r="7" stroke={c} strokeWidth="1.5" />
@@ -32,7 +32,7 @@ export function IconStudio({ active, size = 18 }: { active?: boolean; size?: num
 }
 
 export function IconUpload({ active, size = 18 }: { active?: boolean; size?: number }) {
-  const c = active ? "#10B981" : "#94A3B8";
+  const c = active ? "#276749" : "#69766F";
   return (
     <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
       <path d="M9 2v10M5 6l4-4 4 4M2 14h14" stroke={c} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -41,7 +41,7 @@ export function IconUpload({ active, size = 18 }: { active?: boolean; size?: num
 }
 
 export function IconHistory({ active, size = 18 }: { active?: boolean; size?: number }) {
-  const c = active ? "#10B981" : "#94A3B8";
+  const c = active ? "#276749" : "#69766F";
   return (
     <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
       <path d="M9 4.5V9l3 2" stroke={c} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -52,7 +52,7 @@ export function IconHistory({ active, size = 18 }: { active?: boolean; size?: nu
 }
 
 export function IconUsers({ active, size = 18 }: { active?: boolean; size?: number }) {
-  const c = active ? "#10B981" : "#94A3B8";
+  const c = active ? "#276749" : "#69766F";
   return (
     <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
       <circle cx="9" cy="6" r="3" stroke={c} strokeWidth="1.5" />
@@ -64,7 +64,7 @@ export function IconUsers({ active, size = 18 }: { active?: boolean; size?: numb
 }
 
 export function IconConfig({ active, size = 18 }: { active?: boolean; size?: number }) {
-  const c = active ? "#10B981" : "#94A3B8";
+  const c = active ? "#276749" : "#69766F";
   return (
     <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
       <circle cx="9" cy="9" r="2.5" stroke={c} strokeWidth="1.5" />
@@ -74,7 +74,7 @@ export function IconConfig({ active, size = 18 }: { active?: boolean; size?: num
 }
 
 export function IconLogs({ active, size = 18 }: { active?: boolean; size?: number }) {
-  const c = active ? "#10B981" : "#94A3B8";
+  const c = active ? "#276749" : "#69766F";
   return (
     <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
       <rect x="3" y="2" width="12" height="14" rx="2" stroke={c} strokeWidth="1.5" />
@@ -84,7 +84,7 @@ export function IconLogs({ active, size = 18 }: { active?: boolean; size?: numbe
 }
 
 export function IconSettings({ active, size = 18 }: { active?: boolean; size?: number }) {
-  const c = active ? "#10B981" : "#94A3B8";
+  const c = active ? "#276749" : "#69766F";
   return (
     <svg width={size} height={size} viewBox="0 0 18 18" fill="none">
       <circle cx="9" cy="9" r="2.5" stroke={c} strokeWidth="1.5" />

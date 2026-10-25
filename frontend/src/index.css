@@ -1,12 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
 @import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Brand and surfaces from AI_Coach_Frontend_Design_Rules.md */
+  --color-primary: #276749;
+  --color-primary-hover: #1F553C;
+  --color-primary-soft: #E8F1EB;
+  --color-primary-border: #D4E5D9;
+
+  --color-app-bg: #F5F7F6;
+  --color-surface: #FFFFFF;
+  --color-main-text: #24312B;
+  --color-muted-text: #69766F;
+  --color-border-subtle: #DCE5DF;
+
+  /* Status */
+  --color-status-success: #276749;
+  --color-status-warning: #B7791F;
+  --color-status-danger: #C24141;
+}
 
 html,
 body,
 #root {
   height: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
+  background-color: var(--color-app-bg);
+  color: var(--color-main-text);
+  -webkit-font-smoothing: antialiased;
 }
 
 * {
@@ -15,42 +38,36 @@ body,
 
 /* ── Global micro-interaction primitives ──────────────────── */
 
-/* Primary violet button */
+/* Primary button transition */
 .btn-primary {
-  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.1s ease-in-out;
-}
-
-.btn-primary:hover {
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out, transform 0.1s ease-in-out;
 }
 
 .btn-primary:active {
-  transform: scale(0.98);
-  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);
+  transform: scale(0.99);
 }
 
 /* Secondary / ghost button */
 .btn-secondary {
-  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out, transform 0.1s ease-in-out;
 }
 
 .btn-secondary:active {
-  transform: scale(0.98);
+  transform: scale(0.99);
 }
 
-/* Hoverable card — lift */
+/* Subtle card hover */
 .card-hover {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.09);
+  box-shadow: 0 1px 3px rgba(36, 49, 43, 0.05);
 }
 
 /* Sidebar nav link */
 .nav-link {
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
 }
 
 /* Slide-up-fade-in toast / badge */
@@ -90,11 +107,4 @@ body,
 ::-webkit-scrollbar {
   width: 0px;
   opacity: 0;
-}
-
-@theme inline {
-  --color-blue-primary: #1D4ED8;
-  --color-blue-light: #3B82F6;
-  --color-blue-pale: #EFF6FF;
-  --color-navy: #0F172A;
 }
