@@ -111,14 +111,6 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
   const timer = useTimer(recording);
   const teleRef = useRef<HTMLTextAreaElement>(null);
 
-  const NAV = [
-    { id: "dashboard", label: "Dashboard", Icon: IconDashboard },
-    { id: "studio",    label: "Studio",    Icon: IconStudio },
-    { id: "upload",    label: "Upload Video", Icon: IconUpload },
-    { id: "history",   label: "History",   Icon: IconHistory },
-    { id: "settings",  label: "Settings",  Icon: IconSettings },
-  ];
-
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden font-[Inter,sans-serif]">
 
@@ -168,33 +160,33 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
 
               {/* AI face tracking box */}
               <div className="absolute top-[12%] left-[38%] w-[24%] h-[52%] pointer-events-none">
-                <div className="absolute inset-0 border-2 border-violet-400/70 rounded-lg">
-                  <div className="absolute -top-0.5 -left-0.5 w-4 h-4 border-t-2 border-l-2 border-violet-400 rounded-tl" />
-                  <div className="absolute -top-0.5 -right-0.5 w-4 h-4 border-t-2 border-r-2 border-violet-400 rounded-tr" />
-                  <div className="absolute -bottom-0.5 -left-0.5 w-4 h-4 border-b-2 border-l-2 border-violet-400 rounded-bl" />
-                  <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 border-b-2 border-r-2 border-violet-400 rounded-br" />
+                <div className="absolute inset-0 border-2 border-emerald-400/80 rounded-lg">
+                  <div className="absolute -top-0.5 -left-0.5 w-4 h-4 border-t-2 border-l-2 border-emerald-400 rounded-tl" />
+                  <div className="absolute -top-0.5 -right-0.5 w-4 h-4 border-t-2 border-r-2 border-emerald-400 rounded-tr" />
+                  <div className="absolute -bottom-0.5 -left-0.5 w-4 h-4 border-b-2 border-l-2 border-emerald-400 rounded-bl" />
+                  <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 border-b-2 border-r-2 border-emerald-400 rounded-br" />
                 </div>
-                <div className="absolute -top-6 left-0 bg-violet-500/80 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                <div className="absolute -top-6 left-0 bg-emerald-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded">
                   AI Theo dõi
                 </div>
               </div>
 
               {/* ── HUD: Top-Left Pills ── */}
               <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-emerald-400/40 text-emerald-300 text-[11px] font-semibold px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/20 text-white text-[11px] font-semibold px-3 py-1.5 rounded-full">
                   <IconMic /> Mic: Bật
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-emerald-400/40 text-emerald-300 text-[11px] font-semibold px-3 py-1.5 rounded-full">
                   <IconEye /> Giao tiếp mắt: Tốt
                 </span>
-                <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-orange-400/40 text-orange-300 text-[11px] font-semibold px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/20 text-slate-200 text-[11px] font-semibold px-3 py-1.5 rounded-full">
                   <IconPace /> Nhịp độ: Nhanh
                 </span>
               </div>
 
               {/* ── HUD: Top-Right Timer ── */}
               <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/50 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse flex-shrink-0" />
                 <span className="text-white font-mono text-[15px] font-bold tracking-widest">
                   {timer}
                 </span>
@@ -203,10 +195,10 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
 
               {/* ── HUD: Bottom Controls ── */}
               <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-4">
-                {/* Stop button */}
+                {/* Stop/Start button */}
                 <button
                   onClick={() => setRecording(!recording)}
-                  className="btn-primary group flex items-center gap-2.5 bg-red-500 hover:bg-red-600 text-white font-semibold text-[13px] pl-3 pr-5 py-2.5 rounded-full shadow-lg shadow-red-500/40"
+                  className={`btn-primary group flex items-center gap-2.5 ${recording ? "bg-rose-600 hover:bg-rose-700 shadow-rose-600/30" : "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/30"} text-white font-semibold text-[13px] pl-3 pr-5 py-2.5 rounded-full shadow-lg transition-all`}
                 >
                   <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-all">
                     <IconStop />
@@ -217,7 +209,7 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                 {/* Send for analysis */}
                 <button
                   onClick={onAnalyze}
-                  className="btn-secondary flex items-center gap-2 backdrop-blur-md border border-white/80 bg-white text-violet-700 hover:bg-violet-50 shadow-lg font-semibold text-[13px] px-5 py-3 rounded-full"
+                  className="btn-secondary flex items-center gap-2 backdrop-blur-md border border-white/80 bg-white text-slate-800 hover:bg-slate-50 shadow-lg font-semibold text-[13px] px-5 py-3 rounded-full transition-all"
                 >
                   <IconSend /> Gửi để phân tích
                 </button>
@@ -228,25 +220,25 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                 {Array.from({ length: 60 }).map((_, i) => (
                   <div
                     key={i}
-                    className="w-1 bg-violet-400/50 rounded-full"
+                    className="w-1 bg-emerald-400/50 rounded-full"
                     style={{ height: `${4 + Math.abs(Math.sin(i * 0.6 + Date.now() * 0.001)) * 20}px` }}
                   />
                 ))}
               </div>
             </div>
 
-            {/* Realtime metrics strip below camera */}
+            {/* Realtime metrics strip below camera (Standardized Clean White Cards) */}
             <div className="flex gap-3">
               {[
-                { label: "Giao tiếp mắt", value: 85, unit: "%", color: "text-emerald-600", bg: "bg-emerald-50", border: "border-emerald-200" },
-                { label: "Tốc độ nói", value: 158, unit: " WPM", color: "text-orange-500", bg: "bg-orange-50", border: "border-orange-200" },
-                { label: "Độ tự tin", value: 72, unit: "%", color: "text-violet-600", bg: "bg-violet-50", border: "border-violet-200" },
-                { label: "Từ đệm", value: 3, unit: " từ", color: "text-slate-600", bg: "bg-slate-50", border: "border-slate-200" },
-              ].map(({ label, value, unit, color, bg, border }) => (
-                <div key={label} className={`flex-1 ${bg} border ${border} rounded-xl px-4 py-3`}>
+                { label: "Giao tiếp mắt", value: 85, unit: "%" },
+                { label: "Tốc độ nói", value: 158, unit: " WPM" },
+                { label: "Độ tự tin", value: 72, unit: "%" },
+                { label: "Từ đệm", value: 3, unit: " từ" },
+              ].map(({ label, value, unit }) => (
+                <div key={label} className="flex-1 bg-white border border-slate-200/80 rounded-xl px-4 py-3 shadow-sm">
                   <p className="text-[11px] text-slate-500 font-medium mb-1">{label}</p>
-                  <p className={`text-[20px] font-bold ${color} leading-none`}>
-                    {value}<span className="text-[12px] font-semibold ml-0.5">{unit}</span>
+                  <p className="text-[20px] font-bold text-slate-900 leading-none">
+                    {value}<span className="text-[12px] font-semibold text-slate-500 ml-0.5">{unit}</span>
                   </p>
                 </div>
               ))}
@@ -265,7 +257,7 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                 <select
                   value={context}
                   onChange={(e) => setContext(e.target.value)}
-                  className="w-full appearance-none bg-slate-50 border border-slate-200 text-slate-700 text-[13.5px] font-medium rounded-xl px-4 py-2.5 pr-9 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all cursor-pointer"
+                  className="w-full appearance-none bg-slate-50 border border-slate-200 text-slate-700 text-[13.5px] font-medium rounded-xl px-4 py-2.5 pr-9 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all cursor-pointer"
                 >
                   <option>Bảo vệ đề án</option>
                   <option>Phỏng vấn việc làm</option>
@@ -278,7 +270,7 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                 </div>
               </div>
               <div className="flex items-center gap-2 pt-0.5">
-                <div className="w-2 h-2 rounded-full bg-violet-500" />
+                <div className="w-2 h-2 rounded-full bg-emerald-500" />
                 <span className="text-[11px] text-slate-400">Chế độ AI coaching đang hoạt động theo ngữ cảnh</span>
               </div>
             </div>
@@ -289,7 +281,7 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                 <label className="block text-[12px] font-semibold text-slate-500 uppercase tracking-wider">
                   Máy nhắc chữ
                 </label>
-                <span className="text-[10px] font-medium text-violet-600 bg-violet-50 border border-violet-200 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
                   Đang cuộn
                 </span>
               </div>
@@ -305,7 +297,7 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                   {/* Bottom fade */}
                   <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-slate-900 to-transparent z-10 pointer-events-none" />
                   {/* Center highlight line */}
-                  <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-8 bg-violet-500/8 border-y border-violet-400/20 z-10 pointer-events-none" />
+                  <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-8 bg-emerald-500/10 border-y border-emerald-400/20 z-10 pointer-events-none" />
                   <textarea
                     ref={teleRef}
                     defaultValue={TELEPROMPTER_TEXT}
@@ -330,9 +322,9 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                     max={22}
                     value={textSize}
                     onChange={(e) => setTextSize(Number(e.target.value))}
-                    className="flex-1 accent-violet-600 h-1.5 cursor-pointer"
+                    className="flex-1 accent-emerald-600 h-1.5 cursor-pointer"
                   />
-                  <span className="text-[11px] font-mono font-semibold text-violet-700 w-7 text-right">{textSize}px</span>
+                  <span className="text-[11px] font-mono font-semibold text-emerald-700 w-7 text-right">{textSize}px</span>
                 </div>
 
                 {/* Scroll Speed */}
@@ -348,9 +340,9 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                     step={1}
                     value={scrollSpeed}
                     onChange={(e) => setScrollSpeed(Number(e.target.value))}
-                    className="flex-1 accent-violet-600 h-1.5 cursor-pointer"
+                    className="flex-1 accent-emerald-600 h-1.5 cursor-pointer"
                   />
-                  <span className="text-[11px] font-mono font-semibold text-violet-700 w-7 text-right">{scrollSpeed}x</span>
+                  <span className="text-[11px] font-mono font-semibold text-emerald-700 w-7 text-right">{scrollSpeed}x</span>
                 </div>
 
                 {/* Speed labels */}

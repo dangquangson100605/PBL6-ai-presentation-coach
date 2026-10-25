@@ -1,27 +1,21 @@
-import { GeminiIcon } from "./components/icons";
 import { useState, useEffect } from "react";
 import Sidebar, { UserRole } from "./Sidebar";
 
-/* ── Icons ─────────────────────────────────────────────── */
-
-
-
-/* ── Circular progress ──────────────────────────────────── */
+/* ── Circular Progress (Clean Light Green Emerald) ───────── */
 function CircularProgress({ pct }: { pct: number }) {
-  const R = 88;
-  const stroke = 10;
+  const R = 80;
+  const stroke = 8;
   const norm = R - stroke / 2;
   const circ = 2 * Math.PI * norm;
   const dash = (pct / 100) * circ;
 
   return (
-    <div className="relative" style={{ width: R * 2 + stroke, height: R * 2 + stroke }}>
+    <div className="relative flex items-center justify-center" style={{ width: R * 2 + stroke, height: R * 2 + stroke }}>
       <svg
         width={R * 2 + stroke}
         height={R * 2 + stroke}
         viewBox={`0 0 ${R * 2 + stroke} ${R * 2 + stroke}`}
-        className="-rotate-90"
-        style={{ display: "block" }}
+        className="-rotate-90 block"
       >
         {/* Track */}
         <circle
@@ -29,323 +23,194 @@ function CircularProgress({ pct }: { pct: number }) {
           cy={R + stroke / 2}
           r={norm}
           fill="none"
-          stroke="#EDE9FE"
+          stroke="#F3F4F6"
           strokeWidth={stroke}
         />
-        {/* Glow ring (blurred duplicate) */}
+        {/* Main Arc */}
         <circle
           cx={R + stroke / 2}
           cy={R + stroke / 2}
           r={norm}
           fill="none"
-          stroke="#7C3AED"
-          strokeWidth={stroke + 4}
-          strokeDasharray={`${dash} ${circ}`}
-          strokeLinecap="round"
-          opacity="0.18"
-          filter="url(#glow)"
-          style={{ transition: "stroke-dasharray 0.5s cubic-bezier(0.4, 0, 0.2, 1)" }}
-        />
-        {/* Main arc */}
-        <circle
-          cx={R + stroke / 2}
-          cy={R + stroke / 2}
-          r={norm}
-          fill="none"
-          stroke="url(#arcGrad)"
+          stroke="#10B981"
           strokeWidth={stroke}
           strokeDasharray={`${dash} ${circ}`}
           strokeLinecap="round"
-          style={{ transition: "stroke-dasharray 0.5s cubic-bezier(0.4, 0, 0.2, 1)" }}
+          style={{ transition: "stroke-dasharray 0.4s ease" }}
         />
-        <defs>
-          <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#A78BFA" />
-            <stop offset="100%" stopColor="#7C3AED" />
-          </linearGradient>
-          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="6" result="blur" />
-          </filter>
-        </defs>
       </svg>
 
-      {/* Center label */}
+      {/* Center Label */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[38px] font-bold text-violet-700 leading-none tracking-tight">{pct}%</span>
-        <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest mt-1">Hoàn thành</span>
+        <span className="text-3xl font-bold text-gray-900 leading-none tracking-tight">{pct}%</span>
+        <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mt-1">Đang xử lý</span>
       </div>
     </div>
   );
 }
 
-/* ── Step list ──────────────────────────────────────────── */
+/* ── Step List ──────────────────────────────────────────── */
 const STEPS = [
-  { label: "Đang tải video lên",              done: true,    active: false },
-  { label: "Trích xuất âm thanh",             done: true,    active: false },
-  { label: "Phát hiện điểm mốc khuôn mặt",   done: true,    active: false },
-  { label: "Đo lường giao tiếp mắt",          done: false,   active: true  },
-  { label: "Phân tích tốc độ nói",            done: false,   active: false },
-  { label: "Đếm từ đệm",                      done: false,   active: false },
-  { label: "Tạo tóm tắt AI",                  done: false,   active: false },
+  { label: "Đang tải video lên hệ thống", done: true, active: false },
+  { label: "Trích xuất luồng âm thanh", done: true, active: false },
+  { label: "Phát hiện điểm mốc khuôn mặt (Face Landmarks)", done: true, active: false },
+  { label: "Đo lường tỉ lệ giao tiếp mắt", done: false, active: true },
+  { label: "Phân tích nhịp độ và tốc độ nói (WPM)", done: false, active: false },
+  { label: "Phát hiện và thống kê từ đệm", done: false, active: false },
+  { label: "Tổng hợp báo cáo và khuyến nghị từ AI", done: false, active: false },
 ];
 
 function StepIcon({ done, active }: { done: boolean; active: boolean }) {
   if (done) {
     return (
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-        <circle cx="9" cy="9" r="9" fill="#7C3AED" />
-        <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
+      <div className="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
+        ✓
+      </div>
     );
   }
   if (active) {
     return (
-      <span className="relative flex items-center justify-center w-[18px] h-[18px]">
-        <span className="absolute w-full h-full rounded-full bg-violet-200 animate-ping opacity-60" />
-        <span className="w-[18px] h-[18px] rounded-full border-2 border-violet-500 bg-white flex items-center justify-center">
-          <span className="w-2 h-2 rounded-full bg-violet-500" />
-        </span>
-      </span>
+      <div className="w-5 h-5 rounded-full border-2 border-emerald-500 bg-white flex items-center justify-center flex-shrink-0">
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+      </div>
     );
   }
-  return (
-    <span className="w-[18px] h-[18px] rounded-full border-2 border-slate-200 bg-white block flex-shrink-0" />
-  );
+  return <div className="w-5 h-5 rounded-full border border-gray-200 bg-gray-50 flex-shrink-0" />;
 }
 
-/* ── Scanning line animation ────────────────────────────── */
-function ScanningBar() {
-  return (
-    <div className="relative w-full h-1.5 bg-violet-100 rounded-full overflow-hidden">
-      <div
-        className="absolute top-0 h-full rounded-full"
-        style={{
-          width: "40%",
-          background: "linear-gradient(90deg, transparent, #7C3AED, transparent)",
-          animation: "scan 1.8s ease-in-out infinite",
-        }}
-      />
-      <style>{`
-        @keyframes scan {
-          0%   { left: -40%; }
-          100% { left: 140%; }
-        }
-        @keyframes floatUp {
-          0%, 100% { transform: translateY(0); }
-          50%       { transform: translateY(-6px); }
-        }
-        @keyframes orbitDot {
-          from { transform: rotate(0deg) translateX(64px) rotate(0deg); }
-          to   { transform: rotate(360deg) translateX(64px) rotate(-360deg); }
-        }
-        @keyframes orbitDot2 {
-          from { transform: rotate(120deg) translateX(64px) rotate(-120deg); }
-          to   { transform: rotate(480deg) translateX(64px) rotate(-480deg); }
-        }
-        @keyframes orbitDot3 {
-          from { transform: rotate(240deg) translateX(64px) rotate(-240deg); }
-          to   { transform: rotate(600deg) translateX(64px) rotate(-600deg); }
-        }
-        @keyframes spinRing {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(360deg); }
-        }
-        @keyframes spinRingRev {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(-360deg); }
-        }
-      `}</style>
-    </div>
-  );
-}
+const TIPS = [
+  "Duy trì giao tiếp mắt ít nhất 70% thời lượng giúp người nghe cảm thấy được kết nối.",
+  "Khoảng tốc độ nói lý tưởng trong thuyết trình là từ 130 đến 160 từ/phút (WPM).",
+  "Tạm dừng 1-2 giây trước khi chuyển ý giúp giảm thiểu hoàn toàn các từ đệm như 'ừm', 'à'.",
+  "Thả lỏng hai vai và cử chỉ tay mở giúp bài nói tự nhiên và thuyết phục hơn.",
+];
 
-/* ── Main ───────────────────────────────────────────────── */
 interface AnalyzingPageProps {
   onNav: (view: string) => void;
   onDone?: () => void;
   userRole: UserRole;
 }
 
-const TIPS = [
-  "Dừng lại 2 giây sau một điểm quan trọng giúp khán giả tiếp thu thông điệp của bạn.",
-  "Duy trì giao tiếp mắt với các khu vực khác nhau trong phòng tạo dựng niềm tin và sự kết nối.",
-  "Thay đổi tốc độ nói giúp khán giả tập trung — nói chậm lại khi nhấn mạnh ý chính.",
-  "Loại bỏ từ đệm như 'ừm' và 'à' giúp bạn trở nên tự tin và chuyên nghiệp hơn.",
-];
-
 export default function AnalyzingPage({ onNav, onDone, userRole }: AnalyzingPageProps) {
-  const [progress, setProgress] = useState(75);
-  const [tipIdx] = useState(0);
-
-  /* Slowly advance progress for visual polish */
-  useEffect(() => {
-    if (progress >= 100) return;
-    const id = setInterval(() => setProgress((p) => Math.min(p + 1, 100)), 200);
-    return () => clearInterval(id);
-  }, [progress]);
+  const [progress, setProgress] = useState(42);
+  const [tipIdx, setTipIdx] = useState(0);
 
   useEffect(() => {
-    if (!onDone) return;
-    const id = window.setTimeout(onDone, 3000);
-    return () => window.clearTimeout(id);
-  }, [onDone]);
+    const tInterval = window.setInterval(() => {
+      setTipIdx((i) => (i + 1) % TIPS.length);
+    }, 4500);
+    return () => window.clearInterval(tInterval);
+  }, []);
 
-  const NAV = [
-    { id: "dashboard", label: "Dashboard", Icon: IconDashboard },
-    { id: "studio",    label: "Studio",    Icon: IconStudio },
-    { id: "upload",    label: "Upload Video", Icon: IconUpload },
-    { id: "history",   label: "History",   Icon: IconHistory },
-    { id: "settings",  label: "Settings",  Icon: IconSettings },
-  ];
+  useEffect(() => {
+    const pInterval = window.setInterval(() => {
+      setProgress((p) => {
+        if (p >= 100) {
+          window.clearInterval(pInterval);
+          return 100;
+        }
+        return p + Math.floor(Math.random() * 6 + 2);
+      });
+    }, 350);
+    return () => window.clearInterval(pInterval);
+  }, []);
+
+  useEffect(() => {
+    if (progress >= 100 && onDone) {
+      const id = window.setTimeout(onDone, 800);
+      return () => window.clearTimeout(id);
+    }
+  }, [progress, onDone]);
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden" style={{ fontFamily: "Inter, sans-serif" }}>
-
+    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans text-gray-900 antialiased">
       <Sidebar userRole={userRole} activeItem="analyzing" onNav={onNav} />
 
       {/* ── MAIN ────────────────────────────────────── */}
-      <main className="flex-1 flex flex-col items-center justify-center px-8 py-10 relative overflow-hidden">
+      <main className="flex-1 flex flex-col items-center justify-center p-8 overflow-y-auto">
+        <div className="flex flex-col items-center gap-6 max-w-lg w-full">
+          {/* Progress Dial */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 flex flex-col items-center gap-4 w-full">
+            <CircularProgress pct={Math.min(progress, 100)} />
 
-        {/* Ambient background blobs */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute top-[-120px] left-[10%] w-[420px] h-[420px] rounded-full bg-violet-100 opacity-40 blur-3xl" />
-          <div className="absolute bottom-[-80px] right-[5%] w-[320px] h-[320px] rounded-full bg-indigo-100 opacity-30 blur-3xl" />
-        </div>
+            <div className="text-center space-y-1">
+              <h1 className="text-base font-semibold text-gray-900">
+                Đang phân tích đa phương thức...
+              </h1>
+              <p className="text-xs text-gray-500">
+                Mô hình AI đang trích xuất giao tiếp mắt, tốc độ nói và từ đệm
+              </p>
+            </div>
 
-        <div className="relative z-10 flex flex-col items-center gap-10 max-w-xl w-full">
-
-          {/* ── Orbital animation ring + circular progress ── */}
-          <div className="relative flex items-center justify-center" style={{ width: 220, height: 220 }}>
-
-            {/* Outer spinning dashed ring */}
-            <div
-              className="absolute rounded-full border border-dashed border-violet-200"
-              style={{
-                width: 210,
-                height: 210,
-                animation: "spinRing 18s linear infinite",
-              }}
-            />
-            {/* Inner reverse ring */}
-            <div
-              className="absolute rounded-full border border-dashed border-violet-100"
-              style={{
-                width: 196,
-                height: 196,
-                animation: "spinRingRev 12s linear infinite",
-              }}
-            />
-
-            {/* Orbiting dots */}
-            {[
-              { anim: "orbitDot 3.2s linear infinite", color: "#7C3AED", size: 8 },
-              { anim: "orbitDot2 3.2s linear infinite", color: "#A78BFA", size: 6 },
-              { anim: "orbitDot3 3.2s linear infinite", color: "#C4B5FD", size: 5 },
-            ].map(({ anim, color, size }, i) => (
-              <div
-                key={i}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                style={{ width: 0, height: 0 }}
-              >
+            {/* Overall Progress Bar */}
+            <div className="w-full space-y-1.5 pt-2">
+              <div className="flex justify-between text-xs font-medium text-gray-500">
+                <span>Tiến độ tổng thể</span>
+                <span className="font-semibold text-gray-900">{Math.min(progress, 100)}%</span>
+              </div>
+              <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden w-full">
                 <div
-                  style={{
-                    width: size,
-                    height: size,
-                    borderRadius: "50%",
-                    background: color,
-                    boxShadow: `0 0 8px ${color}`,
-                    animation: anim,
-                    marginLeft: -size / 2,
-                    marginTop: -size / 2,
-                  }}
+                  className="h-full bg-emerald-500 rounded-full transition-all duration-300"
+                  style={{ width: `${Math.min(progress, 100)}%` }}
                 />
               </div>
-            ))}
-
-            {/* Circular progress chart */}
-            <CircularProgress pct={progress} />
-          </div>
-
-          {/* ── Headline ── */}
-          <div className="text-center space-y-2">
-            <h1 className="text-[28px] font-bold text-slate-900 tracking-tight leading-tight">
-              Đang phân tích dữ liệu đa phương thức...
-            </h1>
-            <p className="text-[15px] text-slate-400 font-medium leading-relaxed">
-              Trích xuất giao tiếp mắt, tốc độ nói (WPM) và từ đệm.
-            </p>
-          </div>
-
-          {/* ── Scanning progress bar ── */}
-          <div className="w-full space-y-2">
-            <div className="flex justify-between items-center">
-              <span className="text-[12px] font-semibold text-slate-500 uppercase tracking-wider">Tiến độ tổng thể</span>
-              <span className="text-[12px] font-bold text-violet-700">{progress}%</span>
             </div>
-            <ScanningBar />
           </div>
 
-          {/* ── Step list ── */}
-          <div className="w-full bg-white rounded-2xl border border-slate-100 shadow-sm divide-y divide-slate-50 overflow-hidden">
+          {/* Step List (Clean White Card) */}
+          <div className="w-full bg-white rounded-xl border border-gray-200 shadow-sm divide-y divide-gray-100 overflow-hidden">
             {STEPS.map(({ label, done, active }, i) => (
               <div
                 key={i}
-                className={`flex items-center gap-3 px-5 py-3.5 transition-colors ${
-                  active ? "bg-violet-50/60" : ""
+                className={`flex items-center gap-3 px-4 py-3 text-xs ${
+                  active ? "bg-emerald-50/40" : ""
                 }`}
               >
                 <StepIcon done={done} active={active} />
                 <span
-                  className={`text-[13px] font-medium flex-1 ${
-                    done ? "text-slate-400 line-through decoration-slate-300" : active ? "text-violet-700 font-semibold" : "text-slate-500"
+                  className={`flex-1 ${
+                    done
+                      ? "text-gray-400 line-through"
+                      : active
+                      ? "text-gray-900 font-semibold"
+                      : "text-gray-600"
                   }`}
                 >
                   {label}
                 </span>
                 {done && (
-                  <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
                     Xong
                   </span>
                 )}
                 {active && (
-                  <span className="text-[10px] font-bold text-violet-600 bg-violet-50 border border-violet-200 px-2 py-0.5 rounded-full">
-                    Đang chạy
+                  <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
+                    Đang xử lý
                   </span>
                 )}
               </div>
             ))}
           </div>
 
-          {/* ── View Report button ── */}
-          {onDone && (
-            <button
-              onClick={onDone}
-              className="btn-primary w-full bg-violet-700 hover:bg-violet-800 text-white font-semibold py-3 rounded-xl shadow-md shadow-violet-200 text-[14px]"
-            >
-              Xem Báo cáo đầy đủ →
-            </button>
-          )}
-
-          {/* ── Tip card ── */}
-          <div
-            className="w-full rounded-2xl px-5 py-4 flex items-start gap-4"
-            style={{
-              background: "linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%)",
-              border: "1px solid #DDD6FE",
-              animation: "floatUp 4s ease-in-out infinite",
-            }}
-          >
-            <div className="w-9 h-9 rounded-xl bg-white shadow-sm flex items-center justify-center flex-shrink-0 text-lg">
-              💡
-            </div>
+          {/* Clean Tip Box */}
+          <div className="w-full bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-start gap-3">
+            <span className="text-base">💡</span>
             <div className="space-y-0.5">
-              <p className="text-[11px] font-bold text-violet-500 uppercase tracking-wider">Mẹo thuyết trình</p>
-              <p className="text-[13.5px] font-medium text-violet-900 leading-relaxed">
-                {TIPS[tipIdx]}
-              </p>
+              <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Mẹo luyện tập</p>
+              <p className="text-xs text-gray-700 leading-relaxed">{TIPS[tipIdx]}</p>
             </div>
           </div>
 
+          {/* Action Button */}
+          {onDone && (
+            <button
+              type="button"
+              onClick={onDone}
+              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-medium py-2.5 rounded-lg transition-colors shadow-sm"
+            >
+              Xem báo cáo ngay →
+            </button>
+          )}
         </div>
       </main>
     </div>

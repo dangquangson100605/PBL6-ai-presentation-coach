@@ -53,35 +53,31 @@ export default function LoginPage({ onBack, onSignUp, onLoginAsStudent, onLoginA
       {/* LEFT COLUMN — Branding */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-gray-50 flex-col items-center justify-center p-12 overflow-hidden">
 
-        {/* Soft violet blob */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full bg-gradient-to-br from-violet-200 via-purple-100 to-indigo-100 blur-3xl opacity-70 pointer-events-none" />
-
-        {/* Secondary smaller blobs */}
-        <div className="absolute top-16 right-16 w-48 h-48 rounded-full bg-violet-100 blur-2xl opacity-50 pointer-events-none" />
-        <div className="absolute bottom-20 left-10 w-36 h-36 rounded-full bg-purple-100 blur-2xl opacity-40 pointer-events-none" />
+        {/* Soft background glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full bg-emerald-100/60 blur-3xl opacity-50 pointer-events-none" />
 
         <div className="relative z-10 max-w-[420px] w-full flex flex-col gap-10">
 
           {/* Logo */}
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-2 group self-start"
+            className="inline-flex items-center gap-2.5 group self-start"
           >
-            <div className="w-9 h-9 rounded-xl bg-violet-700 flex items-center justify-center shadow-md shadow-violet-200">
+            <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-sm">
               <GeminiIcon />
             </div>
-            <span className="text-[15px] font-bold text-slate-800 tracking-tight group-hover:text-violet-700 transition-colors">
+            <span className="text-[15px] font-bold text-slate-900 tracking-tight group-hover:text-emerald-700 transition-colors">
               AI Coach
             </span>
           </button>
 
           {/* Motivational quote */}
           <div className="space-y-4">
-            <blockquote className="text-[36px] font-bold leading-[1.15] tracking-tight text-violet-900">
+            <blockquote className="text-[36px] font-bold leading-[1.15] tracking-tight text-slate-900">
               "Tự tin bảo vệ{" "}
-              <span className="text-violet-600">đề án của bạn."</span>
+              <span className="text-emerald-600">đề án của bạn."</span>
             </blockquote>
-            <p className="text-[15px] text-slate-500 leading-relaxed">
+            <p className="text-[15px] text-slate-600 leading-relaxed">
               Phân tích AI thời gian thực về giao tiếp mắt, tốc độ nói và ngôn ngữ cơ thể — để mọi bài thuyết trình đều có giá trị.
             </p>
           </div>
@@ -97,7 +93,7 @@ export default function LoginPage({ onBack, onSignUp, onLoginAsStudent, onLoginA
               </p>
               <p className="text-[14px] font-semibold text-slate-800">
                 Tốc độ nói:{" "}
-                <span className="text-violet-700">145 WPM</span>
+                <span className="text-emerald-700 font-bold">145 WPM</span>
               </p>
               <p className="text-[12px] text-slate-500">Mức tối ưu · Tiếp tục phát huy!</p>
             </div>
@@ -117,7 +113,7 @@ export default function LoginPage({ onBack, onSignUp, onLoginAsStudent, onLoginA
                 style={{
                   width: i === 0 ? 24 : 8,
                   height: 8,
-                  backgroundColor: i === 0 ? "#7C3AED" : "#E5E7EB",
+                  backgroundColor: i === 0 ? "#10B981" : "#E5E7EB",
                 }}
               />
             ))}
@@ -133,21 +129,21 @@ export default function LoginPage({ onBack, onSignUp, onLoginAsStudent, onLoginA
           {/* Mobile logo */}
           <button
             onClick={onBack}
-            className="lg:hidden inline-flex items-center gap-2"
+            className="lg:hidden inline-flex items-center gap-2.5"
           >
-            <div className="w-8 h-8 rounded-lg bg-violet-700 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center">
               <GeminiIcon />
             </div>
-            <span className="text-[14px] font-bold text-violet-700 tracking-tight">AI Coach</span>
+            <span className="text-[14px] font-bold text-slate-900 tracking-tight">AI Coach</span>
           </button>
 
           {/* Desktop logo top-left */}
           <div className="hidden lg:block">
-            <button onClick={onBack} className="inline-flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-violet-700 flex items-center justify-center shadow-sm shadow-violet-200">
+            <button onClick={onBack} className="inline-flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shadow-sm">
                 <GeminiIcon />
               </div>
-              <span className="text-[14px] font-bold text-violet-700 tracking-tight">AI Coach</span>
+              <span className="text-[14px] font-bold text-slate-900 tracking-tight">AI Coach</span>
             </button>
           </div>
 
@@ -156,7 +152,7 @@ export default function LoginPage({ onBack, onSignUp, onLoginAsStudent, onLoginA
             <h1 className="text-[32px] font-bold text-slate-900 tracking-tight">
               Chào mừng trở lại
             </h1>
-            <p className="text-[15px] text-slate-400 font-medium">
+            <p className="text-[15px] text-slate-500 font-medium">
               Tiếp tục hành trình luyện tập thuyết trình của bạn.
             </p>
           </div>
@@ -172,14 +168,14 @@ export default function LoginPage({ onBack, onSignUp, onLoginAsStudent, onLoginA
               <div
                 className="relative rounded-xl border transition-all overflow-hidden"
                 style={{
-                  borderColor: focused === "email" ? "#7C3AED" : "#E5E7EB",
-                  boxShadow: focused === "email" ? "0 0 0 3px rgba(124,58,237,0.12)" : "none",
+                  borderColor: focused === "email" ? "#10B981" : "#E5E7EB",
+                  boxShadow: focused === "email" ? "0 0 0 3px rgba(16,185,129,0.12)" : "none",
                 }}
               >
                 <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke={focused === "email" ? "#7C3AED" : "#9CA3AF"} strokeWidth="1.3" />
-                    <path d="M1.5 5.5l6.5 4 6.5-4" stroke={focused === "email" ? "#7C3AED" : "#9CA3AF"} strokeWidth="1.3" />
+                    <rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke={focused === "email" ? "#10B981" : "#9CA3AF"} strokeWidth="1.3" />
+                    <path d="M1.5 5.5l6.5 4 6.5-4" stroke={focused === "email" ? "#10B981" : "#9CA3AF"} strokeWidth="1.3" />
                   </svg>
                 </div>
                 <input
@@ -201,14 +197,14 @@ export default function LoginPage({ onBack, onSignUp, onLoginAsStudent, onLoginA
               <div
                 className="relative rounded-xl border transition-all overflow-hidden"
                 style={{
-                  borderColor: focused === "password" ? "#7C3AED" : "#E5E7EB",
-                  boxShadow: focused === "password" ? "0 0 0 3px rgba(124,58,237,0.12)" : "none",
+                  borderColor: focused === "password" ? "#10B981" : "#E5E7EB",
+                  boxShadow: focused === "password" ? "0 0 0 3px rgba(16,185,129,0.12)" : "none",
                 }}
               >
                 <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <rect x="3" y="7" width="10" height="7" rx="1.5" stroke={focused === "password" ? "#7C3AED" : "#9CA3AF"} strokeWidth="1.3" />
-                    <path d="M5 7V5a3 3 0 0 1 6 0v2" stroke={focused === "password" ? "#7C3AED" : "#9CA3AF"} strokeWidth="1.3" strokeLinecap="round" />
+                    <rect x="3" y="7" width="10" height="7" rx="1.5" stroke={focused === "password" ? "#10B981" : "#9CA3AF"} strokeWidth="1.3" />
+                    <path d="M5 7V5a3 3 0 0 1 6 0v2" stroke={focused === "password" ? "#10B981" : "#9CA3AF"} strokeWidth="1.3" strokeLinecap="round" />
                   </svg>
                 </div>
                 <input
@@ -234,7 +230,7 @@ export default function LoginPage({ onBack, onSignUp, onLoginAsStudent, onLoginA
             <div className="flex justify-end -mt-2">
               <a
                 href="#"
-                className="text-[13px] font-semibold text-violet-600 hover:text-violet-800 transition-colors"
+                className="text-[13px] font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
               >
                 Quên mật khẩu?
               </a>
@@ -242,11 +238,11 @@ export default function LoginPage({ onBack, onSignUp, onLoginAsStudent, onLoginA
 
             {/* Demo role buttons */}
             <div className="space-y-3 pt-1">
-              <p className="text-[11px] text-slate-400 text-center font-medium uppercase tracking-wider">Chọn vai trò để demo</p>
+              <p className="text-[11px] text-slate-400 text-center font-medium uppercase tracking-wider">Chọn vai trò để tiếp tục</p>
               <button
                 type="button"
                 onClick={onLoginAsStudent}
-                className="btn-primary w-full bg-violet-700 hover:bg-violet-800 text-white font-semibold py-3.5 rounded-xl shadow-md shadow-violet-200 text-[15px] tracking-wide flex items-center justify-center gap-2"
+                className="btn-primary w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 rounded-xl shadow-sm text-[15px] tracking-wide flex items-center justify-center gap-2 transition-colors"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <circle cx="8" cy="5" r="3" stroke="white" strokeWidth="1.4" />
@@ -257,11 +253,11 @@ export default function LoginPage({ onBack, onSignUp, onLoginAsStudent, onLoginA
               <button
                 type="button"
                 onClick={onLoginAsAdmin}
-                className="btn-primary w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3.5 rounded-xl shadow-md shadow-amber-200 text-[15px] tracking-wide flex items-center justify-center gap-2"
+                className="w-full bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 font-semibold py-3.5 rounded-xl shadow-sm text-[15px] tracking-wide flex items-center justify-center gap-2 transition-colors"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle cx="8" cy="6" r="2.5" stroke="white" strokeWidth="1.4" />
-                  <path d="M8 1.5v2M8 10.5v2M1.5 8h2M10.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M3.4 12.6l1.4-1.4M11.2 4.8l1.4-1.4" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
+                  <circle cx="8" cy="6" r="2.5" stroke="currentColor" strokeWidth="1.4" />
+                  <path d="M8 1.5v2M8 10.5v2M1.5 8h2M10.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M3.4 12.6l1.4-1.4M11.2 4.8l1.4-1.4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
                 </svg>
                 Đăng nhập với tư cách Quản trị viên
               </button>
@@ -294,7 +290,7 @@ export default function LoginPage({ onBack, onSignUp, onLoginAsStudent, onLoginA
           {/* Sign up footer */}
           <p className="text-center text-[14px] text-slate-500">
             Chưa có tài khoản?{" "}
-            <button onClick={onSignUp} className="font-semibold text-violet-600 hover:text-violet-800 transition-colors">
+            <button onClick={onSignUp} className="font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
               Đăng ký
             </button>
           </p>
