@@ -143,7 +143,7 @@ function ActivityChart({ data }: { data: ActivityDataPoint[] }) {
       {/* Tooltip */}
       {hoverIdx !== null && (
         <div
-          className="absolute top-2 bg-[#24312B] text-white text-[11px] font-medium px-2.5 py-1 rounded-md shadow-md pointer-events-none"
+          className="absolute top-2 bg-[#24312B] text-white text-[11px] font-medium px-2.5 py-1 rounded-md pointer-events-none"
           style={{
             left: `calc(${(toX(hoverIdx) / W) * 100}% - 35px)`,
           }}
@@ -284,7 +284,7 @@ export default function AdminDashboardPage({ onNav }: AdminDashboardPageProps) {
                     onClick={() => setTimeRange(7)}
                     className={`px-2.5 py-1 rounded-md text-[11.5px] font-medium transition-all ${
                       timeRange === 7
-                        ? "bg-white text-[#24312B] shadow-sm font-semibold"
+                        ? "bg-white text-[#24312B] font-semibold"
                         : "text-[#69766F] hover:text-[#24312B]"
                     }`}
                   >
@@ -295,7 +295,7 @@ export default function AdminDashboardPage({ onNav }: AdminDashboardPageProps) {
                     onClick={() => setTimeRange(14)}
                     className={`px-2.5 py-1 rounded-md text-[11.5px] font-medium transition-all ${
                       timeRange === 14
-                        ? "bg-white text-[#24312B] shadow-sm font-semibold"
+                        ? "bg-white text-[#24312B] font-semibold"
                         : "text-[#69766F] hover:text-[#24312B]"
                     }`}
                   >

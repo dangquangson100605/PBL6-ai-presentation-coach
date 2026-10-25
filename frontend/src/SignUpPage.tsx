@@ -349,7 +349,7 @@ export default function SignUpPage({
               type="submit"
               variant="primary"
               size="lg"
-              className="w-full justify-center shadow-sm mt-2"
+              className="w-full justify-center mt-2"
               disabled={!agreeTerms}
             >
               Đăng ký tài khoản

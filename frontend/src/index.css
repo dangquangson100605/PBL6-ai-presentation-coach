@@ -20,6 +20,16 @@
   --color-status-success: #276749;
   --color-status-warning: #B7791F;
   --color-status-danger: #C24141;
+
+  /* Flat UI Design System: Neutralize all shadow tokens */
+  --shadow-none: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 0 0 #0000;
+  --shadow-xl: 0 0 #0000;
+  --shadow-2xl: 0 0 #0000;
+  --shadow-inner: 0 0 #0000;
 }
 
 html,
@@ -34,6 +44,16 @@ body,
 
 * {
   box-sizing: border-box;
+}
+
+/* ── Completely Eliminate All Box Shadows (Flat UI Design) ── */
+*,
+*::before,
+*::after,
+*:hover,
+*:focus,
+*:active {
+  box-shadow: none !important;
 }
 
 /* ── Global micro-interaction primitives ──────────────────── */
@@ -56,13 +76,14 @@ body,
   transform: scale(0.99);
 }
 
-/* Subtle card hover */
+/* Subtle card hover (clean flat border transition only) */
 .card-hover {
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out;
 }
 
 .card-hover:hover {
-  box-shadow: 0 1px 3px rgba(36, 49, 43, 0.05);
+  border-color: #276749;
+  box-shadow: none !important;
 }
 
 /* Sidebar nav link */

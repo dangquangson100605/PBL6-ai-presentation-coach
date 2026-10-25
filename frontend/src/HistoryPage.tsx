@@ -97,7 +97,7 @@ export default function HistoryPage({
                   onClick={() => setActiveFilter(f)}
                   className={`text-[12px] font-medium px-3 py-1.5 rounded-lg border transition-all ${
                     activeFilter === f
-                      ? "bg-[#276749] text-white border-[#276749] shadow-sm"
+                      ? "bg-[#276749] text-white border-[#276749]"
                       : "bg-white text-[#69766F] border-[#DCE5DF] hover:bg-[#F5F7F6] hover:text-[#24312B]"
                   }`}
                 >
@@ -238,7 +238,7 @@ export default function HistoryPage({
                             ].map(({ label, value, unit, bar }) => (
                               <div
                                 key={label}
-                                className="bg-white rounded-xl border border-[#DCE5DF] p-3 space-y-1 shadow-sm"
+                                className="bg-white rounded-xl border border-[#DCE5DF] p-3 space-y-1"
                               >
                                 <p className="text-[11.5px] text-[#69766F] font-medium">
                                   {label}

@@ -211,7 +211,7 @@ function SettingsSection({
 function Toast({ message, visible }: { message: string; visible: boolean }) {
   if (!visible) return null;
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-[#24312B] text-white text-[12.5px] font-medium px-4 py-3 rounded-xl shadow-lg border border-white/10 animate-fade-in">
+    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-[#24312B] text-white text-[12.5px] font-medium px-4 py-3 rounded-xl border border-white/10 animate-fade-in">
       <span className="text-[#276749] bg-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">
         ✓
       </span>

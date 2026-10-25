@@ -276,7 +276,7 @@ export default function LandingPage({
             {/* Right Column: Live Mockup Card */}
             <div className="lg:col-span-5">
               <div className="relative mx-auto max-w-md lg:max-w-none">
-                <Card className="p-6 space-y-5 bg-white border-[#DCE5DF] shadow-md">
+                <Card className="p-6 space-y-5 bg-white border-[#DCE5DF]">
                   {/* Card Header */}
                   <div className="flex items-center justify-between pb-3.5 border-b border-[#DCE5DF]">
                     <div className="flex items-center gap-3">

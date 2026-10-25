@@ -331,7 +331,7 @@ export default function UploadPage({ onNav, onAnalyze, userRole }: UploadPagePro
               <Button
                 variant="primary"
                 size="lg"
-                className="w-full justify-center shadow-sm"
+                className="w-full justify-center"
                 onClick={handleSend}
               >
                 Gửi để phân tích
@@ -350,7 +350,7 @@ export default function UploadPage({ onNav, onAnalyze, userRole }: UploadPagePro
               {UPLOAD_TIPS.map((tip, i) => (
                 <div
                   key={i}
-                  className="bg-white rounded-xl border border-[#DCE5DF] p-3.5 flex items-start gap-2.5 shadow-sm"
+                  className="bg-white rounded-xl border border-[#DCE5DF] p-3.5 flex items-start gap-2.5"
                 >
                   <div className="w-5 h-5 rounded-md bg-[#E8F1EB] text-[#276749] flex items-center justify-center flex-shrink-0 text-[11px] font-bold mt-0.5">
                     ✓

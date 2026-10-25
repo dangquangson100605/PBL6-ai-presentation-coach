@@ -304,7 +304,7 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
           <div className="flex-1 lg:flex-[6] min-w-0 flex flex-col overflow-y-auto p-5 space-y-4 border-r border-[#DCE5DF]">
             {/* Video Player Box */}
             <div
-              className="rounded-xl overflow-hidden bg-[#1A231F] border border-[#DCE5DF] shadow-sm relative"
+              className="rounded-xl overflow-hidden bg-[#1A231F] border border-[#DCE5DF] relative"
               style={{ aspectRatio: "16/9" }}
             >
               <img
@@ -405,7 +405,7 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                   style={{ width: `${playhead}%` }}
                 />
                 <div
-                  className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#276749] border-2 border-white shadow-sm z-20"
+                  className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#276749] border-2 border-white z-20"
                   style={{ left: `calc(${playhead}% - 7px)` }}
                 />
 
@@ -418,11 +418,11 @@ export default function ReportPage({ onNav, userRole }: ReportPageProps) {
                     onMouseLeave={() => setHoverMarker(null)}
                   >
                     <div
-                      className="w-3.5 h-3.5 rounded-full border-2 border-white shadow-sm"
+                      className="w-3.5 h-3.5 rounded-full border-2 border-white"
                       style={{ background: m.color }}
                     />
                     {hoverMarker === i && (
-                      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#24312B] text-white text-[11px] font-medium px-2.5 py-1 rounded-md whitespace-nowrap shadow-md z-30 pointer-events-none">
+                      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#24312B] text-white text-[11px] font-medium px-2.5 py-1 rounded-md whitespace-nowrap z-30 pointer-events-none">
                         {m.symbol} {m.severity}: {m.label}
                       </div>
                     )}

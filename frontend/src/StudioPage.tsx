@@ -188,7 +188,7 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
           {/* ── LEFT: Camera & Controls ──────────────────────── */}
           <div className="flex-1 lg:flex-[7] min-w-0 flex flex-col gap-3.5">
             {/* Camera Viewport Container */}
-            <div className="relative flex-1 rounded-2xl overflow-hidden bg-[#1A231F] border border-[#DCE5DF] shadow-sm min-h-[360px] flex flex-col">
+            <div className="relative flex-1 rounded-2xl overflow-hidden bg-[#1A231F] border border-[#DCE5DF] min-h-[360px] flex flex-col">
               {/* Webcam Video / Live Preview Feed */}
               <img
                 src="https://images.unsplash.com/photo-1758876020207-67890de8aa73?w=1200&h=900&fit=crop&auto=format"
@@ -207,7 +207,7 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                   <div className="absolute -bottom-0.5 -left-0.5 w-3.5 h-3.5 border-b-2 border-l-2 border-[#276749] rounded-bl" />
                   <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 border-b-2 border-r-2 border-[#276749] rounded-br" />
                 </div>
-                <div className="absolute -top-5 left-0 bg-[#276749]/90 text-white text-[10px] font-medium px-2 py-0.5 rounded shadow-sm">
+                <div className="absolute -top-5 left-0 bg-[#276749]/90 text-white text-[10px] font-medium px-2 py-0.5 rounded">
                   AI Tracking
                 </div>
               </div>
@@ -262,7 +262,7 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                 <button
                   type="button"
                   onClick={() => setRecording(!recording)}
-                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-[13px] text-white shadow-md transition-all active:scale-[0.98] ${
+                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-[13px] text-white transition-all active:scale-[0.98] ${
                     recording
                       ? "bg-[#C24141] hover:bg-[#a53232]"
                       : "bg-[#276749] hover:bg-[#1F553C]"
@@ -276,7 +276,7 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
                 <button
                   type="button"
                   onClick={onAnalyze}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full font-medium text-[13px] bg-white text-[#24312B] hover:bg-[#F5F7F6] border border-[#DCE5DF] shadow-md transition-all active:scale-[0.98]"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full font-medium text-[13px] bg-white text-[#24312B] hover:bg-[#F5F7F6] border border-[#DCE5DF] transition-all active:scale-[0.98]"
                 >
                   <IconSend />
                   <span>Gửi phân tích</span>
@@ -294,7 +294,7 @@ export default function StudioPage({ onNav, onAnalyze, userRole }: StudioPagePro
               ].map(({ label, value, unit, status, variant }) => (
                 <div
                   key={label}
-                  className="bg-white border border-[#DCE5DF] rounded-xl px-4 py-3 shadow-sm flex flex-col justify-between"
+                  className="bg-white border border-[#DCE5DF] rounded-xl px-4 py-3 flex flex-col justify-between"
                 >
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-[12px] font-medium text-[#69766F]">{label}</span>

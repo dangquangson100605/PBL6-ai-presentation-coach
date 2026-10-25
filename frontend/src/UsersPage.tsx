@@ -2,7 +2,7 @@ import { useState } from "react";
 import Sidebar from "./Sidebar";
 import { User, UserStatus as Status } from "./types";
 import { SEED_USERS } from "./mocks/mockUsers";
-import { Button, Card, Badge } from "./components/common";
+import { Button, Card } from "./components/common";
 
 const PAGE_SIZE = 10;
 const TOTAL = 150;
@@ -11,9 +11,13 @@ const TOTAL = 150;
 function StatusBadge({ status }: { status: Status }) {
   const active = status === "active";
   return (
-    <Badge variant={active ? "success" : "danger"} withDot>
+    <span
+      className={`font-medium text-[12.5px] ${
+        active ? "text-[#276749]" : "text-[#C24141]"
+      }`}
+    >
       {active ? "Hoạt động" : "Bị khóa"}
-    </Badge>
+    </span>
   );
 }
 
@@ -21,7 +25,7 @@ function StatusBadge({ status }: { status: Status }) {
 function Toast({ message, visible }: { message: string; visible: boolean }) {
   if (!visible) return null;
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-[#24312B] text-white text-[12.5px] font-medium px-4 py-3 rounded-xl shadow-lg border border-white/10 animate-fade-in">
+    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-[#24312B] text-white text-[12.5px] font-medium px-4 py-3 rounded-xl border border-white/10 animate-fade-in">
       <span className="text-[#276749] bg-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">
         ✓
       </span>
@@ -49,7 +53,7 @@ function ConfirmModal({
         className="absolute inset-0 bg-[#24312B]/40 backdrop-blur-sm"
         onClick={onCancel}
       />
-      <Card className="relative bg-white shadow-xl w-full max-w-sm p-6 space-y-4 z-10 border-[#DCE5DF]">
+      <Card className="relative bg-white w-full max-w-sm p-6 space-y-4 z-10 border-[#DCE5DF]">
         <h3 className="text-[16px] font-bold text-[#24312B] leading-snug">
           {isBan ? "Khóa tài khoản người dùng?" : "Mở khóa tài khoản?"}
         </h3>
@@ -82,7 +86,7 @@ function ConfirmModal({
             type="button"
             variant={isBan ? "danger" : "primary"}
             size="sm"
-            className="flex-1 justify-center shadow-sm"
+            className="flex-1 justify-center"
             onClick={onConfirm}
           >
             {isBan ? "Xác nhận khóa" : "Mở khóa"}
@@ -266,6 +270,7 @@ export default function UsersPage({ onNav }: UsersPageProps) {
                               type="button"
                               variant="primary"
                               size="sm"
+                              className="w-20 justify-center"
                               onClick={() =>
                                 setModal({ user, action: "unban" })
                               }
@@ -277,7 +282,7 @@ export default function UsersPage({ onNav }: UsersPageProps) {
                               type="button"
                               variant="secondary"
                               size="sm"
-                              className="hover:text-[#C24141] hover:border-[#C24141]/40"
+                              className="w-20 justify-center hover:text-[#C24141] hover:border-[#C24141]/40"
                               onClick={() => setModal({ user, action: "ban" })}
                             >
                               Khóa

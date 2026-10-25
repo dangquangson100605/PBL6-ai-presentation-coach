@@ -38,8 +38,14 @@
   * Lưu trữ `public/logo.svg` với gradient chuẩn và tỷ lệ 250:64.
   * Tạo component [BrandLogo.tsx](file:///c:/Users/Admin/OneDrive%20-%20The%20University%20of%20Technology/Ki_7/PBL6/code/PBL6-ai-presentation-coach/frontend/src/components/common/BrandLogo.tsx).
   * Cập nhật đồng bộ tại LandingPage, LoginPage, SignUpPage, Sidebar và favicon.
+* [x] **Giai đoạn 10 (26/10/2026):** Chuẩn hóa Flat Design và tinh chỉnh giao diện Admin:
+  * Loại bỏ hoàn toàn hiệu ứng đổ bóng (`box-shadow`, `shadow-*`) trên toàn bộ hệ sinh thái giao diện (Landing, Auth, Student, Admin).
+  * Vô hiệu hóa token shadow tại `@theme` và áp dụng reset `box-shadow: none !important`, bảo tồn viền mảnh `border-[#DCE5DF]`.
+  * Tinh chỉnh `/admin/users`: Bỏ box badge trạng thái chuyển sang text thuần, chuẩn hóa kích thước đồng nhất cho 2 nút "Khóa" và "Mở khóa".
+  * Tinh chỉnh `/admin/config` và `/admin/logs`: Bỏ box bao quanh chữ trạng thái xử lý và mức độ log (INFO/WARN/ERROR/DEBUG).
 
 ## 3. Các Việc Ưu Tiên Tiếp Theo (Next Priority Steps)
 1. **Studio MediaRecorder:** Tích hợp bộ thu video webcam qua `MediaRecorder API`, cho phép xuất file nộp thử nghiệm hoặc tải về máy.
 2. **Họp đồng bộ với Backend Lead (Võ Thành Nhân):** Chốt danh sách API endpoints chuẩn (Swagger/OpenAPI) cho Auth (login/logout/register), Session (upload/list/detail) và AI Report.
 3. **Kết nối API thật với tầng Services:** Chuyển đổi dần các module từ `src/mocks/` sang gọi API thực qua `src/services/apiClient.ts` khi Backend khởi động môi trường local.
+

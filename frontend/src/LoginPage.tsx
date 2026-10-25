@@ -203,7 +203,7 @@ export default function LoginPage({
                   onClick={() => fillPreset(p.email, p.pass)}
                   className={`text-left px-2.5 py-1.5 rounded-lg border text-[12px] font-medium transition-all ${
                     email.toLowerCase() === p.email.toLowerCase()
-                      ? "border-[#276749] bg-[#E8F1EB] text-[#276749] font-semibold shadow-xs"
+                      ? "border-[#276749] bg-[#E8F1EB] text-[#276749] font-semibold"
                       : "border-[#DCE5DF] bg-[#F5F7F6] text-[#24312B] hover:border-[#69766F]"
                   }`}
                 >
@@ -304,7 +304,7 @@ export default function LoginPage({
                 variant="primary"
                 size="lg"
                 disabled={isSubmitting}
-                className="w-full justify-center shadow-sm"
+                className="w-full justify-center"
               >
                 {isSubmitting ? "Đang xác thực..." : "Đăng nhập"}
               </Button>

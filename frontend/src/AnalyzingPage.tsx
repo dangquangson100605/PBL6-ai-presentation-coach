@@ -253,7 +253,7 @@ export default function AnalyzingPage({ onNav, onDone, userRole }: AnalyzingPage
             <Button
               variant="primary"
               size="lg"
-              className="w-full justify-center shadow-sm"
+              className="w-full justify-center"
               onClick={() => {
                 if (createdSessionRef.current) {
                   onDone(createdSessionRef.current);

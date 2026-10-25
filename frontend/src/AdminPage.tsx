@@ -516,7 +516,15 @@ export default function AdminPage({ onNav, userRole }: AdminPageProps) {
                         {row.duration}
                       </td>
                       <td className="px-6 py-3">
-                        <Badge variant={row.variant}>{row.status}</Badge>
+                        <span
+                          className={`font-medium ${
+                            row.variant === "danger"
+                              ? "text-[#C24141]"
+                              : "text-[#276749]"
+                          }`}
+                        >
+                          {row.status}
+                        </span>
                       </td>
                     </tr>
                   ))}

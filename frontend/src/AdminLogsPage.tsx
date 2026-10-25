@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import Sidebar from "./Sidebar";
-import { Button, Card, Badge } from "./components/common";
+import { Button, Card } from "./components/common";
 import { DEMO_SERVER_LOGS } from "./mocks/mockLogs";
 import { ServerLogItem, LogLevel } from "./types";
 
@@ -11,30 +11,34 @@ function LogLevelBadge({ level }: { level: LogLevel }) {
   switch (level) {
     case "ERROR":
       return (
-        <Badge variant="danger" withDot>
+        <span className="font-semibold text-[11.5px] text-[#C24141]">
           ERROR
-        </Badge>
+        </span>
       );
     case "WARNING":
       return (
-        <Badge variant="warning" withDot>
+        <span className="font-semibold text-[11.5px] text-[#B7791F]">
           WARN
-        </Badge>
+        </span>
       );
     case "INFO":
       return (
-        <Badge variant="success" withDot>
+        <span className="font-semibold text-[11.5px] text-[#276749]">
           INFO
-        </Badge>
+        </span>
       );
     case "DEBUG":
       return (
-        <Badge variant="neutral" withDot>
+        <span className="font-semibold text-[11.5px] text-[#69766F]">
           DEBUG
-        </Badge>
+        </span>
       );
     default:
-      return <Badge variant="neutral">{level}</Badge>;
+      return (
+        <span className="font-semibold text-[11.5px] text-[#69766F]">
+          {level}
+        </span>
+      );
   }
 }
 
@@ -55,7 +59,7 @@ function LogDetailModal({
       />
 
       {/* Modal Dialog Card */}
-      <Card className="relative bg-white shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col p-0 z-10 border-[#DCE5DF] overflow-hidden">
+      <Card className="relative bg-white w-full max-w-2xl max-h-[85vh] flex flex-col p-0 z-10 border-[#DCE5DF] overflow-hidden">
         {/* Modal Header */}
         <div className="px-6 py-4 border-b border-[#DCE5DF] flex items-center justify-between bg-[#F5F7F6]/50">
           <div className="flex items-center gap-2.5">
@@ -478,7 +482,7 @@ export default function AdminLogsPage({ onNav }: AdminLogsPageProps) {
                       }}
                       className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[12px] font-medium border transition-all ${
                         active
-                          ? "bg-[#276749] text-white border-[#276749] shadow-sm font-semibold"
+                          ? "bg-[#276749] text-white border-[#276749] font-semibold"
                           : "bg-white text-[#69766F] border-[#DCE5DF] hover:bg-[#F5F7F6] hover:text-[#24312B]"
                       }`}
                     >

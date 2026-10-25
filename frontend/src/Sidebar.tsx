@@ -115,7 +115,7 @@ export default function Sidebar({ userRole, activeItem, onNav, onLogout }: Sideb
       <div className="pt-4 border-t border-[#DCE5DF] flex flex-col md:flex-row items-center justify-center md:justify-between px-1 md:px-2 gap-2">
         <div className="flex items-center gap-2.5 min-w-0">
           <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ${
+            className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
               isAdmin ? "bg-[#24312B] text-white" : "bg-[#276749] text-white"
             }`}
           >
